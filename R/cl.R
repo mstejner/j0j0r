@@ -24,7 +24,7 @@ cl <- function(l, direction, k_perp, k_par, v_perp, v_par, omega_c){
   switch(
     direction,
     x = (l * omega_c / k_perp) * besselJ(k_perp * rho, l),
-    y = const$i * v_perp * (besselJ(k_perp * rho, l - 1) + besselJ(k_perp * rho, l + 1)) / 2,
+    y = v_perp * (besselJ(k_perp * rho, l - 1) + besselJ(k_perp * rho, l + 1)) / 2,
     z = v_par * besselJ(k_perp * rho, l)
   )
 }

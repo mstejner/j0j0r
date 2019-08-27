@@ -41,7 +41,7 @@ j0j0 <- function(
   k_par <- cos(phi * pi / 180) * k
 
   frontfaktor <-  (2 * pi)^2 * m * q^2 / k_par
-  signs <- c("x" = 1, "y" = const$i, "z" = 1)
+  signs <- c("x" = 1, "y" = -const$i, "z" = 1)
 
   vector_integrand <- Vectorize(
     FUN = j0j0_integrand,

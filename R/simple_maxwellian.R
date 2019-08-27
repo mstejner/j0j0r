@@ -40,7 +40,7 @@ maxwellian_setup <- function(n, T_eV, A){
       n = n,
       p_term = find_p_term(T_eV, A)
     ),
-    p_scale = find_p_term(T_eV, A = 2)
+    p_scale = find_p_term(T_eV, A)
   )
 }
 
@@ -84,14 +84,3 @@ maxwellian_grad <- deriv(
   namevec = c("p_perp","p_par"),
   function.arg = c("p_perp", "p_par", "n", "p_term")
   )
-
-
-
-# bi_maxwellian_drift <- function(p, dist){
-#   (2 * dist[["n"]] * p[1] / (const[["sqrt_pi"]] * dist[["p_term"]][[1]]^2 * dist[["p_term"]][[2]])) *
-#     exp(-sum((p - dist[["p_drift"]])^2 / dist[["p_term"]]^2))
-# }
-#
-# dist <- list(p_term = c(1, 1), p_drift = c(0, 1), n = 1)
-#
-# bi_maxwellian_drift_dist_vec <- Vectorize(FUN = sum(bi_maxwellian_drift), vectorize.args = "dist")

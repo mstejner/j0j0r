@@ -36,7 +36,7 @@ j0j0_spectrum <- function(
     direction1 = directions,
     direction2 = directions,
     stringsAsFactors = FALSE
-  ) %>%
+    ) %>%
     dplyr::filter(.data[["direction1"]] >= .data[["direction2"]]) %>%
     dplyr::mutate(
       directions = paste0(.data[["direction1"]], .data[["direction2"]])
