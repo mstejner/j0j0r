@@ -3,6 +3,48 @@
 # * must be normalized so the integral is 1
 # * p must be scaled so it is near 1
 
+#' @title maxwellian_expr
+#'
+#' @description expression for a simple maxwellian momentum distribution in
+#'   cylindrical coordinates
+maxwellian_expr <- expression(
+  2 * pi * n / (sqrt(pi) * p_term)^3 * exp(-(p_par^2 + p_perp^2) / p_term^2)
+)
+
+#' @title maxwellian_func
+#'
+#' @description function to evaluate a simple maxwellian momentum distribution
+#'
+#' @param p_perp \code{numeric} value of perpendicular momentum component
+#' @param p_par \code{numeric} value of parallel momentum component
+#' @param n \code{numeric} particle density.
+#' @param p_term \code{numeric} Particle themal momentum
+#'
+#' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
+#'
+maxwellian_func <- function(p_perp, p_par, n, p_term){
+  eval(maxwellian_expr)
+}
+
+#' @title maxwellian_grad
+#'
+#' @description function to calculate the gradient of a  simple maxwellian
+#'   momentum distribution with respect to parallel and perpencicular momentum
+#'
+#' @param p_perp \code{numeric} value of perpendicular momentum component
+#' @param p_par \code{numeric} value of parallel momentum component
+#' @param n \code{numeric} particle density.
+#' @param p_term \code{numeric} Particle themal momentum
+#'
+#' @return \code{list}
+#'
+maxwellian_grad <- deriv(
+  expr = maxwellian_expr,
+  namevec = c("p_perp","p_par"),
+  function.arg = c("p_perp", "p_par", "n", "p_term")
+)
+
+
 
 #' @title find_p_term
 #'
@@ -44,43 +86,3 @@ maxwellian_setup <- function(n, T_eV, A){
   )
 }
 
-#' @title maxwellian_expr
-#'
-#' @description expression for a simple maxwellian momentum distribution in
-#'   cylindrical coordinates
-maxwellian_expr <- expression(
-  2 * pi * n / (sqrt(pi) * p_term)^3 * exp(-(p_par^2 + p_perp^2) / p_term^2)
-  )
-
-#' @title maxwellian_func
-#'
-#' @description function to evaluate a simple maxwellian momentum distribution
-#'
-#' @param p_perp \code{numeric} value of perpendicular momentum component
-#' @param p_par \code{numeric} value of parallel momentum component
-#' @param n \code{numeric} particle density.
-#' @param p_term \code{numeric} Particle themal momentum
-#'
-#' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
-#'
-maxwellian_func <- function(p_perp, p_par, n, p_term){
-  eval(maxwellian_expr)
-  }
-
-#' @title maxwellian_grad
-#'
-#' @description function to calculate the gradient of a  simple maxwellian
-#'   momentum distribution with respect to parallel and perpencicular momentum
-#'
-#' @param p_perp \code{numeric} value of perpendicular momentum component
-#' @param p_par \code{numeric} value of parallel momentum component
-#' @param n \code{numeric} particle density.
-#' @param p_term \code{numeric} Particle themal momentum
-#'
-#' @return \code{list}
-#'
-maxwellian_grad <- deriv(
-  expr = maxwellian_expr,
-  namevec = c("p_perp","p_par"),
-  function.arg = c("p_perp", "p_par", "n", "p_term")
-  )

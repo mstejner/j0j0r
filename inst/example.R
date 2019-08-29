@@ -60,3 +60,55 @@ specdf %>%
   ggplot2::geom_line() +
   ggplot2::geom_hline(yintercept = 0) +
   ggplot2::facet_wrap( ~ directions)
+
+
+
+deuterium_kp2 = list(
+  name = "deuterium_kp2",
+  Z = 1,
+  A = 2,
+  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 2, A = 2)
+)
+
+deuterium_kp5 = list(
+  name = "deuterium_kp5",
+  Z = 1,
+  A = 2,
+  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 5, A = 2)
+)
+
+deuterium_kp50 = list(
+  name = "deuterium_kp50",
+  Z = 1,
+  A = 2,
+  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 50, A = 2)
+)
+
+phi <- 86
+k <- 2 * pi / (j0j0r::const$c / 100e9)
+B = 2.5
+
+future::plan(strategy = "multisession", .skip = TRUE)
+
+tic()
+specdf <- j0j0r::j0j0_spectrum2(
+  k = k,
+  phi = c(86),
+  frequencies = seq(0, 400e6, length.out = 41),
+  directions = c("x", "y", "z"),
+  B = B,
+  particles = list(
+    deuterium_kp50 = deuterium_kp50
+  )
+)
+toc()
+
+specdf %>%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = particle)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions)
+
+
+
+

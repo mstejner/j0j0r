@@ -9,9 +9,14 @@ bimaxwellian_setup(n, T_eV_perp, T_eV_par, v_drift, A)
 \arguments{
 \item{n}{\code{numeric} Particle density.}
 
-\item{A}{\code{numeric} Particle mass number}
+\item{T_eV_perp}{\code{numeric} Perpendicular temperaure in eV.}
 
-\item{T_eV}{\code{numeric} Temperaure in eV.}
+\item{T_eV_par}{\code{numeric} Parallel temperaure in eV.}
+
+\item{v_drift}{\code{numeric} drift velocity parallel to magnetic field in
+m/s.}
+
+\item{A}{\code{numeric} Particle mass number}
 }
 \value{
 \code{list} with momentum distribution setup
