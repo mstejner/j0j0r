@@ -34,11 +34,14 @@ j0j0_integrand <- function(
 
   # v_par_max <- optimize_distribution_perp(distribution, p_perp)[["maximum"]] *
   #   distribution[["p_scale"]] / m
+
+  l_scale <- 3
+
   v_par_max <- 0
   p_perp <- p_perp * distribution[["p_scale"]]
 
   l_0 <- round((omega - v_par_max * k_par) / omega_c)
-  l_values <- l_0 + seq(-5, 5, 1)
+  l_values <- l_0 + seq(-l_scale, l_scale, 1)
 
   niter <- 0
   converged <- FALSE
@@ -64,18 +67,20 @@ j0j0_integrand <- function(
     sum_terms_all <- c(sum_terms_all, sum_terms)
     max_term <- max(abs(sum_terms_all))
 
-    l_values <- new_l_values(max_term, l_values_done, sum_terms, nl = 3)
+    l_values <- new_l_values(max_term, l_values_done, sum_terms, nl = l_scale)
 
     converged <- length(l_values) == 0
     if (max_term == 0 & niter > 5) {converged <- TRUE}
 
-    if (!converged & niter > 20) {
-      warning("could not converge integrand in 20 iterations")
+    if (!converged & niter > 50) {
+      warning("could not converge integrand in 50 iterations")
       break()
     }
+
+    l_scale <- ceiling(l_scale * 1.2)
+
   }
   p_perp * sum(sum_terms_all)
-
 }
 
 #' @title j0j0_sum_terms
@@ -114,14 +119,17 @@ j0j0_sum_terms <- function(
   ){
 
   v_perp <- p_perp / m
-  v_par <- (omega - l_values * omega_c) / k_par
+  v_par  <- (omega - l_values * omega_c) / k_par
   p_par  <- v_par * m
 
-  clcl <-
-    abs(
+  if (identical(directions[[1]], directions[[2]])) {
+    clcl <-
+      cl(l_values, directions[[1]], k_perp, k_par, v_perp, v_par, omega_c)^2
+  } else {
+    clcl <-
       cl(l_values, directions[[1]], k_perp, k_par, v_perp, v_par, omega_c) *
-        Conj(cl(l_values, directions[[2]], k_perp, k_par, v_perp, v_par, omega_c))
-    )
+      cl(l_values, directions[[2]], k_perp, k_par, v_perp, v_par, omega_c)
+  }
 
   fl <- eval_distribution(distribution, p_perp, p_par)
 
@@ -145,10 +153,10 @@ new_l_values <- function(max_term, l_values_done, sum_terms, nl){
     l_values <- expand_l_values(l_values, l_values_done, "up", nl)
     l_values <- expand_l_values(l_values, l_values_done, "down", nl)
   } else {
-    if (abs(sum_terms[[1]]) / max_term > .Machine$double.eps) {
+    if (abs(sum_terms[[1]]) / max_term > 1e-6) {
       l_values <- expand_l_values(l_values, l_values_done, "down", nl)
     }
-    if (abs(utils::tail(sum_terms, 1)) /  max_term > .Machine$double.eps) {
+    if (abs(utils::tail(sum_terms, 1)) /  max_term > 1e-6) {
     l_values <- expand_l_values(l_values, l_values_done, "up", nl)
     }
   }

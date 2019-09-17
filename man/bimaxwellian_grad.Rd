@@ -13,7 +13,8 @@ bimaxwellian_grad(p_perp, p_par, n, p_tperp, p_tpar, p_drift)
 
 \item{n}{\code{numeric} particle density.}
 
-\item{p_tperp}{\code{numeric} thermal momentum perpendicular to magnetic field}
+\item{p_tperp}{\code{numeric} thermal momentum perpendicular to magnetic
+field}
 
 \item{p_tpar}{\code{numeric} thermal momentum parallel to magnetic field}
 
@@ -23,6 +24,6 @@ bimaxwellian_grad(p_perp, p_par, n, p_tperp, p_tpar, p_drift)
 \code{list}
 }
 \description{
-function to calculate the gradient of a  bimaxwellian
-  momentum distribution with respect to parallel and perpencicular momentum
+function to calculate the gradient of a  bimaxwellian momentum
+  distribution with respect to parallel and perpencicular momentum
 }

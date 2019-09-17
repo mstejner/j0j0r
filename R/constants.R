@@ -9,7 +9,9 @@ const <- list(
   c = 299792458,
   sqrt_pi = sqrt(pi),
   sqrt_pi_p3 = sqrt(pi)^3,
-  two_pi = 2 * pi
+  two_pi = 2 * pi,
+  m_e = 9.1093837015e-31,
+  epsilon_0 = 8.8541878128e-12
 )
 
 
