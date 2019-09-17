@@ -32,12 +32,24 @@ bvtnorm_expr <- expression(
 #' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
 #'
 bvtnorm_func <- function(p_perp, p_par, n, center, covariance, K){
-  K * n * mvtnorm::dmvnorm(
-    x = c(p_perp, p_par),
-    mean = center,
-    sigma = covariance
+  mapply(
+    FUN = function(p_perp, p_par, n, center, covariance, K){
+      K * n *
+        mvtnorm::dmvnorm(
+          x = c(p_perp, p_par),
+          mean = center,
+          sigma = covariance
+        )
+    },
+    p_perp = p_perp,
+    p_par = p_par,
+    MoreArgs = list(
+      n = n,
+      center = center,
+      covariance = covariance,
+      K = K
     )
-  #eval(bvtnorm_expr)
+  )
 }
 
 #' #' @title bvtnorm_grad

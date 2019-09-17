@@ -1,4 +1,4 @@
-devtools::install("C:/ctsr/j0j0r")
+devtools::install("C:/ctsr/j0j0r", dependencies = FALSE)
 devtools::load_all("C:/ctsr/j0j0r")
 library(magrittr)
 library(tictoc)
@@ -135,18 +135,43 @@ plot_distribution(distributions, v_par, v_perp) + ggplot2::scale_y_log10(limits 
 
 n <- 4e19
 A <- 2
-center <- c(0, 1e6)
-T_eV <- 2e3
+center <- c(0, 0.5e6)
+T_eV <- 0.1e3
 v_term <- find_p_term(T_eV, A) / (A * const[["amu"]])
 covariance <- rbind(c(v_term^2, 0), c(0, (v_term)^2))
 
-bvtnorm <- bvtnorm_setup(n, A, center, covariance)
-bvtnorm
-integrate_distribution(bvtnorm)
+
+bvtnorm <- list(
+  name = "deuterium_ring",
+  A = 2,
+  Z = 1,
+  distribution = bvtnorm_setup(n = 4e19, A = 2, center = center, covariance = covariance)
+  )
 
 v_par <- seq(-2e6, 2e6, length.out = 1000)
 v_perp <- 0
-plot_distribution(particles = list(bvtnorm = list(A = 2, distribution = bvtnorm)), v_par, v_perp)
+plot_distribution(particles = list(bvtnorm = bvtnorm), v_par, v_perp)
+
+bvtnorm_func(p_perp = 0, p_par = v_par*2*const$amu, n = 4e19, center = center, covariance = covariance, K = 1 )
+
+tic()
+specdf <- j0j0r::j0j0_spectrum2(
+  k = k,
+  phi = c(86),
+  frequencies = seq(0, 400e6, 10e6),
+  directions = c("x", "y", "z"),
+  B = B,
+  particles = list(
+    bvtnorm = bvtnorm
+  )
+)
+toc()
+specdf %>%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = particle)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions)
+
 
 
 deuterium_wilkie= list(
@@ -197,3 +222,42 @@ specdf %>%
   ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = directions)) +
   ggplot2::geom_line() +
   ggplot2::geom_hline(yintercept = 0)
+
+
+
+deuterium_ring = list(
+  name = "deuterium_ring",
+  Z = 1,
+  A = 2,
+  distribution = maxwellian_ring_setup(n = 4e19, A = 2, v_width = 1e5, v_rad = 0.5e6)
+)
+v_par <- seq(-5e6, 5e6, length.out = 10000)
+v_perp <- 0
+plot_distribution(particles = list(ring = deuterium_ring, maxw = deuterium_maxw), v_par, v_perp, logscale = FALSE)
+
+
+tic()
+specdf <- j0j0r::j0j0_spectrum2(
+  k = k,
+  phi = c(86),
+  frequencies = seq(0, 400e6, 1e6),
+  directions = c("x", "y", "z"),
+  B = B,
+  particles = list(
+    ring = deuterium_ring
+  )
+)
+toc()
+specdf %>%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = particle)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions)
+
+
+specdf %>%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = directions)) +
+  ggplot2::geom_line() +
+  ggplot2::geom_hline(yintercept = 0)
+
+
