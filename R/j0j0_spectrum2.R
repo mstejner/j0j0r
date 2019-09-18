@@ -24,47 +24,39 @@ j0j0_spectrum2 <- function(
   directions = c("x", "y", "z"),
   B,
   particles
-){
+) {
 
-  speclist = purrr::cross(
-    .l = list(
-      k = k,
-      phi = phi,
-      frequency = frequencies,
-      d1 = directions,
-      d2 = directions,
-      B = B,
-      particle = names(particles)
-    ),
-    .filter = function(k, phi, frequency, d1, d2, B, particle) { d1 > d2 }
-  )
-
-  specdf <- lapply(
-    X = speclist,
-    FUN = function(x){as.data.frame(x, stringsAsFactors = FALSE)}
-  ) %>%
-    dplyr::bind_rows() %>%
-    dplyr::mutate(directions = paste0(.data[["d1"]], .data[["d2"]])) %>%
+  spec <-
+    purrr::cross_df(
+      .l = list(
+        k = k,
+        phi = phi,
+        frequency = frequencies,
+        d1 = directions,
+        d2 = directions,
+        B = B,
+        particle = names(particles)
+      ),
+      .filter = function(k, phi, frequency, d1, d2, B, particle) { d1 > d2 }
+    ) %>%
+    dplyr::mutate(
+      directions = paste0(.data[["d1"]], .data[["d2"]]),
+      A = sapply(.data[["particle"]], function(x){particles[[x]][["A"]]}),
+      Z = sapply(.data[["particle"]], function(x){particles[[x]][["Z"]]}),
+      distribution = lapply(.data[["particle"]], function(x){particles[[x]][["distribution"]]})
+    ) %>%
     dplyr::select(-.data[["d1"]], -.data[["d2"]])
 
-  specdf %>%
+  spec %>%
     dplyr::mutate(
-      j0j0 = furrr::future_map(
-        .x = speclist,
-        .f = function(x, particles) {
-          j0j0r::j0j0(
-            directions = paste0(x[["d1"]], x[["d2"]]),
-            k = x[["k"]],
-            phi = x[["phi"]],
-            frequency = x[["frequency"]],
-            B = x[["B"]],
-            A = particles[[x[["particle"]]]][["A"]],
-            Z = particles[[x[["particle"]]]][["Z"]],
-            distribution = particles[[x[["particle"]]]][["distribution"]]
-          )
-        },
-        particles = particles
-      ) %>%
+      j0j0 =
+        furrr::future_pmap(
+          .l = spec %>% dplyr::select(-.data[["particle"]]),
+          .f = j0j0r::j0j0,
+          .progress = TRUE
+        ) %>%
         unlist()
-    )
+    ) %>%
+    dplyr::select(-.data[["distribution"]])
+
 }
