@@ -4,7 +4,7 @@
 \alias{bimaxwellian_setup}
 \title{bimaxwellian_setup}
 \usage{
-bimaxwellian_setup(n, T_eV_perp, T_eV_par, v_drift, A)
+bimaxwellian_setup(n, T_eV_perp, T_eV_par, v_drift, A, Z, name)
 }
 \arguments{
 \item{n}{\code{numeric} Particle density.}
@@ -17,6 +17,10 @@ bimaxwellian_setup(n, T_eV_perp, T_eV_par, v_drift, A)
 m/s.}
 
 \item{A}{\code{numeric} Particle mass number}
+
+\item{Z}{\code{numeric} Particle charge number}
+
+\item{name}{\code{character} Name of distribution/particle}
 }
 \value{
 \code{list} with momentum distribution setup

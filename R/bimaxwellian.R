@@ -55,12 +55,15 @@ bimaxwellian_grad <- deriv(
 #' @param v_drift \code{numeric} drift velocity parallel to magnetic field in
 #'   m/s.
 #' @param A \code{numeric} Particle mass number
+#' @param Z \code{numeric} Particle charge number
+#' @param name \code{character} Name of distribution/particle
 #'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-bimaxwellian_setup <- function(n, T_eV_perp, T_eV_par, v_drift, A){
-  list(
+bimaxwellian_setup <- function(n, T_eV_perp, T_eV_par, v_drift, A, Z, name){
+
+  distribution <- list(
     function_name = "bimaxwellian_func",
     gradient = "bimaxwellian_grad",
     distargs = list(
@@ -71,4 +74,12 @@ bimaxwellian_setup <- function(n, T_eV_perp, T_eV_par, v_drift, A){
     ),
     p_scale = find_p_term(T_eV_perp, A)
   )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
+  )
+
 }

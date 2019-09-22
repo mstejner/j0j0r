@@ -14,6 +14,10 @@ generalized_lorentzian_setup(n, T_eV, kp, A)
 \item{kp}{\code{numeric} kappa parameter (spectral index).}
 
 \item{A}{\code{numeric} Particle mass number}
+
+\item{Z}{\code{numeric} Particle charge number}
+
+\item{name}{\code{character} Name of distribution/particle}
 }
 \value{
 \code{list} with momentum distribution setup

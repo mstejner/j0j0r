@@ -10,9 +10,11 @@ root_distribution_perp(distribution, p_perp, tol = 1e-10)
 \item{distribution}{\code{list} with the momentum distributions.}
 
 \item{p_perp}{\code{numeric} value of perpendicular momentum component.}
+
+\item{tol}{\code{numeric} tolerance.}
 }
 \value{
-\code{numeric} values of p_par and the distribution at the optimum
+\code{numeric} values of p_par and the distribution at the root
 }
 \description{
 function to find a root (to within tol) of a momentum

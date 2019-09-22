@@ -16,11 +16,10 @@
 #' @param ions \code{data frame} with information on all ion species, containing
 #'   columns "n" (ion density), "A" (ion mass number), and "Z" (ion charge
 #'   number)
-#'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions){
+wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name){
   m <- A * const[["amu"]]
 
   p_c <- m * critical_velocity(n_e, T_e_eV, ions)
@@ -41,7 +40,7 @@ wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions){
 
   K <-  1 / integrate_homogeneous_distribution(unnormalized_dist)
 
-  list(
+  distribution <- list(
     function_name = "wilkie_func",
     gradient = "wilkie_grad",
     distargs = list(
@@ -52,6 +51,13 @@ wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions){
       K = K
     ),
     p_scale = p_b
+  )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
   )
 }
 

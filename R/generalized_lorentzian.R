@@ -79,12 +79,15 @@ generalized_lorentzian_grad <- deriv(
 #' @param T_eV \code{numeric} Temperaure in eV.
 #' @param kp \code{numeric} kappa parameter (spectral index).
 #' @param A \code{numeric} Particle mass number
+#' @param Z \code{numeric} Particle charge number
+#' @param name \code{character} Name of distribution/particle
 #'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-generalized_lorentzian_setup <- function(n, T_eV, kp, A){
-  list(
+generalized_lorentzian_setup <- function(n, T_eV, kp, A, Z, name){
+
+  distribution <- list(
     function_name = "generalized_lorentzian_func",
     gradient = "generalized_lorentzian_grad",
     distargs = list(
@@ -94,4 +97,12 @@ generalized_lorentzian_setup <- function(n, T_eV, kp, A){
     ),
     p_scale = find_glz_theta(T_eV, kp, A)
   )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
+  )
+
 }

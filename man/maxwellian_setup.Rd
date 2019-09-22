@@ -4,7 +4,7 @@
 \alias{maxwellian_setup}
 \title{maxwellian_setup}
 \usage{
-maxwellian_setup(n, T_eV, A)
+maxwellian_setup(n, T_eV, A, Z, name = "maxwellian")
 }
 \arguments{
 \item{n}{\code{numeric} Particle density.}
@@ -12,6 +12,10 @@ maxwellian_setup(n, T_eV, A)
 \item{T_eV}{\code{numeric} Temperaure in eV.}
 
 \item{A}{\code{numeric} Particle mass number}
+
+\item{Z}{\code{numeric} Particle charge number}
+
+\item{name}{\code{character} Name of distribution/particle}
 }
 \value{
 \code{list} with momentum distribution setup

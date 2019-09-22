@@ -77,14 +77,17 @@ bvtnorm_func <- function(p_perp, p_par, n, center, covariance, K){
 #' @description Function to return a bivariate normal momentum distribution
 #'
 #' @param n \code{numeric} Particle density.'
-#' @param A \code{numeric} Particle mass number
 #' @param center \code{numeric} center of velocity distribution (2d vector)
 #' @param covariance \code{numeric} covariance of velocity distribution (2 by 2 matrix)
+#' @param A \code{numeric} Particle mass number
+#' @param Z \code{numeric} Particle charge number
+#' @param name \code{character} Name of distribution/particle
 #'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-bvtnorm_setup <- function(n, A, center, covariance){
+bvtnorm_setup <- function(n, center, covariance, A, Z, name){
+
   unnormalized_dist <- list(
     function_name = "bvtnorm_func",
     gradient = "bvtnorm_grad",
@@ -97,7 +100,7 @@ bvtnorm_setup <- function(n, A, center, covariance){
     p_scale = sqrt(max(covariance)) * A * const[["amu"]]
   )
 
-  list(
+  distribution <- list(
     function_name = "bvtnorm_func",
     gradient = "bvtnorm_grad",
     distargs = list(
@@ -108,4 +111,12 @@ bvtnorm_setup <- function(n, A, center, covariance){
     ),
     p_scale = sqrt(max(covariance)) * A * const[["amu"]]
   )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
+  )
+
 }

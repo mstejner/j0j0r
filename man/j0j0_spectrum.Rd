@@ -5,7 +5,7 @@
 \title{j0j0_spectrum}
 \usage{
 j0j0_spectrum(k, phi, frequencies, directions = c("x", "y", "z"), B,
-  particle)
+  particles)
 }
 \arguments{
 \item{k}{\code{numeric} length of the fluctuation wavevector.}
@@ -15,16 +15,17 @@ the fluctuation wavevector}
 
 \item{frequencies}{\code{numeric} fluctuation frequencies in Hz.}
 
-\item{directions}{\code{character} one or more spatial directions.}
+\item{directions}{\code{character} one or more spatial directions ("x", "y"
+or "z").}
 
 \item{B}{\code{numeric} strength of magnetic field in Tesla.}
 
-\item{particle}{\code{list} with mass, charge, and momentum distribution}
+\item{particles}{\code{list} with mass, charge, and momentum distribution}
 }
 \value{
 \code{data.frame}
 }
 \description{
 Wrapper function for j0j0 to calculate a spectrum of j0j0 values
-  for multiple frequencies and directions
+  for multiple frequencies and directions. Parallelized with future/furrr.
 }

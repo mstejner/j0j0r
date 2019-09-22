@@ -70,12 +70,15 @@ find_p_term <- function(T_eV, A) {
 #' @param n \code{numeric} Particle density.
 #' @param T_eV \code{numeric} Temperaure in eV.
 #' @param A \code{numeric} Particle mass number
+#' @param Z \code{numeric} Particle charge number
+#' @param name \code{character} Name of distribution/particle
 #'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-maxwellian_setup <- function(n, T_eV, A){
-  list(
+maxwellian_setup <- function(n, T_eV, A, Z, name = "maxwellian"){
+
+  distribution <- list(
     function_name = "maxwellian_func",
     gradient = "maxwellian_grad",
     distargs = list(
@@ -84,5 +87,13 @@ maxwellian_setup <- function(n, T_eV, A){
     ),
     p_scale = find_p_term(T_eV, A)
   )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
+  )
+
 }
 

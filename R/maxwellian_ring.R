@@ -55,14 +55,16 @@ maxwellian_ring_grad <- deriv(
 #' @description Function to return a maxwellian ring momentum distribution
 #'
 #' @param n \code{numeric} Particle density.
-#' @param A \code{numeric} Particle mass number
 #' @param v_width \code{numeric} Width of ring in terms of velocity.
 #' @param v_rad \code{numeric} Radius of ring in terms of velocity.
+#' @param A \code{numeric} Particle mass number
+#' @param Z \code{numeric} Particle charge number
+#' @param name \code{character} Name of distribution/particle
 #'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-maxwellian_ring_setup <- function(n, A, v_width, v_rad){
+maxwellian_ring_setup <- function(n, v_width, v_rad, A, name){
   dist_unnormalized <- list(
     function_name = "maxwellian_ring_func",
     gradient = "maxwellian_ring_grad",
@@ -75,7 +77,7 @@ maxwellian_ring_setup <- function(n, A, v_width, v_rad){
     p_scale = v_rad *  A * const[["amu"]]
   )
 
-  list(
+  distribution <- list(
     function_name = "maxwellian_ring_func",
     gradient = "maxwellian_ring_grad",
     distargs = list(
@@ -86,5 +88,13 @@ maxwellian_ring_setup <- function(n, A, v_width, v_rad){
     ),
     p_scale = v_rad *  A * const[["amu"]]
   )
+
+  list(
+    name = name,
+    Z = Z,
+    A = A,
+    distribution = distribution
+  )
+
 }
 

@@ -10,24 +10,22 @@ B = 2.5
 future::plan(strategy = "multisession", .skip = TRUE)
 
 
-deuterium_maxw = list(
-  name = "deuterium_maxw",
-  Z = 1,
+deuterium_maxw = j0j0r::maxwellian_setup(
+  n = 4e19,
+  T_eV = 2000,
   A = 2,
-  distribution = j0j0r::maxwellian_setup(n = 4e19, T_eV = 2000, A = 2)
+  Z = 1,
+  name = "deuterium_maxw"
 )
 
-deuterium_bimaxw = list(
-  name = "deuterium_bimaxw",
-  Z = 1,
+deuterium_bimaxw <-  j0j0r::bimaxwellian_setup(
+  n = 4e19,
+  T_eV_perp = 2000,
+  T_eV_par = 2000,
+  v_drift = 2e5,
   A = 2,
-  distribution = j0j0r::bimaxwellian_setup(
-    n = 4e19,
-    T_eV_perp = 2000,
-    T_eV_par = 2000,
-    v_drift = 2e5,
-    A = 2
-    )
+  Z = 1,
+  name =  deuterium_bimaxw
 )
 
 
@@ -37,7 +35,7 @@ tic()
 specdf <- j0j0r::j0j0_spectrum2(
   k = k,
   phi = c(86),
-  frequencies = seq(0, 400e6, length.out = 401),
+  frequencies = seq(0, 400e6, length.out = 41),
   directions = c("x", "y", "z"),
   B = B,
   particles = list(
@@ -67,32 +65,34 @@ specdf %>%
 
 
 
-deuterium_kp2 = list(
-  name = "deuterium_kp2",
-  Z = 1,
+deuterium_kp2 <- j0j0r::generalized_lorentzian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  kp = 2,
   A = 2,
-  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 2, A = 2)
+  Z = 1,
+  name = "deuterium_kp2"
+  )
+
+deuterium_kp15 <- j0j0r::generalized_lorentzian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  kp = 15,
+  A = 2,
+  Z = 1,
+  name = "deuterium_kp15"
 )
 
-deuterium_kp15 = list(
-  name = "deuterium_kp15",
-  Z = 1,
+deuterium_kp50 <- j0j0r::generalized_lorentzian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  kp = 50,
   A = 2,
-  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 5, A = 2)
+  Z = 1,
+  name = "deuterium_kp50"
 )
 
-deuterium_kp50 = list(
-  name = "deuterium_kp50",
-  Z = 1,
-  A = 2,
-  distribution = j0j0r::generalized_lorentzian_setup(n = 4e19, T_eV = 2000, kp = 50, A = 2)
-)
 
-phi <- 86
-k <- 2 * pi / (j0j0r::const$c / 100e9)
-B = 2.5
-
-future::plan(strategy = "multisession", .skip = TRUE)
 
 tic()
 specdf <- j0j0r::j0j0_spectrum2(

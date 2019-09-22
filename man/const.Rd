@@ -4,7 +4,7 @@
 \name{const}
 \alias{const}
 \title{const}
-\format{An object of class \code{list} of length 8.}
+\format{An object of class \code{list} of length 10.}
 \usage{
 const
 }
