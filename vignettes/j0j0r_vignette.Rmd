@@ -1,0 +1,33 @@
+---
+title: "j0j0r vignette"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    math: katex
+vignette: >
+  %\VignetteIndexEntry{j0j0r vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo = FALSE}
+library(j0j0r)
+```
+
+The j0j0r package is meant to calculate the unscreened current correlation tensor of the plasma fluctuation model of Bindslev 1996, Journal of Atmospheric and Terrestial Physics, **58**, 983. The *j0j0* elements of  are given by Eq. 25 and 26 of Bindslev 1996:
+
+$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \int dp_\perp p_\perp \sum_{l = -\infty}^\infty {\bf c}_l {\bf c}_l^*f^{(a0)}(p_\perp, p_\parallel)$$
+
+and
+
+$$ {\bf c}_l = \left(\begin{array}{c} \frac{l\omega_{ca}}{k_\parallel}J_l(k_\perp\rho) \\ -iv_\perp J'_l(k_\perp\rho) \\ v_\parallel J_l(k_\perp\rho) \end{array}\right), \quad p_\parallel = m_a\frac{\omega -l\omega_{ca}}{k_\parallel}, \quad \rho = v_\perp/\omega_{ca}, \quad \omega_{ca} = q_aB^{(0)}/m_a $$
+
+

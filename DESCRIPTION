@@ -22,3 +22,7 @@ Imports:
     future,
     furrr,
     purrr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

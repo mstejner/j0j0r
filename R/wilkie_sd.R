@@ -16,6 +16,8 @@
 #' @param ions \code{data frame} with information on all ion species, containing
 #'   columns "n" (ion density), "A" (ion mass number), and "Z" (ion charge
 #'   number)
+#' @param name \code{character} Name of distribution/particle
+#'
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export

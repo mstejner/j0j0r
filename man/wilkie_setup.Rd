@@ -4,7 +4,7 @@
 \alias{wilkie_setup}
 \title{wilkie_setup}
 \usage{
-wilkie_setup(b, n, A, Z, birth_energy, n_e, T_e_eV, ions)
+wilkie_setup(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name)
 }
 \arguments{
 \item{b}{\code{numeric} b-parameter in Wilkie 2018 eq. 2.9. Quantifies

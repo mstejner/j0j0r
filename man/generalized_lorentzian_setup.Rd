@@ -4,7 +4,7 @@
 \alias{generalized_lorentzian_setup}
 \title{generalized_lorentzian_setup}
 \usage{
-generalized_lorentzian_setup(n, T_eV, kp, A)
+generalized_lorentzian_setup(n, T_eV, kp, A, Z, name)
 }
 \arguments{
 \item{n}{\code{numeric} Particle density.}

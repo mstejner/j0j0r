@@ -64,7 +64,7 @@ maxwellian_ring_grad <- deriv(
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-maxwellian_ring_setup <- function(n, v_width, v_rad, A, name){
+maxwellian_ring_setup <- function(n, v_width, v_rad, A, Z, name){
   dist_unnormalized <- list(
     function_name = "maxwellian_ring_func",
     gradient = "maxwellian_ring_grad",
