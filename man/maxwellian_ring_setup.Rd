@@ -4,7 +4,7 @@
 \alias{maxwellian_ring_setup}
 \title{maxwellian_ring_setup}
 \usage{
-maxwellian_ring_setup(n, v_width, v_rad, A, name)
+maxwellian_ring_setup(n, v_width, v_rad, A, Z, name)
 }
 \arguments{
 \item{n}{\code{numeric} Particle density.}
@@ -15,9 +15,9 @@ maxwellian_ring_setup(n, v_width, v_rad, A, name)
 
 \item{A}{\code{numeric} Particle mass number}
 
-\item{name}{\code{character} Name of distribution/particle}
-
 \item{Z}{\code{numeric} Particle charge number}
+
+\item{name}{\code{character} Name of distribution/particle}
 }
 \value{
 \code{list} with momentum distribution setup

@@ -96,7 +96,7 @@ dist_plot + ggplot2::scale_y_log10(limits = c(1e78, 1e84))
 
 
 tic()
-specdf <- j0j0r::j0j0_spectrum(
+specdf <- j0j0r::j0j0(
   k = k,
   phi = phi,
   frequencies = seq(0, 400e6, length.out = 41),

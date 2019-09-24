@@ -4,33 +4,28 @@
 \alias{j0j0}
 \title{j0j0}
 \usage{
-j0j0(directions, k, phi, frequency, B, A, Z, distribution)
+j0j0(k, phi, frequencies, directions = c("x", "y", "z"), B, particles)
 }
 \arguments{
-\item{directions}{\code{character} vector with two spatial directions: a
-combination of x, y, and z. e.g  xx, xy or yz.}
-
 \item{k}{\code{numeric} length of the fluctuation wavevector.}
 
 \item{phi}{\code{numeric} angle (in degrees) between the magnetic field and
 the fluctuation wavevector}
 
-\item{frequency}{\code{numeric} fluctuation frequency in Hz.}
+\item{frequencies}{\code{numeric} fluctuation frequencies in Hz.}
+
+\item{directions}{\code{character} one or more spatial directions ("x", "y"
+or "z").}
 
 \item{B}{\code{numeric} strength of magnetic field in Tesla.}
 
-\item{A}{\code{numeric} particle mass number.}
-
-\item{Z}{\code{numeric} particle charge number.}
-
-\item{distribution}{\code{list} with the velocity distribution and associated
-settings.}
+\item{particles}{\code{list} with mass, charge, and momentum distribution}
 }
 \value{
-\code{complex}
+\code{data.frame}
 }
 \description{
-Function to calculate terms in the  unscreened current
-  fluctuation correlation tensor. I.e th integral in in eq. 25 of Bindslev
-  1996, JATP 58, 983.
+Wrapper function for j0j0_element to calculate a spectrum of
+  j0j0 values for multiple frequencies and directions. Parallelized with
+  future/furrr.
 }

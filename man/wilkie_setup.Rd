@@ -26,6 +26,8 @@ importance of transport. Suggested in the range 0 (no transport) to 10
 \item{ions}{\code{data frame} with information on all ion species, containing
 columns "n" (ion density), "A" (ion mass number), and "Z" (ion charge
 number)}
+
+\item{name}{\code{character} Name of distribution/particle}
 }
 \value{
 \code{list} with momentum distribution setup

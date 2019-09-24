@@ -1,66 +1,64 @@
 #' @title j0j0
 #'
-#' @description Function to calculate terms in the  unscreened current
-#'   fluctuation correlation tensor. I.e th integral in in eq. 25 of Bindslev
-#'   1996, JATP 58, 983.
+#' @description Wrapper function for j0j0_element to calculate a spectrum of
+#'   j0j0 values for multiple frequencies and directions. Parallelized with
+#'   future/furrr.
 #'
-#' @param directions \code{character} vector with two spatial directions: a
-#'   combination of x, y, and z. e.g  xx, xy or yz.
+#' @param directions \code{character} one or more spatial directions ("x", "y"
+#'   or "z").
 #' @param k \code{numeric} length of the fluctuation wavevector.
 #' @param phi \code{numeric} angle (in degrees) between the magnetic field and
 #'   the fluctuation wavevector
-#' @param frequency \code{numeric} fluctuation frequency in Hz.
+#' @param frequencies \code{numeric} fluctuation frequencies in Hz.
 #' @param B \code{numeric} strength of magnetic field in Tesla.
-#' @param A \code{numeric} particle mass number.
-#' @param Z \code{numeric} particle charge number.
-#' @param distribution \code{list} with the velocity distribution and associated
-#'   settings.
+#' @param particles \code{list} with mass, charge, and momentum distribution
 #'
-#' @return \code{complex}
+#' @return \code{data.frame}
+#'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #'
 #' @export
 j0j0 <- function(
-  directions,
   k,
   phi,
-  frequency,
+  frequencies,
+  directions = c("x", "y", "z"),
   B,
-  A,
-  Z,
-  distribution
-){
+  particles
+) {
 
-  directions <- unlist(strsplit(directions, split = ""))
+  spec <-
+    purrr::cross_df(
+      .l = list(
+        k = k,
+        phi = phi,
+        frequency = frequencies,
+        d1 = directions,
+        d2 = directions,
+        B = B,
+        particle = names(particles)
+      ),
+      .filter = function(k, phi, frequency, d1, d2, B, particle) { d1 > d2 }
+    ) %>%
+    dplyr::mutate(
+      directions = paste0(.data[["d1"]], .data[["d2"]]),
+      A = sapply(.data[["particle"]], function(x){particles[[x]][["A"]]}),
+      Z = sapply(.data[["particle"]], function(x){particles[[x]][["Z"]]}),
+      distribution = lapply(.data[["particle"]], function(x){particles[[x]][["distribution"]]})
+    ) %>%
+    dplyr::select(-.data[["d1"]], -.data[["d2"]])
 
-  m <- A * const$amu
-  q <- Z * const$qe
+  spec %>%
+    dplyr::mutate(
+      j0j0 =
+        furrr::future_pmap(
+          .l = spec %>% dplyr::select(-.data[["particle"]]),
+          .f = j0j0r::j0j0_element,
+          .progress = TRUE
+        ) %>%
+        unlist()
+    ) %>%
+    dplyr::select(-.data[["distribution"]])
 
-  omega_c <- q * B / m
-
-  k_perp <- sin(phi * pi / 180) * k
-  k_par <- cos(phi * pi / 180) * k
-
-  frontfaktor <-  (2 * pi)^2 * m * q^2 / k_par
-  signs <- c("x" = 1, "y" = -const$i, "z" = 1)
-
-  vector_integrand <- Vectorize(
-    FUN = j0j0_integrand,
-    vectorize.args = "p_perp"
-  )
-
-  integral <- stats::integrate(
-    f = vector_integrand,
-    lower = 0,
-    upper = Inf,
-    directions = directions,
-    k_perp = k_perp,
-    k_par = k_par,
-    omega = 2 * pi * frequency,
-    omega_c = omega_c,
-    m = m,
-    distribution = distribution
-  )
-
-  frontfaktor * integral[["value"]] *
-    distribution[["p_scale"]] * prod(signs[directions])
 }

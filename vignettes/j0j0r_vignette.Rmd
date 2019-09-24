@@ -2,7 +2,7 @@
 title: "j0j0r vignette"
 output:
   prettydoc::html_pretty:
-    theme: cayman
+    theme: tactile
     highlight: github
     math: katex
 vignette: >
@@ -21,8 +21,11 @@ knitr::opts_chunk$set(
 ```{r setup, echo = FALSE}
 library(j0j0r)
 ```
+# Introduction
 
-The j0j0r package is meant to calculate the unscreened current correlation tensor of the plasma fluctuation model of Bindslev 1996, Journal of Atmospheric and Terrestial Physics, **58**, 983. The *j0j0* elements of  are given by Eq. 25 and 26 of Bindslev 1996:
+The j0j0r package is meant to calculate the unscreened current correlation tensor, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, of the plasma fluctuation model of [Bindslev 1996, Journal of Atmospheric and Terrestial Physics, **58**, 983](https://www.sciencedirect.com/science/article/pii/0021916995001298). 
+
+The elements of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ are given by Eq. 25 and 26 of [Bindslev 1996](https://www.sciencedirect.com/science/article/pii/0021916995001298) or by Eq. 7 and 8 of [Stejner et al 2011 PPFE, **53**, 065020](https://orbit.dtu.dk/files/5555263/Stejner_preprint.pdf):
 
 $$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \int dp_\perp p_\perp \sum_{l = -\infty}^\infty {\bf c}_l {\bf c}_l^*f^{(a0)}(p_\perp, p_\parallel)$$
 
@@ -30,4 +33,67 @@ and
 
 $$ {\bf c}_l = \left(\begin{array}{c} \frac{l\omega_{ca}}{k_\parallel}J_l(k_\perp\rho) \\ -iv_\perp J'_l(k_\perp\rho) \\ v_\parallel J_l(k_\perp\rho) \end{array}\right), \quad p_\parallel = m_a\frac{\omega -l\omega_{ca}}{k_\parallel}, \quad \rho = v_\perp/\omega_{ca}, \quad \omega_{ca} = q_aB^{(0)}/m_a $$
 
+with notation as in the references. 
 
+The j0j0r code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. The integral over perpendicular momentum is calculated numerically with [stats::integrate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/integrate.html). Analytic solutions, possible only in special cases, are not used/supported. 
+
+The code is therefore meant to be flexible and easy to use, but it is not designed for speed. However, the code does support parallelized calculations using the [future](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html) and [furrr](https://cran.r-project.org/web/packages/furrr/index.html) package.
+
+# Distribution functions
+
+New momentum distributions can be input in a specific format (descibed below). They do not need to be included in the package, but at present the package includes functions to set up the following distribution types:
+
+* A simple isotropic Maxwellian distribution, see `maxwellian_setup()`. 
+
+* A bi-Maxwellian distribution, with drift along the magnetic field (z-direction), see `j0j0r::bimaxwellian_setup()`.
+
+* A generalized Lorentzian / Kappa distribution, see [here](https://www.spenvis.oma.be/help/background/distributions/distributions.html) and `j0j0r::generalized_lorentzian_setup()`.
+
+* A "Maxwellian-like" ring-distribution, see `j0j0r::maxwellian_ring_setup()`.
+
+* A bivariate normal distribution, see `j0j0r::bvtnorm_setup()`.
+
+* An isotropic fast-ion slowdown with transport modifications as formulated by George J. Wilkie,  see [https://arxiv.org/abs/1808.01934v2](https://arxiv.org/abs/1808.01934v2) and `j0j0r::wilkie_setup()`.  
+
+
+An ion momentum distribution (electrons are not yet supported) can be input to the code as a list with elements:
+
+* name, a text string
+* A, an integer: ion mass number
+* Z, an integer: ion charge number
+* distribution, a list with elements:
+    * function_name, a text string:  name of function to be called to evaluate the distribution.
+    * gradient, a text string:  name of function to be called to be called to evaluate the gradient of the distribution. Not used at present, so optional. 
+    * distargs, a list of name-value pairs: all arguments to the distribution function other than p_par and p_perp, e.g. density and themal momentum.
+    * p_scale, a double: a typical/representative momentum scale. Used to scale momentum so it is near 1 in calls to `stats::integrate()`.
+
+Such a list does not have to be constructed using functions from the package, but, as an example, a Maxwellian distribution can be set up with:
+
+```{r, echo = TRUE, results='asis'}
+j0j0r::maxwellian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  A = 1,
+  Z = 2,
+  name = "maxwellian"
+)
+```
+
+# Calculating j0j0 elements
+
+The function `j0j0r::j0j0_element()` is used to calculate a single element of j0j0 for a single wave vector, frequency, distribution etc. The function `j0j0r::j0j0()` is a wrapper for parameter sweeps. It requires the following input:
+
+
+
+```{r, echo = TRUE, results='asis'}
+j0j0r::maxwellian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  A = 1,
+  Z = 2,
+  name = "maxwellian"
+)
+```
+
+
+# Examples

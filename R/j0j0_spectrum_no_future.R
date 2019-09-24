@@ -27,7 +27,7 @@ j0j0_spectrum_no_future <- function(
 ){
 
   vector_j0j0 <- Vectorize(
-    FUN = j0j0,
+    FUN = j0j0_element,
     vectorize.args = c("frequency", "directions")
   )
 
