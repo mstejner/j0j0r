@@ -3,6 +3,7 @@
 export(bimaxwellian_setup)
 export(birth_velocity)
 export(bvtnorm_setup)
+export(calculate_distribution_data_frame)
 export(cl)
 export(const)
 export(critical_velocity)

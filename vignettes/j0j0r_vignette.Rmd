@@ -12,15 +12,15 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+library(magrittr)
+library(rlang)
+library(j0j0r)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r setup, echo = FALSE}
-library(j0j0r)
-```
 # Introduction
 
 The j0j0r package is meant to calculate the unscreened current correlation tensor, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, of the plasma fluctuation model of [Bindslev 1996, Journal of Atmospheric and Terrestial Physics, **58**, 983](https://www.sciencedirect.com/science/article/pii/0021916995001298). 
@@ -41,7 +41,7 @@ The code is therefore meant to be flexible and easy to use, but it is not design
 
 # Distribution functions
 
-New momentum distributions can be input in a specific format (descibed below). They do not need to be included in the package, but at present the package includes functions to set up the following distribution types:
+New momentum distributions can be input in a specific format (described below). They do not need to be included in the package, but at present the package includes functions to set up the following distribution types:
 
 * A simple isotropic Maxwellian distribution, see `maxwellian_setup()`. 
 
@@ -53,39 +53,123 @@ New momentum distributions can be input in a specific format (descibed below). T
 
 * A bivariate normal distribution, see `j0j0r::bvtnorm_setup()`.
 
-* An isotropic fast-ion slowdown with transport modifications as formulated by George J. Wilkie,  see [https://arxiv.org/abs/1808.01934v2](https://arxiv.org/abs/1808.01934v2) and `j0j0r::wilkie_setup()`.  
+* A "Wilkie" distribution: an isotropic fast-ion slowdown with transport modifications as formulated by George J. Wilkie,  see [https://arxiv.org/abs/1808.01934v2](https://arxiv.org/abs/1808.01934v2) and `j0j0r::wilkie_setup()`.  
 
+### Conventions
 
-An ion momentum distribution (electrons are not yet supported) can be input to the code as a list with elements:
+A particle with specified momentum distribution can be input to the code as a list with elements:
 
-* name, a text string
-* A, an integer: ion mass number
-* Z, an integer: ion charge number
+* name, a text string: some name for the particle, e.g. "Deutrium".
+* A, an integer: ion mass number.
+* Z, an integer: ion charge number.
 * distribution, a list with elements:
     * function_name, a text string:  name of function to be called to evaluate the distribution.
     * gradient, a text string:  name of function to be called to be called to evaluate the gradient of the distribution. Not used at present, so optional. 
-    * distargs, a list of name-value pairs: all arguments to the distribution function other than p_par and p_perp, e.g. density and themal momentum.
+    * distargs, a list of name-value pairs: all arguments to the distribution function other than p_par and p_perp, e.g. density and thermal momentum.
     * p_scale, a double: a typical/representative momentum scale. Used to scale momentum so it is near 1 in calls to `stats::integrate()`.
 
-Such a list does not have to be constructed using functions from the package, but, as an example, a Maxwellian distribution can be set up with:
+Such a list does not have to be constructed using functions from the package, but the package includes some examples (mentioned above) of how this can be done. 
 
-```{r, echo = TRUE, results='asis'}
-j0j0r::maxwellian_setup(
+The code assumes that the distributions are always in cylindrical coordinates and symmetric about the magnetic field, so ${\bf p = (p_\perp, p_\parallel)$ where the magnetic field is in the z-direction so $p_\perp =\sqrt{(p_x^2 + p_y^2)}$ and $p_\parallel = p_z$. When transforming between different coordinate systems the distribution function must remain normalized, so
+
+$$ 
+n = \int f({\bf p}) d{\bf p} = \int f(p_x, p_y, p_z)dp_x dp_y dp_z = 2\pi\int f(p_\perp, p_\parallel) p_\perp dp_\perp dp_\parallel 
+$$
+Where the final equality again assumes symmetry around the megnetic field (z-axis), so the integral over azimuthal angle contributes a factor $2\pi$. 
+
+Note that with this convention, the factor $2\pi p_\perp$ is considered part of the volume element, and not of the distribution function $f(p_\perp, p_\parallel)$. So with this convention the expression for a Maxwellian velocity distribution is 
+
+$$
+f_{Mw}(p_\perp, p_\parallel) = \frac{n}{(\sqrt{\pi}p_t)^3}e^{-(p_\perp^2 + p_\parallel^2)/p_t}, \qquad
+p_t = \sqrt{2k_bTm}
+$$
+where $T$ is temperature, $k_b$ Boltzmann's constant and $p_t$ is the thermal momentum corresponding to the thermal velocity $v_t = \sqrt{2k_bT/m}$.
+
+### Examples
+A Maxwellian distribution and a Wilkie slowdown distribution can be set up with:
+
+```{r, echo = TRUE, results = FALSE}
+maxwellian_deuterium <- j0j0r::maxwellian_setup(
   n = 4e19,
   T_eV = 2000,
-  A = 1,
-  Z = 2,
+  A = 2,
+  Z = 1,
   name = "maxwellian"
+)
+
+wilkie_deuterium <- j0j0r::wilkie_setup(
+  b = 3,
+  n = 4e19,
+  A = 2,
+  Z = 1,
+  birth_energy = 10e3,
+  n_e = 4e19,
+  T_e_eV = 2e3,
+  ions = data.frame(
+    Z = 1,
+    A = 2,
+    n = 4e19
+  ),
+  name = "wilkie"
 )
 ```
 
-# Calculating j0j0 elements
+And they can be plotted as a function of parallel velocity with 
+
+```{r fig1, echo = TRUE, fig.height = 6, fig.width = 6, fig.align = "center"}
+j0j0r::calculate_distribution_data_frame(
+  particles = list(
+    maxwellian = maxwellian_deuterium, 
+    wilkie = wilkie_deuterium
+    ), 
+  v_par = seq(-1.5e6, 1.5e6, length.out = 1000), 
+  v_perp = 0
+) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(x = v_par, y = value, color = name)
+    ) +
+  ggplot2::geom_line(size = 1.2) +
+  ggplot2::theme(legend.position="top") +
+  ggplot2::ylab("Density") +
+  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+  ggplot2::theme(text = ggplot2::element_text(size=17))
+```
+
+The `j0j0r::calculate_distribution_data_frame()` function returns a data frame wit the evaluated distribution for all combinations of its arguments: particles, v_par and v_perp. So a 2D-plot can be obtained by allowing both v_par and v_perp to vary:
+
+```{r fig2, echo = TRUE}
+j0j0r::calculate_distribution_data_frame(
+  particles = list(
+    maxwellian = maxwellian_deuterium, 
+    wilkie = wilkie_deuterium
+    ), 
+  v_par = seq(-1e6, 1e6, length.out = 300), 
+  v_perp = seq(0, 1e6, length.out = 300)
+) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+    ) +
+  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+  ggplot2::facet_wrap( ~ name) +
+  viridis::scale_fill_viridis(option="plasma", limits = c(0, 1.5e82)) +
+  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+  ggplot2::theme(
+    text = ggplot2::element_text(size = 15),
+    axis.text.x = ggplot2::element_text(angle = -45)
+    ) +
+  ggplot2::scale_x_continuous(labels = scales::scientific)
+```
+
+# Calculating j0j0
 
 The function `j0j0r::j0j0_element()` is used to calculate a single element of j0j0 for a single wave vector, frequency, distribution etc. The function `j0j0r::j0j0()` is a wrapper for parameter sweeps. It requires the following input:
 
 
 
-```{r, echo = TRUE, results='asis'}
+```{r, echo = TRUE, results = FALSE}
 j0j0r::maxwellian_setup(
   n = 4e19,
   T_eV = 2000,
