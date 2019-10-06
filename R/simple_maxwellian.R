@@ -8,7 +8,7 @@
 #' @description expression for a simple maxwellian momentum distribution in
 #'   cylindrical coordinates
 maxwellian_expr <- expression(
-  2 * pi * n / (sqrt(pi) * p_term)^3 * exp(-(p_par^2 + p_perp^2) / p_term^2)
+  n / (sqrt(pi) * p_term)^3 * exp(-(p_par^2 + p_perp^2) / p_term^2)
 )
 
 #' @title maxwellian_func

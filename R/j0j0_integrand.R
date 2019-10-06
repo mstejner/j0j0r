@@ -80,7 +80,7 @@ j0j0_integrand <- function(
     l_scale <- ceiling(l_scale * 1.2)
 
   }
-  p_perp * sum(sum_terms_all)
+  2 * pi * p_perp * sum(sum_terms_all)
 }
 
 #' @title j0j0_sum_terms

@@ -3,7 +3,7 @@
 #' @description expression for a bimaxwellian momentum distribution in
 #'   cylindrical coordinates
 bimaxwellian_expr <- expression(
-  (2 * n / (sqrt(pi) * p_tperp^2 * p_tpar)) *
+  (n / (sqrt(pi)^3 * p_tperp^2 * p_tpar)) *
     exp(-((p_par - p_drift)^2/p_tpar^2 + p_perp^2/p_tperp^2))
 )
 

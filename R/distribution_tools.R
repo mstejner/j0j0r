@@ -64,11 +64,12 @@ eval_distribution_list <- function(distribution_list, p_perp, p_par){
 integrand_distribution <- function(p, distribution){
   #TODO: kan vektoriseres?
   p <- p * distribution[["p_scale"]]
-  eval_distribution(
+  2 * pi * p[[1]] *
+    eval_distribution(
     distribution = distribution,
     p_perp = p[[1]],
     p_par = p[[2]]
-  ) * p[[1]]
+  )
 }
 
 #' @title integrate_distribution
@@ -218,10 +219,11 @@ eval_homogeneous_distribution <- function(distribution, p){
 integrand_homogeneous_distribution <- function(p, distribution){
   #TODO: kan vektoriseres?
   p <- p * distribution[["p_scale"]]
-  eval_homogeneous_distribution(
-    distribution = distribution,
-    p = p
-  ) * p^2
+  2 * pi * p^2 *
+    eval_homogeneous_distribution(
+      distribution = distribution,
+      p = p
+    )
 }
 
 #' @title integrate_homogeneous_distribution

@@ -8,7 +8,7 @@
 #' @description expression for a maxwellian ring distribution in
 #'   cylindrical coordinates
 maxwellian_ring_expr <- expression(
-  2 * pi * n / (sqrt(pi) * p_width)^3 * K *
+  n / (sqrt(pi) * p_width)^3 * K *
     exp(-(sqrt(p_par^2 + p_perp^2) - p_rad)^2 / p_width^2)
 )
 

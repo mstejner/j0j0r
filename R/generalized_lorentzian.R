@@ -11,7 +11,7 @@
 #'   https://www.spenvis.oma.be/help/background/distributions/distributions.html.
 #'
 generalized_lorentzian_expr <- expression(
-  (2 * pi * n / (sqrt(pi) * theta)^3) *
+  (n / (sqrt(pi) * theta)^3) *
     (gamma(kp + 1) / (kp^1.50 * gamma(kp - 0.5))) *
     (1 + (p_par^2 + p_perp^2) / (kp * theta^2))^(-kp - 1)
 )

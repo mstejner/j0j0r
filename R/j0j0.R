@@ -9,9 +9,9 @@
 #' @param k \code{numeric} length of the fluctuation wavevector.
 #' @param phi \code{numeric} angle (in degrees) between the magnetic field and
 #'   the fluctuation wavevector
-#' @param frequencies \code{numeric} fluctuation frequencies in Hz.
+#' @param frequency \code{numeric} fluctuation frequencies in Hz.
 #' @param B \code{numeric} strength of magnetic field in Tesla.
-#' @param particles \code{list} with mass, charge, and momentum distribution
+#' @param particle \code{list} with mass, charge, and momentum distribution.
 #'
 #' @return \code{data.frame}
 #'
@@ -22,8 +22,8 @@
 j0j0 <- function(
   k,
   phi,
-  frequencies,
-  directions = c("x", "y", "z"),
+  frequency,
+  direction = c("x", "y", "z"),
   B,
   particles
 ) {
