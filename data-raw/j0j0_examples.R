@@ -1,8 +1,3 @@
-devtools::install("C:/ctsr/j0j0r")
-devtools::load_all(j0j0r)
-library(magrittr)
-library(tictoc)
-
 phi <- 86
 k <- 2 * pi / (j0j0r::const$c / 100e9)
 B = 2.5
@@ -36,7 +31,7 @@ lorentzian <- j0j0r::generalized_lorentzian_setup(
   kp = 15,
   A = A,
   Z = Z,
-  name = "gen_lorentzian"
+  name = "lorentzian"
 )
 
 ring = j0j0r::maxwellian_ring_setup(
@@ -49,9 +44,9 @@ ring = j0j0r::maxwellian_ring_setup(
 )
 
 
-center <- c(0, 0.5e6)
-T_eV <- 0.1e3
-v_term <- find_p_term(T_eV, A) / (A * const[["amu"]])
+center <- c(1, 0.5e6)
+T_eV <- 2e3
+v_term <- j0j0r::find_p_term(T_eV, A) / (A * j0j0r::const[["amu"]])
 covariance <- rbind(c(v_term^2, 0), c(0, (v_term)^2))
 
 bvtnorm <- j0j0r::bvtnorm_setup(
@@ -68,7 +63,7 @@ wilkie = j0j0r::wilkie_setup(
   n = n,
   A = A,
   Z = Z,
-  birth_energy = 50e3,#3.52e6,
+  birth_energy = 50e3,
   n_e = n,
   T_e_eV = 2e3,
   ions = data.frame(
@@ -79,7 +74,7 @@ wilkie = j0j0r::wilkie_setup(
   name = "deuterium_wilkie"
 )
 
-dist_plot <- plot_distribution(
+distribution_examples <- j0j0r::calculate_distribution_data_frame(
   particles = list(
     maxwellian = maxwellian,
     bimaxwellian = bimaxwellian,
@@ -88,18 +83,23 @@ dist_plot <- plot_distribution(
     bvtnorm = bvtnorm,
     wilkie = wilkie
   ),
-  v_par = seq(-5e6, 5e6, length.out = 1000),
-  v_perp = 0,
-  logscale = TRUE
+  v_par = seq(-2.5e6, 2.5e6, length.out = 1000),
+  v_perp = 0
 )
-dist_plot + ggplot2::scale_y_log10(limits = c(1e78, 1e84))
+ggplot2::ggplot( data = distribution_examples,
+  mapping = ggplot2::aes(x = v_par, y = value, color = name)
+) +
+  ggplot2::geom_line(size = 1.2) +
+  ggplot2::theme(legend.position = "top") +
+  ggplot2::ylab("Density") +
+  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+  ggplot2::theme(text = ggplot2::element_text(size = 17))
 
 
-tic()
-specdf <- j0j0r::j0j0(
+j0j0_examples <- j0j0r::j0j0(
   k = k,
   phi = phi,
-  frequencies = seq(0, 400e6, length.out = 41),
+  frequencies = seq(0, 400e6, length.out = 101),
   directions = c("x", "y", "z"),
   B = B,
   particles = list(
@@ -111,10 +111,5 @@ specdf <- j0j0r::j0j0(
     wilkie = wilkie
   )
 )
-toc()
 
-specdf %>%
-  ggplot2::ggplot(mapping = ggplot2::aes(x = frequency, y = Re(j0j0) + Im(j0j0), color = particle)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_hline(yintercept = 0) +
-  ggplot2::facet_wrap( ~ directions)
+usethis::use_data(j0j0_examples, overwrite = TRUE)
