@@ -52,6 +52,7 @@ j0j0_element <- function(
     f = vector_integrand,
     lower = 0,
     upper = Inf,
+    subdivisions = 1000L,
     directions = directions,
     k_perp = k_perp,
     k_par = k_par,
@@ -59,8 +60,22 @@ j0j0_element <- function(
     omega_c = omega_c,
     m = m,
     distribution = distribution
-  )
+  )[["value"]]
 
-  frontfaktor * integral[["value"]] *
-    distribution[["p_scale"]] * prod(signs[directions])
+  #TODO learn to use adaptIntegrate with vectorInterface
+  # integral <- cubature::adaptIntegrate(
+  #   f = vector_integrand,
+  #   lower = 0,
+  #   upper = Inf,
+  #   vectorInterface = TRUE,
+  #   directions = directions,
+  #   k_perp = k_perp,
+  #   k_par = k_par,
+  #   omega = 2 * pi * frequency,
+  #   omega_c = omega_c,
+  #   m = m,
+  #   distribution = distribution
+  # )[["integral"]]
+
+  frontfaktor * integral * distribution[["p_scale"]] * prod(signs[directions])
 }

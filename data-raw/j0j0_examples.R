@@ -1,3 +1,5 @@
+#script to generate j0j0_examples, distribution_examples
+
 phi <- 86
 k <- 2 * pi / (j0j0r::const$c / 100e9)
 B = 2.5
@@ -99,7 +101,7 @@ ggplot2::ggplot( data = distribution_examples,
 j0j0_examples <- j0j0r::j0j0(
   k = k,
   phi = phi,
-  frequencies = seq(0, 400e6, length.out = 101),
+  frequencies = seq(0, 400e6, by = 1e6),
   directions = c("x", "y", "z"),
   B = B,
   particles = list(
@@ -112,4 +114,4 @@ j0j0_examples <- j0j0r::j0j0(
   )
 )
 
-usethis::use_data(j0j0_examples, overwrite = TRUE)
+usethis::use_data(j0j0_examples, distribution_examples)
