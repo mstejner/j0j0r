@@ -15,10 +15,10 @@
 #'   fluctuations.
 #' @param omega_c \code{numeric} particle angular cyclotron frequency (omega_c =
 #'   qB/m).
-#' @param m \code{numeric} particle mass in kg.
+#' @param mass \code{numeric} particle mass in kg.
 #' @param distribution \code{list} with the velocity distribution.
 #'
-#' @return \code{complex}
+#' @return \code{numeric}
 #'
 #' @export
 j0j0_integrand <- function(
@@ -28,7 +28,7 @@ j0j0_integrand <- function(
   k_par,
   omega,
   omega_c,
-  m,
+  mass,
   distribution
 ){
 
@@ -59,7 +59,7 @@ j0j0_integrand <- function(
       k_par,
       omega,
       omega_c,
-      m,
+      mass,
       distribution
       )
 
@@ -101,7 +101,7 @@ j0j0_integrand <- function(
 #'   fluctuations.
 #' @param omega_c \code{numeric} particle angular cyclotron frequency (omega_c =
 #'   qB/m).
-#' @param m \code{numeric} particle mass in kg.
+#' @param mass \code{numeric} particle mass in kg.
 #' @param distribution \code{list} with the velocity distribution.
 #'
 #' @return \code{complex}
@@ -114,13 +114,13 @@ j0j0_sum_terms <- function(
   k_par,
   omega,
   omega_c,
-  m,
+  mass,
   distribution
   ){
 
-  v_perp <- p_perp / m
+  v_perp <- p_perp / mass
   v_par  <- (omega - l_values * omega_c) / k_par
-  p_par  <- v_par * m
+  p_par  <- v_par * mass
 
   if (identical(directions[[1]], directions[[2]])) {
     clcl <-

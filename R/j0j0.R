@@ -12,6 +12,8 @@
 #' @param frequencies \code{numeric} fluctuation frequencies in Hz.
 #' @param B \code{numeric} strength of magnetic field in Tesla.
 #' @param particles \code{list} with mass, charge, and momentum distribution.
+#' @param integration_method \code{character} method to use for integration. One
+#'   of "stats", "hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"
 #'
 #' @return \code{data.frame}
 #'
@@ -25,7 +27,8 @@ j0j0 <- function(
   frequencies,
   directions = c("x", "y", "z"),
   B,
-  particles
+  particles,
+  integration_method
 ) {
 
   spec <-
@@ -37,9 +40,10 @@ j0j0 <- function(
         d1 = directions,
         d2 = directions,
         B = B,
-        particle = names(particles)
+        particle = names(particles),
+        integration_method = integration_method
       ),
-      .filter = function(k, phi, frequency, d1, d2, B, particle) { d1 > d2 }
+      .filter = function(k, phi, frequency, d1, d2, B, particle, integration_method) { d1 > d2 }
     ) %>%
     dplyr::mutate(
       directions = paste0(.data[["d1"]], .data[["d2"]]),

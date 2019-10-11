@@ -189,9 +189,11 @@ The function `j0j0r::j0j0_element()` is used to calculate a single element of j0
 All of these inputs can ved vectors or lists with multiple elements, e.g. multiple frequencirs or particles. The function will form all unique combinations of its inputs and return $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ for each. So a sweep of frequency and direction for two values of phi can be done with:
 
 ```{r, echo = TRUE, results = FALSE}
+future::plan(strategy = "multisession", .skip = TRUE)
+
 specdf <- j0j0r::j0j0(
   k = 2 * pi / (j0j0r::const$c / 100e9),
-  phi = c(60, 87),
+  phi = c(60, 86),
   frequencies = seq(0, 400e6, by = 1e6),
   directions = c("x", "y", "z"),
   B = 2.5,
@@ -228,3 +230,109 @@ specdf %>%
 
 
 # Examples
+
+###Bimaxwellian
+```{r, echo = TRUE, results = FALSE}
+j0j0r::j0j0_examples %>% 
+  dplyr::filter(particle %in% c("maxwellian", "bimaxwellian")) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6, 
+      y = Re(j0j0) + Im(j0j0), 
+      color = particle
+      )
+    ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
+  ggplot2::theme(legend.position = "top",
+                 text = ggplot2::element_text(size = 13)
+                 )
+```
+
+###Lorentzian
+```{r, echo = TRUE, results = FALSE}
+j0j0r::j0j0_examples %>% 
+  dplyr::filter(particle %in% c("maxwellian", "lorentzian")) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6, 
+      y = Re(j0j0) + Im(j0j0), 
+      color = particle
+      )
+    ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
+  ggplot2::theme(legend.position = "top",
+                 text = ggplot2::element_text(size = 13)
+                 )
+```
+###Ring
+```{r, echo = TRUE, results = FALSE}
+j0j0r::j0j0_examples %>% 
+  dplyr::filter(particle %in% c("maxwellian", "ring")) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6, 
+      y = Re(j0j0) + Im(j0j0), 
+      color = particle
+      )
+    ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
+  ggplot2::theme(legend.position = "top",
+                 text = ggplot2::element_text(size = 13)
+                 )
+```
+
+###Bivariate Normal
+```{r, echo = TRUE, results = FALSE}
+j0j0r::j0j0_examples %>% 
+  dplyr::filter(particle %in% c("maxwellian", "bvtnorm")) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6, 
+      y = Re(j0j0) + Im(j0j0), 
+      color = particle
+      )
+    ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
+  ggplot2::theme(legend.position = "top",
+                 text = ggplot2::element_text(size = 13)
+                 )
+```
+
+
+
+###Wilkie slowdown
+```{r, echo = TRUE, results = FALSE}
+j0j0r::j0j0_examples %>% 
+  dplyr::filter(particle %in% c("maxwellian", "wilkie")) %>% 
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6, 
+      y = Re(j0j0) + Im(j0j0), 
+      color = particle
+      )
+    ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
+  ggplot2::theme(legend.position = "top",
+                 text = ggplot2::element_text(size = 13)
+                 )
+```

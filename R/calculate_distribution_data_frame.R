@@ -43,7 +43,7 @@ calculate_distribution_data_frame <- function(particles, v_par, v_perp){
     )
 
   dist_df[["value"]] <-
-    purrr::pmap_dbl(
+    furrr::future_pmap_dbl(
       .l = dist_df %>% dplyr::select(distribution, p_perp, p_par),
       .f = eval_distribution
     )
