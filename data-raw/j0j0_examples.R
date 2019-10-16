@@ -1,6 +1,6 @@
 #script to generate j0j0_examples, distribution_examples
 
-phi <- 86
+phi <- 70
 k <- 2 * pi / (j0j0r::const$c / 100e9)
 B = 2.5
 n = 4e19
@@ -20,7 +20,7 @@ maxwellian = j0j0r::maxwellian_setup(
 bimaxwellian <-  j0j0r::bimaxwellian_setup(
   n = n,
   T_eV_perp = 2000,
-  T_eV_par = 2000,
+  T_eV_par = 1000,
   v_drift = 2e5,
   A = A,
   Z = Z,
@@ -30,7 +30,7 @@ bimaxwellian <-  j0j0r::bimaxwellian_setup(
 lorentzian <- j0j0r::generalized_lorentzian_setup(
   n = n,
   T_eV = 2000,
-  kp = 3,
+  kp = 10,
   A = A,
   Z = Z,
   name = "lorentzian"
@@ -128,6 +128,7 @@ distribution_examples <- j0j0r::calculate_distribution_data_frame(
   v_par = seq(-2.5e6, 2.5e6, length.out = 1000),
   v_perp = 0
 )
+
 ggplot2::ggplot( data = distribution_examples,
   mapping = ggplot2::aes(x = v_par, y = value, color = name)
 ) +
@@ -142,7 +143,7 @@ ggplot2::ggplot( data = distribution_examples,
 j0j0_examples <- j0j0r::j0j0(
   k = k,
   phi = phi,
-  frequencies = seq(0, 600e6, by = 50e6),
+  frequencies = seq(0, 600e6, by = 2e6),
   directions = c("x", "y", "z"),
   B = B,
   particles = list(
@@ -171,4 +172,4 @@ j0j0r::j0j0_element(
   integration_method = "hcubature"
 )
 
-usethis::use_data(j0j0_examples, distribution_examples)
+usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
