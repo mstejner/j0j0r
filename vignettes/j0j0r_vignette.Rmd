@@ -244,12 +244,12 @@ $k = 2095.845 \,{\text m}^{-1}$, $B = 2.5\,{\text T}$, $n = 4e19 \,{\text m}^{-3
 The expression for a bi-maxwellian is
 
 $$
-f(p_\perp, p_parallel) =\frac{n}{(2\pi)^3 p_{\perp\,T}^2 p_{\parallel\,T}} e^{(-((p_\parallel - p_{drift})^2 /p_{\parallel\,T}^2 + p_\perp^2 / p_{\perp\,T}^2))}
+f(p_\perp, p_\parallel) =\frac{n}{(2\pi)^3 p_{\perp\,T}^2 p_{\parallel\,T}} e^{(-((p_\parallel - p_{drift})^2 /p_{\parallel\,T}^2 + p_\perp^2 / p_{\perp\,T}^2))}
 $$
 where $p_{\perp\,T}$ and $p_{\parallel\,T}$ are the perpendicilar and parallel themal momenta, and $p_{drift}$ corresponds to the parallel drift velocity.
 
 It can be se up with 
-```{r, echo = TRUE, results = FALSE}
+```{r, echo = TRUE}
 bimaxwellian <-  j0j0r::bimaxwellian_setup(
   n = 4e9,
   T_eV_perp = 2000,
@@ -261,7 +261,7 @@ bimaxwellian <-  j0j0r::bimaxwellian_setup(
 )
 ```
 
-```{r, echo = FALSE, results = FALSE, fig.width = 16, fig.height = 8}
+```{r, echo = FALSE, fig.width = 16, fig.height = 8}
 pp1 <- j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "bimaxwellian")) %>% 
   ggplot2::ggplot(mapping = ggplot2::aes(x = v_par, y = value, color = name)) +
@@ -291,7 +291,8 @@ pp2 <- j0j0r::calculate_distribution_data_frame(
     text = ggplot2::element_text(size = 15),
     axis.text.x = ggplot2::element_text(angle = -45)
   ) +
-  ggplot2::scale_x_continuous(labels = scales::scientific)
+  ggplot2::scale_x_continuous(labels = scales::scientific) +
+  ggplot2::ggtitle("bimaxwellian")
 
 gridExtra::grid.arrange(pp1, pp2, ncol = 2)
 
@@ -326,66 +327,273 @@ j0j0r::j0j0_examples %>%
     )
 ```
 
-###Lorentzian
+##Lorentzian
+
+The expression for the [Generalized Lorentzian](https://www.spenvis.oma.be/help/background/distributions/distributions.html) is
+
+$$
+f(p_\perp, p_\parallel) = \frac{n}{(\sqrt{\pi}\theta)^3}\frac{\Gamma(\kappa + 1)}{\sqrt{\kappa^3}\Gamma(\kappa - \frac{1}{2})}\left(1 + \frac{p_\perp^2 + p_\parallel^2}{\kappa\theta^2}\right)^{-(\kappa+1)}
+$$
+with
+$$
+\theta = \sqrt\frac{(2\kappa -3)mkT}{\kappa}
+$$
+where $\kappa$ is a spectral index. For large $\kappa$ the distribution tends towards a Maxwellian. For small $\kappa$ it is much flatter and remains significant at far higher velocities. Calculations of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ can therefore be slow for small $\kappa$ values. The example below was calculated with $\kappa = 10$.
+
+The distribution can be set up with
+
+```{r, echo = TRUE}
+lorentzian <- j0j0r::generalized_lorentzian_setup(
+  n = 4e19,
+  T_eV = 2000,
+  kp = 10,
+  A = 2,
+  Z = 1,
+  name = "lorentzian"
+)
+```
+
+```{r, echo = FALSE, fig.width = 16, fig.height = 8}
+pp1 <- j0j0r::distribution_examples %>% 
+  dplyr::filter(name %in% c("maxwellian", "lorentzian")) %>% 
+  ggplot2::ggplot(mapping = ggplot2::aes(x = v_par, y = value, color = name)) +
+  ggplot2::geom_line(size = 1.2) +
+  ggplot2::theme(legend.position = "top") +
+  ggplot2::ylab("Density") +
+  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+  ggplot2::theme(text = ggplot2::element_text(size = 17)) + 
+  ggplot2::scale_y_log10()
+
+pp2 <- j0j0r::calculate_distribution_data_frame(
+  particles = list(
+    lorentzian = lorentzian
+  ),
+  v_par = seq(-7e5, 7e5, length.out = 300),
+  v_perp = seq(0, 1e6, length.out = 300)
+) %>%
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+  ) +
+  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+  viridis::scale_fill_viridis(option = "plasma") +
+  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+  ggplot2::theme(
+    text = ggplot2::element_text(size = 15),
+    axis.text.x = ggplot2::element_text(angle = -45)
+  ) +
+  ggplot2::scale_x_continuous(labels = scales::scientific) +
+  ggplot2::ggtitle("Generalized Lorentzian")
+
+gridExtra::grid.arrange(pp1, pp2, ncol = 2)
+
+```
+
+And we get the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ components shown below.
+
 ```{r, echo = TRUE, results = FALSE}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "lorentzian")) %>% 
+  dplyr::mutate(
+    real = Re(j0j0),
+    imaginary = Im(j0j0)
+  ) %>% 
+  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>% 
+  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>% 
   ggplot2::ggplot(
     mapping = ggplot2::aes(
       x = frequency/1e6, 
-      y = Re(j0j0) + Im(j0j0), 
-      color = particle
+      y = j0j0, 
+      color = particle,
+      linetype =  component
       )
     ) +
   ggplot2::geom_line(size = 1) +
   ggplot2::geom_hline(yintercept = 0) +
   ggplot2::facet_wrap( ~ directions) +
   ggplot2::xlab("Frequency in MHz") +
-  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
-  ggplot2::theme(legend.position = "top",
-                 text = ggplot2::element_text(size = 13)
-                 )
+  ggplot2::theme(
+    legend.position = "top", 
+    text = ggplot2::element_text(size = 13)
+    )
 ```
 ###Ring
+A ring distribution is set op analogously to a Maxwellian with the expression
+
+$$
+f(p_\perp, p_\parallel) =K\frac{n}{\sqrt{\pi} p_{\text{width}}} e^{-(p - p_{\text{radius}})^2/p_{\text{width}}^2},\quad p=\sqrt{p_\perp^2+p_\parallel^2}
+$$
+where $K$ is an integration constant (calculated numerically), $p_{\text{width}}$ controls the width of the ring, and $p_{\text{radius}}$ controls the radius of the ring.
+
+This distribition has no particular physical underpinning. It is merely an illustrative example here. It is set up with:
+
+```{r, echo = TRUE}
+ring = j0j0r::maxwellian_ring_setup(
+  n = 4e19,
+  v_width = 1.5e5,
+  v_rad = 0.5e6,
+  A = 2,
+  Z = 1,
+  name = "ring"
+)
+```
+
+```{r, echo = FALSE, fig.width = 16, fig.height = 8}
+pp1 <- j0j0r::distribution_examples %>% 
+  dplyr::filter(name %in% c("maxwellian", "ring")) %>% 
+  ggplot2::ggplot(mapping = ggplot2::aes(x = v_par, y = value, color = name)) +
+  ggplot2::geom_line(size = 1.2) +
+  ggplot2::theme(legend.position = "top") +
+  ggplot2::ylab("Density") +
+  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+  ggplot2::theme(text = ggplot2::element_text(size = 17)) 
+
+pp2 <- j0j0r::calculate_distribution_data_frame(
+  particles = list(
+    ring = ring
+  ),
+  v_par = seq(-7e5, 7e5, length.out = 300),
+  v_perp = seq(0, 1e6, length.out = 300)
+) %>%
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+  ) +
+  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+  viridis::scale_fill_viridis(option = "plasma") +
+  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+  ggplot2::theme(
+    text = ggplot2::element_text(size = 15),
+    axis.text.x = ggplot2::element_text(angle = -45)
+  ) +
+  ggplot2::scale_x_continuous(labels = scales::scientific) +
+  ggplot2::ggtitle("Ring distribution")
+
+gridExtra::grid.arrange(pp1, pp2, ncol = 2)
+
+```
+
+
 ```{r, echo = TRUE, results = FALSE}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "ring")) %>% 
+  dplyr::mutate(
+    real = Re(j0j0),
+    imaginary = Im(j0j0)
+  ) %>% 
+  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>% 
+  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>% 
   ggplot2::ggplot(
     mapping = ggplot2::aes(
       x = frequency/1e6, 
-      y = Re(j0j0) + Im(j0j0), 
-      color = particle
+      y = j0j0, 
+      color = particle,
+      linetype =  component
       )
     ) +
   ggplot2::geom_line(size = 1) +
   ggplot2::geom_hline(yintercept = 0) +
   ggplot2::facet_wrap( ~ directions) +
   ggplot2::xlab("Frequency in MHz") +
-  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
-  ggplot2::theme(legend.position = "top",
-                 text = ggplot2::element_text(size = 13)
-                 ) 
+  ggplot2::theme(
+    legend.position = "top", 
+    text = ggplot2::element_text(size = 13)
+    )
 ```
 
 ###Bivariate Normal
+
+A bivariate normal distribution is given by
+$$
+f(p_\perp, p_\parallel) = nK \frac{\exp\left(-\frac{1}{2}({\mathbf p} - \mathbf{\mu})^T\Sigma^{-1}({\mathbf p} - \mathbf{\mu})\right)}{\sqrt{(2\pi)^2}\lvert\Sigma\rvert},\quad {\mathbf p}= \left(\begin{array}{c} p_\perp \\ p_\parallel \end{array}\right)
+$$
+where $K$ is an integration constant (calculated numerically), $\mathbf{\mu}$ is the center of the distribution, and $\Sigma$ its covariance. In practice it is here implemented using the `dmvnorm` function from the [mvtnorm package](https://cran.r-project.org/web/packages/mvtnorm/index.html). The integration constant $K$ is included because $p_\perp$ cannot be negative (if it could, the normalization would be correct without $K$).
+
+Again, this distribition has no particular physical underpinning. It is merely an illustrative example here. An example can be set up with:
+
+```{r, echo = TRUE}
+center <- c(5e5, 3e5)
+T_eV <- 2e3
+A <- 2
+v_term <- j0j0r::find_p_term(T_eV, A) / (A * j0j0r::const[["amu"]])
+covariance <- rbind(c(v_term^2/4, v_term^2/3), c(v_term^2/5, (v_term)^2))
+
+bvtnorm <- j0j0r::bvtnorm_setup(
+  n = 4e19,
+  center = center,
+  covariance = covariance,
+  A = 2,
+  Z = 1,
+  name = "bivariate_normal"
+)
+```
+
+```{r, echo = FALSE, fig.width = 16, fig.height = 8}
+pp1 <- j0j0r::distribution_examples %>% 
+  dplyr::filter(name %in% c("maxwellian", "bvtnorm")) %>% 
+  ggplot2::ggplot(mapping = ggplot2::aes(x = v_par, y = value, color = name)) +
+  ggplot2::geom_line(size = 1.2) +
+  ggplot2::theme(legend.position = "top") +
+  ggplot2::ylab("Density") +
+  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+  ggplot2::theme(text = ggplot2::element_text(size = 17))
+
+pp2 <- j0j0r::calculate_distribution_data_frame(
+  particles = list(
+    bivariate_normal = bvtnorm
+    ),
+  v_par = seq(-10e5, 10e5, length.out = 300),
+  v_perp = seq(0, 1e6, length.out = 300)
+  ) %>%
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+  ) +
+  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+  viridis::scale_fill_viridis(option = "plasma") +
+  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+  ggplot2::theme(
+    text = ggplot2::element_text(size = 15),
+    axis.text.x = ggplot2::element_text(angle = -45)
+  ) +
+  ggplot2::scale_x_continuous(labels = scales::scientific) +
+  ggplot2::ggtitle("Bivariate normal distribution")
+
+gridExtra::grid.arrange(pp1, pp2, ncol = 2)
+
+```
+
 ```{r, echo = TRUE, results = FALSE}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "bvtnorm")) %>% 
+  dplyr::mutate(
+    real = Re(j0j0),
+    imaginary = Im(j0j0)
+  ) %>% 
+  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>% 
+  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>% 
   ggplot2::ggplot(
     mapping = ggplot2::aes(
       x = frequency/1e6, 
-      y = Re(j0j0) + Im(j0j0), 
-      color = particle
+      y = j0j0, 
+      color = particle,
+      linetype =  component
       )
     ) +
   ggplot2::geom_line(size = 1) +
   ggplot2::geom_hline(yintercept = 0) +
   ggplot2::facet_wrap( ~ directions) +
   ggplot2::xlab("Frequency in MHz") +
-  ggplot2::guides(color = ggplot2::guide_legend(title = expression(phi))) + 
-  ggplot2::theme(legend.position = "top",
-                 text = ggplot2::element_text(size = 13)
-                 )
+  ggplot2::theme(
+    legend.position = "top", 
+    text = ggplot2::element_text(size = 13)
+    )
 ```
 
 
