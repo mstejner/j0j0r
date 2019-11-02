@@ -128,8 +128,8 @@ integrate_distribution_list <- function(distribution_list){
 #' @return \code{numeric} values of p_par and the distribution at the optimum
 #'
 #' @export
-optimize_distribution_perp <- function(distribution, p_perp, maximum){
-  stats::optimise(
+optimize_distribution_perp <- function(distribution, p_perp, maximum = TRUE){
+  stats::optimize(
     f = function(p_par, p_perp, distribution){
       eval_distribution(
         distribution = distribution,
@@ -139,7 +139,8 @@ optimize_distribution_perp <- function(distribution, p_perp, maximum){
     },
     distribution = distribution,
     p_perp = p_perp,
-    interval = c(-1, 1) * 100,
+    lower = -100,
+    upper = 100,
     maximum = maximum
   )
 }

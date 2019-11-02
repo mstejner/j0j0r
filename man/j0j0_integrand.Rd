@@ -4,7 +4,7 @@
 \alias{j0j0_integrand}
 \title{j0j0_integrand}
 \usage{
-j0j0_integrand(p_perp, directions, k_perp, k_par, omega, omega_c, m,
+j0j0_integrand(p_perp, directions, k_perp, k_par, omega, omega_c, mass,
   distribution)
 }
 \arguments{
@@ -26,12 +26,12 @@ fluctuations.}
 \item{omega_c}{\code{numeric} particle angular cyclotron frequency (omega_c =
 qB/m).}
 
-\item{m}{\code{numeric} particle mass in kg.}
+\item{mass}{\code{numeric} particle mass in kg.}
 
 \item{distribution}{\code{list} with the velocity distribution.}
 }
 \value{
-\code{complex}
+\code{numeric}
 }
 \description{
 Function to calculate the integrand in eq. 25 of Bindslev 1996,

@@ -4,7 +4,8 @@
 \alias{j0j0}
 \title{j0j0}
 \usage{
-j0j0(k, phi, frequencies, directions = c("x", "y", "z"), B, particles)
+j0j0(k, phi, frequencies, directions = c("x", "y", "z"), B, particles,
+  integration_method)
 }
 \arguments{
 \item{k}{\code{numeric} length of the fluctuation wavevector.}
@@ -19,7 +20,10 @@ or "z").}
 
 \item{B}{\code{numeric} strength of magnetic field in Tesla.}
 
-\item{particles}{\code{list} with mass, charge, and momentum distribution}
+\item{particles}{\code{list} with mass, charge, and momentum distribution.}
+
+\item{integration_method}{\code{character} method to use for integration. One
+of "stats", "hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"}
 }
 \value{
 \code{data.frame}

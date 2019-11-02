@@ -1,6 +1,6 @@
-#' @title wilkie_setup
+#' @title slowdown_setup
 #'
-#' @description Function to return a setup for a wilkie slowdown momentum
+#' @description Function to return a setup for a slowdown momentum
 #'   distribution, based on Wilkie 2018, https://arxiv.org/abs/1808.01934v2, eq.
 #'   2.9.
 #'
@@ -21,15 +21,15 @@
 #' @return \code{list} with momentum distribution setup
 #'
 #' @export
-wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name){
+slowdown_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name){
   m <- A * const[["amu"]]
 
   p_c <- m * critical_velocity(n_e, T_e_eV, ions)
   p_b <- m * birth_velocity(birth_energy, m)
 
   unnormalized_dist <- list(
-    function_name = "wilkie_func_p",
-    gradient = "wilkie_grad",
+    function_name = "slowdown_func_p",
+    gradient = "slowdown_grad",
     distargs = list(
       n = 1,
       p_c = p_c,
@@ -43,8 +43,8 @@ wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name){
   K <-  1 / integrate_homogeneous_distribution(unnormalized_dist)
 
   distribution <- list(
-    function_name = "wilkie_func",
-    gradient = "wilkie_grad",
+    function_name = "slowdown_func",
+    gradient = "slowdown_grad",
     distargs = list(
       n = n,
       p_c = p_c,
@@ -64,11 +64,11 @@ wilkie_setup <- function(b, n, A, Z, birth_energy, n_e, T_e_eV, ions, name){
 }
 
 
-#' @title wilkie_expr
+#' @title slowdown_expr
 #'
-#' @description expression for a Wilkie slowdown momentum distribution,
+#' @description expression for a slowdown momentum distribution,
 #'   https://arxiv.org/abs/1808.01934v2, eq. 2.9, in cylindrical coordinates
-wilkie_expr <- expression(
+slowdown_expr <- expression(
   # (2 * pi * n * K) *
   #   (tau_s / 4 * pi) *
   #   (1 / (p_c^3 + sqrt(p_perp^2 + p_par^2)^3)) *
@@ -86,18 +86,18 @@ wilkie_expr <- expression(
 )
 
 
-#' @title wilkie_expr_p
+#' @title slowdown_expr_p
 #'
-#' @description expression for a Wilkie slowdown momentum distribution,
+#' @description expression for a slowdown momentum distribution,
 #'   https://arxiv.org/abs/1808.01934v2, eq. 2.9, using only length of p
-wilkie_expr_p <- expression(
+slowdown_expr_p <- expression(
     n * K * (1 / (p_c^3 + p^3)) *
     ((p^3 / p_b^3) * ((p_b^3 + p_c^3) / (p^3 + p_b^3)))^(b / 3)
 )
 
-#' @title wilkie_func
+#' @title slowdown_func
 #'
-#' @description function to evaluate a Wilkie slowdown momentum distribution,
+#' @description function to evaluate a slowdown momentum distribution,
 #'   https://arxiv.org/abs/1808.01934v2, eq. 2.9
 #'
 #' @param p_perp \code{numeric} value of perpendicular momentum component
@@ -110,13 +110,13 @@ wilkie_expr_p <- expression(
 #'
 #' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
 #'
-wilkie_func <- function(p_perp, p_par, n, K, p_c, p_b, b){
-  eval(wilkie_expr) * as.numeric(sqrt(p_perp^2 + p_par^2) < p_b)
+slowdown_func <- function(p_perp, p_par, n, K, p_c, p_b, b){
+  eval(slowdown_expr) * as.numeric(sqrt(p_perp^2 + p_par^2) < p_b)
 }
 
-#' @title wilkie_func_p
+#' @title slowdown_func_p
 #'
-#' @description function to evaluate a Wilkie slowdown momentum distribution,
+#' @description function to evaluate a slowdown momentum distribution,
 #'   https://arxiv.org/abs/1808.01934v2, eq. 2.9, using only length pf p
 #'
 #' @param p \code{numeric} length of momentum vector, p = norm(c(p_perp, p_par))
@@ -128,13 +128,13 @@ wilkie_func <- function(p_perp, p_par, n, K, p_c, p_b, b){
 #'
 #' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
 #'
-wilkie_func_p <- function(p, n, K, p_c, p_b, b){
-  eval(wilkie_expr_p) * as.numeric(p < p_b)
+slowdown_func_p <- function(p, n, K, p_c, p_b, b){
+  eval(slowdown_expr_p) * as.numeric(p < p_b)
 }
 
-#' @title wilkie_grad
+#' @title slowdown_grad
 #'
-#' @description function to calculate the gradient of a Wilkie slowdown
+#' @description function to calculate the gradient of a slowdown
 #'   momentum distribution with respect to parallel and perpencicular momentum
 #'
 #' @param p_perp \code{numeric} value of perpendicular momentum component
@@ -147,8 +147,8 @@ wilkie_func_p <- function(p, n, K, p_c, p_b, b){
 #'
 #' @return \code{list}
 #'
-wilkie_grad <- deriv(
-  expr = wilkie_expr,
+slowdown_grad <- deriv(
+  expr = slowdown_expr,
   namevec = c("p_perp","p_par"),
   function.arg = c("p_perp", "p_par", "n", "K", "p_c", "p_b", "b")
 )

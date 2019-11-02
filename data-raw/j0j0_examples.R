@@ -1,6 +1,8 @@
 #script to generate j0j0_examples, distribution_examples
+library(magrittr)
+library(j0j0r)
 
-phi <- 70
+phi <- 80
 k <- 2 * pi / (j0j0r::const$c / 100e9)
 B = 2.5
 n = 4e19
@@ -30,7 +32,7 @@ bimaxwellian <-  j0j0r::bimaxwellian_setup(
 lorentzian <- j0j0r::generalized_lorentzian_setup(
   n = n,
   T_eV = 2000,
-  kp = 10,
+  kp = 5,
   A = A,
   Z = Z,
   name = "lorentzian"
@@ -61,29 +63,29 @@ bvtnorm <- j0j0r::bvtnorm_setup(
 )
 
 
-j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    bvtnorm = bvtnorm
-  ),
-  v_par = seq(-1e6, 1e6, length.out = 300),
-  v_perp = seq(0, 1e6, length.out = 300)
-) %>%
-  ggplot2::ggplot(
-    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
-  ) +
-  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
-  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
-  viridis::scale_fill_viridis(option = "plasma") +
-  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
-  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
-  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
-  ggplot2::theme(
-    text = ggplot2::element_text(size = 15),
-    axis.text.x = ggplot2::element_text(angle = -45)
-  ) +
-  ggplot2::scale_x_continuous(labels = scales::scientific)
+# j0j0r::calculate_distribution_data_frame(
+#   particles = list(
+#     bvtnorm = bvtnorm
+#   ),
+#   v_par = seq(-1e6, 1e6, length.out = 300),
+#   v_perp = seq(0, 1e6, length.out = 300)
+# ) %>%
+#   ggplot2::ggplot(
+#     mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+#   ) +
+#   ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+#   ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+#   viridis::scale_fill_viridis(option = "plasma") +
+#   ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+#   ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+#   ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+#   ggplot2::theme(
+#     text = ggplot2::element_text(size = 15),
+#     axis.text.x = ggplot2::element_text(angle = -45)
+#   ) +
+#   ggplot2::scale_x_continuous(labels = scales::scientific)
 
-wilkie_b5 = j0j0r::wilkie_setup(
+slowdown_b5 = j0j0r::slowdown_setup(
   b = 5,
   n = n,
   A = A,
@@ -96,10 +98,10 @@ wilkie_b5 = j0j0r::wilkie_setup(
     A = c(2),
     n = n
   ),
-  name = "deuterium_wilkie"
+  name = "deuterium_slowdown_b5"
 )
 
-wilkie_b0 = j0j0r::wilkie_setup(
+slowdown_b0 = j0j0r::slowdown_setup(
   b = 0,
   n = n,
   A = A,
@@ -112,7 +114,7 @@ wilkie_b0 = j0j0r::wilkie_setup(
     A = c(2),
     n = n
   ),
-  name = "deuterium_wilkie"
+  name = "deuterium_slowdown_b0"
 )
 
 distribution_examples <- j0j0r::calculate_distribution_data_frame(
@@ -122,8 +124,8 @@ distribution_examples <- j0j0r::calculate_distribution_data_frame(
     lorentzian = lorentzian,
     ring = ring,
     bvtnorm = bvtnorm,
-    wilkie_b5 = wilkie_b5,
-    wilkie_b0 = wilkie_b0
+    slowdown_b5 = slowdown_b5,
+    slowdown_b0 = slowdown_b0
   ),
   v_par = seq(-2.5e6, 2.5e6, length.out = 1000),
   v_perp = 0
@@ -136,7 +138,8 @@ ggplot2::ggplot( data = distribution_examples,
   ggplot2::theme(legend.position = "top") +
   ggplot2::ylab("Density") +
   ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
-  ggplot2::theme(text = ggplot2::element_text(size = 17))
+  ggplot2::theme(text = ggplot2::element_text(size = 17)) +
+  ggplot2::scale_y_log10(limits=c(1e78, 1e82))
 
 
 
@@ -152,24 +155,124 @@ j0j0_examples <- j0j0r::j0j0(
     lorentzian = lorentzian,
     ring = ring,
     bvtnorm = bvtnorm,
-    wilkie_b0 = wilkie_b0,
-    wilkie_b5 = wilkie_b5
+    slowdown_b0 = slowdown_b0,
+    slowdown_b5 = slowdown_b5
   ),
-  integration_method = "hcubature"
+  integration_method = "stats"
 )
 
 
 
+tt2 <- j0j0r::j0j0(
+  k = k,
+  phi = 86,
+  frequencies = seq(0, 600e6, by = 2e6),
+  directions = c("x", "y", "z"),
+  B = B,
+  particles = list(
+    slowdown_b5 = slowdown_b5
+  ),
+  integration_method = "stats"
+)
+
+tt2  %>%
+  dplyr::mutate(
+    real = Re(j0j0),
+    imaginary = Im(j0j0)
+  ) %>%
+  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>%
+  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>%
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6,
+      y = j0j0,
+      color = particle,
+      linetype =  component
+    )
+  ) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ directions) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::theme(
+    legend.position = "top",
+    text = ggplot2::element_text(size = 13)
+  )
+
+
+
+library(tictoc)
+tic()
 j0j0r::j0j0_element(
-  directions = "xx",
+  directions = "zz",
   k = k,
   phi = phi,
-  frequency = 600e6,
+  frequency = 100e6,
   B = B,
   A = A,
   Z = Z,
-  distribution = lorentzian$distribution,
-  integration_method = "hcubature"
+  distribution = slowdown_b5$distribution,
+  integration_method = "stats"
 )
+toc()
+
+microbenchmark::microbenchmark(
+  stats = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 100e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = slowdown_b5$distribution,
+    integration_method = "stats"
+  ),
+  times = 10
+)
+
+j0j0_integration_check <- j0j0r::j0j0(
+  k = k,
+  phi = 86,
+  frequencies = seq(0, 600e6, by = 2e6),
+  directions = c("z"),
+  B = B,
+  particles = list(
+    maxwellian = maxwellian,
+    slowdown_b0 = slowdown_b0,
+    slowdown_b5 = slowdown_b5
+  ),
+  integration_method = c(
+    "stats", "hcubature", "cuhre"
+  )
+)
+
+j0j0_integration_check %>%
+  dplyr::mutate(
+    real = Re(j0j0),
+    imaginary = Im(j0j0)
+  ) %>%
+  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>%
+  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>%
+  dplyr::filter(component == "real", particle == "slowdown_b5") %>%
+  ggplot2::ggplot(
+    mapping = ggplot2::aes(
+      x = frequency/1e6,
+      y = j0j0,
+      color = integration_method,
+      shape = integration_method,
+      size = integration_method,
+      linetype =  component
+    )
+  ) +
+  ggplot2::geom_line(size = 1, alpha = 0.5) +
+  ggplot2::geom_point(size = 2, alpha = 0.5) +
+  ggplot2::geom_hline(yintercept = 0) +
+  ggplot2::facet_wrap( ~ particle) +
+  ggplot2::xlab("Frequency in MHz") +
+  ggplot2::theme(
+    legend.position = "top",
+    text = ggplot2::element_text(size = 13)
+  )
 
 usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)

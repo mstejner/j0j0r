@@ -35,7 +35,7 @@ j0j0_integrand <- function(
   # v_par_max <- optimize_distribution_perp(distribution, p_perp)[["maximum"]] *
   #   distribution[["p_scale"]] / m
 
-  l_scale <- 3
+  l_scale <- 10
 
   v_par_max <- 0
   p_perp <- p_perp * distribution[["p_scale"]]
@@ -77,7 +77,7 @@ j0j0_integrand <- function(
       break()
     }
 
-    l_scale <- ceiling(l_scale * 1.2)
+    l_scale <- ceiling(l_scale * 1.5)
 
   }
   2 * pi * p_perp * sum(sum_terms_all)
@@ -106,6 +106,7 @@ j0j0_integrand <- function(
 #'
 #' @return \code{complex}
 #'
+#' @export
 j0j0_sum_terms <- function(
   l_values,
   p_perp,
@@ -153,10 +154,10 @@ new_l_values <- function(max_term, l_values_done, sum_terms, nl){
     l_values <- expand_l_values(l_values, l_values_done, "up", nl)
     l_values <- expand_l_values(l_values, l_values_done, "down", nl)
   } else {
-    if (abs(sum_terms[[1]]) / max_term > 1e-6) {
+    if (abs(sum_terms[[1]]) / max_term > 1e-4) {
       l_values <- expand_l_values(l_values, l_values_done, "down", nl)
     }
-    if (abs(utils::tail(sum_terms, 1)) /  max_term > 1e-6) {
+    if (abs(utils::tail(sum_terms, 1)) /  max_term > 1e-4) {
     l_values <- expand_l_values(l_values, l_values_done, "up", nl)
     }
   }

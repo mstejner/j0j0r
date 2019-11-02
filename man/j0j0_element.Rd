@@ -4,7 +4,8 @@
 \alias{j0j0_element}
 \title{j0j0_element}
 \usage{
-j0j0_element(directions, k, phi, frequency, B, A, Z, distribution)
+j0j0_element(directions, k, phi, frequency, B, A, Z, distribution,
+  integration_method)
 }
 \arguments{
 \item{directions}{\code{character} vector with two spatial directions: a
@@ -25,6 +26,9 @@ the fluctuation wavevector}
 
 \item{distribution}{\code{list} with the velocity distribution and associated
 settings.}
+
+\item{integration_method}{\code{character} method to use for integration. One
+of "stats", "hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"}
 }
 \value{
 \code{complex}
