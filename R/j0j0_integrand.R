@@ -32,24 +32,91 @@ j0j0_integrand <- function(
   distribution
 ){
 
-  # v_par_max <- optimize_distribution_perp(distribution, p_perp)[["maximum"]] *
-  #   distribution[["p_scale"]] / m
+  # v_par_max <-
+  #   optimize_distribution_perp(distribution, p_perp)[["maximum"]] *
+  #   distribution[["p_scale"]] / mass
 
-  l_scale <- 10
-
-  v_par_max <- 0
   p_perp <- p_perp * distribution[["p_scale"]]
 
-  l_0 <- round((omega - v_par_max * k_par) / omega_c)
-  l_values <- l_0 + seq(-l_scale, l_scale, 1)
+  v_scale <- distribution[["p_scale"]] / mass
+
+  l_0 <- round((omega - 0 * k_par) / omega_c)
+  l_scale <- 5 #max(c(10,  abs(round((omega - v_scale * k_par) / omega_c))))
+
+  go_up_or_down <- list("up" = "up", "down" = "down")
+
+  j0j0_sum <- lapply(
+    X = go_up_or_down,
+    FUN = j0j0r:::j0j0_integrand_sum,
+    l_0 = l_0,
+    l_scale = l_scale,
+    p_perp = p_perp,
+    directions = directions,
+    k_perp = k_perp,
+    k_par = k_par,
+    omega = omega,
+    omega_c = omega_c,
+    mass = mass,
+    distribution = distribution
+    )
+
+  2 * pi * p_perp * (j0j0_sum[["up"]] + j0j0_sum[["down"]])
+}
+
+#' @title j0j0_integrand_sum
+#'
+#' @description Function to calculate the sum in the j0j0 integrand.
+#'
+#' @param p_perp \code{numeric} component of momentum vector perpendicular to
+#'   the magnetic field divided by p_scale. Should be near 1.
+#' @param directions \code{character} vector with two spatial directions:
+#'   acombination of x, y, and z. e.g  xx, xy or yz.
+#' @param k_perp \code{numeric} length of component of wavevector perpendicular
+#'   to the magnetic field.
+#' @param k_par \code{numeric} length of component of wavevector parallel to the
+#'   magnetic field.
+#' @param omega \code{numeric} angular cyclotron frequency of current
+#'   fluctuations.
+#' @param omega_c \code{numeric} particle angular cyclotron frequency (omega_c =
+#'   qB/m).
+#' @param mass \code{numeric} particle mass in kg.
+#'
+#' @param distribution \code{list} with the velocity distribution.
+#'
+#' @param l_0 \code{integer} Starting point for sum over l values.
+#'
+#' @param l_scale \code{integer} Relevant range of l values
+#'
+#' @param go_up_or_down \code{character} starting from l_0, go "up" or go "down"
+#'
+#' @return \code{numeric}
+#'
+#' @export
+j0j0_integrand_sum <- function(
+  go_up_or_down,
+  l_0,
+  l_scale,
+  p_perp,
+  directions,
+  k_perp,
+  k_par,
+  omega,
+  omega_c,
+  mass,
+  distribution
+){
 
   niter <- 0
   converged <- FALSE
-  sum_terms <- numeric()
-  sum_terms_all <- numeric()
-  l_values_done <- numeric()
+  j0j0_sum <- 0
   while (!converged) {
-    niter <- niter + 1
+
+    l_values <- l_0 +
+      switch(
+        go_up_or_down,
+        up =  seq(niter * l_scale, (niter + 1) * l_scale - 1, by = 1),
+        down = seq(-niter * l_scale - 1, -(niter + 1) * l_scale, by = -1)
+      )
 
     sum_terms <- j0j0_sum_terms(
       l_values,
@@ -61,26 +128,26 @@ j0j0_integrand <- function(
       omega_c,
       mass,
       distribution
-      )
+    )
 
-    l_values_done <- sort(c(l_values_done, l_values))
-    sum_terms_all <- c(sum_terms_all, sum_terms)
-    max_term <- max(abs(sum_terms_all))
+    sum_sum_terms <- sum(sum_terms)
 
-    l_values <- new_l_values(max_term, l_values_done, sum_terms, nl = l_scale)
+    j0j0_sum <- j0j0_sum + sum_sum_terms
 
-    converged <- length(l_values) == 0
-    if (max_term == 0 & niter > 5) {converged <- TRUE}
+    converged <- abs(j0j0_sum) > 0 & abs(sum_sum_terms / j0j0_sum) < 1e-4
 
-    if (!converged & niter > 50) {
-      warning("could not converge integrand in 50 iterations")
+    #if (j0j0_sum == 0 & max(abs(l_values - l_0)) > ) {converged <- TRUE}
+    if (j0j0_sum == 0 & niter > 3) {converged <- TRUE}
+
+    if (!converged & niter > 1000) {
+      warning("could not converge integrand in 1000 iterations")
       break()
     }
 
-    l_scale <- ceiling(l_scale * 1.5)
-
+    niter <- niter + 1
   }
-  2 * pi * p_perp * sum(sum_terms_all)
+
+  j0j0_sum
 }
 
 #' @title j0j0_sum_terms
@@ -117,7 +184,7 @@ j0j0_sum_terms <- function(
   omega_c,
   mass,
   distribution
-  ){
+){
 
   v_perp <- p_perp / mass
   v_par  <- (omega - l_values * omega_c) / k_par
@@ -136,51 +203,3 @@ j0j0_sum_terms <- function(
 
   clcl * fl
 }
-
-#' @title new_l_values
-#'
-#' @description  construct a new vextor of l-values by expanding up and/or dowm
-#'
-#' @param max_term \code{numeric} maximum term encountered so far
-#' @param l_values_done \code{numeric} vector of l-values already done.
-#' @param sum_terms \code{complex} sum terms encountered so far.
-#' @param nl \code{numeric} number of l-values to expand with.
-#'
-#' @return \code{numeric}
-#'
-new_l_values <- function(max_term, l_values_done, sum_terms, nl){
-  l_values <- numeric()
-  if (max_term == 0) {
-    l_values <- expand_l_values(l_values, l_values_done, "up", nl)
-    l_values <- expand_l_values(l_values, l_values_done, "down", nl)
-  } else {
-    if (abs(sum_terms[[1]]) / max_term > 1e-4) {
-      l_values <- expand_l_values(l_values, l_values_done, "down", nl)
-    }
-    if (abs(utils::tail(sum_terms, 1)) /  max_term > 1e-4) {
-    l_values <- expand_l_values(l_values, l_values_done, "up", nl)
-    }
-  }
-
-  l_values
-}
-
-#' @title expand_l_values
-#'
-#' @description  expand a vector of l-values up or down by nl
-#'
-#' @param l_values \code{numeric} vector of l-values to expand.
-#' @param l_values_done \code{numeric} vector of l-values already done.
-#' @param updown \code{character} expand "up" or "down".
-#' @param nl \code{numeric} number of l-values to expand with
-#'
-#' @return \code{numeric}
-#'
-expand_l_values <- function(l_values, l_values_done, updown, nl){
-  switch(
-    updown,
-    up =  c(l_values, seq(max(l_values_done) + 1, max(l_values_done) + nl, 1)),
-    down = c(seq(min(l_values_done) - nl, min(l_values_done) - 1, 1), l_values)
-  )
-}
-

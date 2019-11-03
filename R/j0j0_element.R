@@ -48,7 +48,7 @@ j0j0_element <- function(
   signs <- c("x" = 1, "y" = -const$i, "z" = 1)
 
   vector_integrand <- Vectorize(
-    FUN = j0j0_integrand2,
+    FUN = j0j0_integrand,
     vectorize.args = "p_perp"
   )
 
@@ -157,7 +157,7 @@ matrix_integrand <- function(
     apply(
       X = p_perp,
       MARGIN = 2,
-      FUN = j0j0_integrand2,
+      FUN = j0j0_integrand,
       directions = directions,
       k_perp = k_perp,
       k_par = k_par,

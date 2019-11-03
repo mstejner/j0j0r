@@ -1,6 +1,7 @@
 #script to generate j0j0_examples, distribution_examples
 library(magrittr)
 library(j0j0r)
+library(tictoc)
 
 phi <- 80
 k <- 2 * pi / (j0j0r::const$c / 100e9)
@@ -17,6 +18,18 @@ maxwellian = j0j0r::maxwellian_setup(
   A = A,
   Z = Z,
   name = "maxwellian"
+)
+
+maxwellian_example <- j0j0r::j0j0(
+  k = 2 * pi / (j0j0r::const$c / 100e9),
+  phi = c(60, 86),
+  frequencies = seq(0, 400e6, by = 2e6),
+  directions = c("x", "y", "z"),
+  B = 2.5,
+  particles = list(
+    maxwellian = maxwellian_deuterium
+  ),
+  integration_method = "hcubature"
 )
 
 bimaxwellian <-  j0j0r::bimaxwellian_setup(
@@ -211,25 +224,81 @@ j0j0r::j0j0_element(
   B = B,
   A = A,
   Z = Z,
-  distribution = slowdown_b5$distribution,
+  distribution = bimaxwellian$distribution,
   integration_method = "stats"
 )
 toc()
 
 microbenchmark::microbenchmark(
-  stats = j0j0r::j0j0_element(
+  maxwellian = j0j0r::j0j0_element(
     directions = "zz",
     k = k,
     phi = phi,
-    frequency = 100e6,
+    frequency = 300e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = maxwellian$distribution,
+    integration_method = "stats"
+  ),
+  bimaxwellian = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 400e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = bimaxwellian$distribution,
+    integration_method = "stats"
+  ),
+  ring = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 400e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = ring$distribution,
+    integration_method = "stats"
+  ),
+  bvtnorm = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 400e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = bvtnorm$distribution,
+    integration_method = "stats"
+  ),
+  slowdown_b0 = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 400e6,
+    B = B,
+    A = A,
+    Z = Z,
+    distribution = slowdown_b0$distribution,
+    integration_method = "stats"
+  ),
+  slowdown_b5 = j0j0r::j0j0_element(
+    directions = "zz",
+    k = k,
+    phi = phi,
+    frequency = 400e6,
     B = B,
     A = A,
     Z = Z,
     distribution = slowdown_b5$distribution,
     integration_method = "stats"
-  ),
-  times = 10
+  )
 )
+
+
 
 j0j0_integration_check <- j0j0r::j0j0(
   k = k,
@@ -275,4 +344,5 @@ j0j0_integration_check %>%
     text = ggplot2::element_text(size = 13)
   )
 
+usethis::use_data(maxwellian_example)
 usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
