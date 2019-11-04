@@ -76,28 +76,6 @@ bvtnorm <- j0j0r::bvtnorm_setup(
 )
 
 
-# j0j0r::calculate_distribution_data_frame(
-#   particles = list(
-#     bvtnorm = bvtnorm
-#   ),
-#   v_par = seq(-1e6, 1e6, length.out = 300),
-#   v_perp = seq(0, 1e6, length.out = 300)
-# ) %>%
-#   ggplot2::ggplot(
-#     mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
-#   ) +
-#   ggplot2::geom_raster(ggplot2::aes(fill = value)) +
-#   ggplot2::geom_contour(colour = "white", alpha = 0.2) +
-#   viridis::scale_fill_viridis(option = "plasma") +
-#   ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
-#   ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
-#   ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
-#   ggplot2::theme(
-#     text = ggplot2::element_text(size = 15),
-#     axis.text.x = ggplot2::element_text(angle = -45)
-#   ) +
-#   ggplot2::scale_x_continuous(labels = scales::scientific)
-
 slowdown_b5 = j0j0r::slowdown_setup(
   b = 5,
   n = n,
@@ -144,16 +122,16 @@ distribution_examples <- j0j0r::calculate_distribution_data_frame(
   v_perp = 0
 )
 
-ggplot2::ggplot( data = distribution_examples,
-  mapping = ggplot2::aes(x = v_par, y = value, color = name)
-) +
-  ggplot2::geom_line(size = 1.2) +
-  ggplot2::theme(legend.position = "top") +
-  ggplot2::ylab("Density") +
-  ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
-  ggplot2::theme(text = ggplot2::element_text(size = 17)) +
-  ggplot2::scale_y_log10(limits=c(1e78, 1e82))
-
+# ggplot2::ggplot( data = distribution_examples,
+#   mapping = ggplot2::aes(x = v_par, y = value, color = name)
+# ) +
+#   ggplot2::geom_line(size = 1.2) +
+#   ggplot2::theme(legend.position = "top") +
+#   ggplot2::ylab("Density") +
+#   ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
+#   ggplot2::theme(text = ggplot2::element_text(size = 17)) +
+#   ggplot2::scale_y_log10(limits=c(1e78, 1e82))
+#
 
 
 j0j0_examples <- j0j0r::j0j0(
@@ -173,176 +151,6 @@ j0j0_examples <- j0j0r::j0j0(
   ),
   integration_method = "stats"
 )
-
-
-
-tt2 <- j0j0r::j0j0(
-  k = k,
-  phi = 86,
-  frequencies = seq(0, 600e6, by = 2e6),
-  directions = c("x", "y", "z"),
-  B = B,
-  particles = list(
-    slowdown_b5 = slowdown_b5
-  ),
-  integration_method = "stats"
-)
-
-tt2  %>%
-  dplyr::mutate(
-    real = Re(j0j0),
-    imaginary = Im(j0j0)
-  ) %>%
-  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>%
-  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>%
-  ggplot2::ggplot(
-    mapping = ggplot2::aes(
-      x = frequency/1e6,
-      y = j0j0,
-      color = particle,
-      linetype =  component
-    )
-  ) +
-  ggplot2::geom_line(size = 1) +
-  ggplot2::geom_hline(yintercept = 0) +
-  ggplot2::facet_wrap( ~ directions) +
-  ggplot2::xlab("Frequency in MHz") +
-  ggplot2::theme(
-    legend.position = "top",
-    text = ggplot2::element_text(size = 13)
-  )
-
-
-
-library(tictoc)
-tic()
-j0j0r::j0j0_element(
-  directions = "zz",
-  k = k,
-  phi = phi,
-  frequency = 100e6,
-  B = B,
-  A = A,
-  Z = Z,
-  distribution = bimaxwellian$distribution,
-  integration_method = "stats"
-)
-toc()
-
-microbenchmark::microbenchmark(
-  maxwellian = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 300e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = maxwellian$distribution,
-    integration_method = "stats"
-  ),
-  bimaxwellian = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 400e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = bimaxwellian$distribution,
-    integration_method = "stats"
-  ),
-  ring = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 400e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = ring$distribution,
-    integration_method = "stats"
-  ),
-  bvtnorm = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 400e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = bvtnorm$distribution,
-    integration_method = "stats"
-  ),
-  slowdown_b0 = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 400e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = slowdown_b0$distribution,
-    integration_method = "stats"
-  ),
-  slowdown_b5 = j0j0r::j0j0_element(
-    directions = "zz",
-    k = k,
-    phi = phi,
-    frequency = 400e6,
-    B = B,
-    A = A,
-    Z = Z,
-    distribution = slowdown_b5$distribution,
-    integration_method = "stats"
-  )
-)
-
-
-
-j0j0_integration_check <- j0j0r::j0j0(
-  k = k,
-  phi = 86,
-  frequencies = seq(0, 600e6, by = 2e6),
-  directions = c("z"),
-  B = B,
-  particles = list(
-    maxwellian = maxwellian,
-    slowdown_b0 = slowdown_b0,
-    slowdown_b5 = slowdown_b5
-  ),
-  integration_method = c(
-    "stats", "hcubature", "cuhre"
-  )
-)
-
-j0j0_integration_check %>%
-  dplyr::mutate(
-    real = Re(j0j0),
-    imaginary = Im(j0j0)
-  ) %>%
-  tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>%
-  dplyr::mutate(component = forcats::fct_rev(as.factor(component))) %>%
-  dplyr::filter(component == "real", particle == "slowdown_b5") %>%
-  ggplot2::ggplot(
-    mapping = ggplot2::aes(
-      x = frequency/1e6,
-      y = j0j0,
-      color = integration_method,
-      shape = integration_method,
-      size = integration_method,
-      linetype =  component
-    )
-  ) +
-  ggplot2::geom_line(size = 1, alpha = 0.5) +
-  ggplot2::geom_point(size = 2, alpha = 0.5) +
-  ggplot2::geom_hline(yintercept = 0) +
-  ggplot2::facet_wrap( ~ particle) +
-  ggplot2::xlab("Frequency in MHz") +
-  ggplot2::theme(
-    legend.position = "top",
-    text = ggplot2::element_text(size = 13)
-  )
 
 usethis::use_data(maxwellian_example)
 usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)

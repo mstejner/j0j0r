@@ -4,7 +4,7 @@
 \alias{optimize_distribution_perp}
 \title{optimize_distribution_perp}
 \usage{
-optimize_distribution_perp(distribution, p_perp, maximum)
+optimize_distribution_perp(distribution, p_perp, maximum = TRUE)
 }
 \arguments{
 \item{distribution}{\code{list} with the momentum distributions.}
