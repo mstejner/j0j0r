@@ -31,6 +31,8 @@ maxwellian_example <- j0j0r::j0j0(
   ),
   integration_method = "hcubature"
 )
+usethis::use_data(maxwellian_example)
+
 
 bimaxwellian <-  j0j0r::bimaxwellian_setup(
   n = n,
@@ -122,6 +124,31 @@ distribution_examples <- j0j0r::calculate_distribution_data_frame(
   v_perp = 0
 )
 
+dist_2D_examples <-
+  dplyr::bind_rows(
+    j0j0r::calculate_distribution_data_frame(
+      particles = list(
+        maxwellian = maxwellian,
+        bimaxwellian = bimaxwellian,
+        lorentzian = lorentzian,
+        ring = ring,
+        bvtnorm = bvtnorm
+      ),
+      v_par = seq(-1e6, 1e6, length.out = 300),
+      v_perp = seq(0, 1e6, length.out = 300)
+    ),
+    j0j0r::calculate_distribution_data_frame(
+      particles = list(
+        slowdown_b5 = slowdown_b5,
+        slowdown_b0 = slowdown_b0
+      ),
+      v_par = seq(-1.5e6, 1.5e6, length.out = 300),
+      v_perp = seq(0, 1.5e6, length.out = 300)
+    )
+  )
+usethis::use_data(dist_2D_examples, overwrite = TRUE)
+
+
 # ggplot2::ggplot( data = distribution_examples,
 #   mapping = ggplot2::aes(x = v_par, y = value, color = name)
 # ) +
@@ -152,5 +179,4 @@ j0j0_examples <- j0j0r::j0j0(
   integration_method = "stats"
 )
 
-usethis::use_data(maxwellian_example)
-usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
+susethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)

@@ -52,3 +52,72 @@ calculate_distribution_data_frame <- function(particles, v_par, v_perp){
 
   dist_df %>% as.data.frame()
 }
+
+
+#' @title plot_dist
+#'
+#' @description helper function to plot momentum distributions
+#'
+#' @param dist_df \code{data.frame} output of
+#'   calculate_distribution_data_frame() containing the evaluated distribution
+#'
+#' @return \code{ggplot}
+#'
+#' @importFrom magrittr %>%
+#'
+#' @export
+plot_dist <- function(dist_df, velocity_dist = TRUE){
+
+  v_par_varies <- length(unique(dist_df[["v_par"]])) != 1
+  v_perp_varies <- length(unique(dist_df[["v_perp"]])) != 1
+  both_vary = v_par_varies & v_perp_varies
+
+  if (velocity_dist) {
+    dist_df[["value"]] <-
+      dist_df[["value"]] * (dist_df[["A"]] * const[["amu"]])^3
+    ylab <- "Density, s^3/m^6"
+  } else {
+    ylab <- "Density, s^3/(kg m^6)"
+  }
+
+
+  if (both_vary) {
+    dist_df %>%
+      ggplot2::ggplot(
+        mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+      ) +
+      ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+      ggplot2::geom_contour(colour = "white", alpha = 0.2) +
+      viridis::scale_fill_viridis(option = "plasma") +
+      ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
+      ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+      ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
+      ggplot2::theme(
+        text = ggplot2::element_text(size = 15),
+        axis.text.x = ggplot2::element_text(angle = -45, size = 17)
+      ) +
+      ggplot2::scale_x_continuous(labels = scales::scientific)
+  } else {
+    x <- ifelse(
+      test = v_par_varies,
+      yes = "v_par",
+      no = "v_perp"
+    )
+
+    xlab <- ifelse(
+      test = v_par_varies,
+      yes = "$v_{par}$ in m/s^2",
+      no = "$v_{perp}$ in m/s^2"
+    )
+
+    dist_df %>%
+      ggplot2::ggplot(
+        mapping = ggplot2::aes_string(x = x, y = "value", color = "name")
+      ) +
+      ggplot2::geom_line(size = 1.3) +
+      ggplot2::theme(legend.position = "top") +
+      ylab(latex2exp::TeX(ylab)) +
+      xlab(latex2exp::TeX(xlab)) +
+      ggplot2::theme(text = ggplot2::element_text(size = 17))
+  }
+}

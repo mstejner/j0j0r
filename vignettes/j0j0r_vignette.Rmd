@@ -17,34 +17,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-plot1d_dist <- function(dist_df){
-  dist_df %>% 
-  ggplot2::ggplot(mapping = ggplot2::aes(x = v_par, y = value, color = name)) +
-  ggplot2::geom_line(size = 1.2) +
-  ggplot2::theme(legend.position = "top") +
-  ylab(latex2exp::TeX("Density, s^3/(kg m^6)")) +
-  xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
-  ggplot2::theme(text = ggplot2::element_text(size = 17))
-}
-
-plot2d_dist <- function(dist_df) {
-  dist_df %>% 
-  ggplot2::ggplot(
-    mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
-  ) +
-  ggplot2::geom_raster(ggplot2::aes(fill = value)) +
-  ggplot2::geom_contour(colour = "white", alpha = 0.2) +
-  viridis::scale_fill_viridis(option = "plasma") +
-  ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
-  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
-  ggplot2::guides(fill = ggplot2::guide_colourbar(title = "Density")) +
-  ggplot2::theme(
-    text = ggplot2::element_text(size = 15),
-    axis.text.x = ggplot2::element_text(angle = -45)
-  ) +
-  ggplot2::scale_x_continuous(labels = scales::scientific) 
-}
+future::plan(strategy = "multisession")
 ```
 
 # Introduction
@@ -125,7 +98,7 @@ library(purrr)
 library(ggplot2)
 ```
 
-A Maxwellian distribution and a slowdown distribution can be set up with:
+A Maxwellian distribution and a slowdown distribution (with b = 3, indicating strong effects of transport) can be set up with:
 
 ```{r, echo = TRUE, results = FALSE}
 maxwellian_deuterium <- maxwellian_setup(
@@ -153,9 +126,9 @@ slowdown_deuterium <- slowdown_setup(
 )
 ```
 
-And they can be evaluated with 
+And they can be evaluated (in a slice at $v_\perp = 0$) with 
 
-```{r fig1, echo = TRUE, fig.height = 6, fig.width = 6, fig.align = "center"}
+```{r fig1, echo = TRUE, fig.align = "center"}
 dist_examples <- calculate_distribution_data_frame(
   particles = list(
     maxwellian = maxwellian_deuterium, 
@@ -165,35 +138,33 @@ dist_examples <- calculate_distribution_data_frame(
   v_perp = 0
 ) 
 
-plot1d_dist(dist_examples)
+plot_dist(dist_examples)
 ```
 
 
-Note that, although this is a momentum distribution it is here shown as a function of velocity in order to have more recognizable units on the axis.
+Note that, although the code generally works with momentum distributions, they are shown here as velocity distrubutions in order to have more recognizable units/scales on the axis. 
 
-Also remember, the factor $2\pi p_\perp$ is considered part of the volume element, not of the distribution function. So it is not included here. If it were, the maxwellian would also be "hollow" with a minimum at $v_{par} = 0$.
+Also, as noted above, the factor $2\pi p_\perp$ is considered part of the volume element, not of the distribution function. So it is not included here.
 
 The function `calculate_distribution_data_frame()` returns a data frame with the evaluated distribution for all combinations of its arguments: particles, v_par and v_perp. So a 2D-plot can be obtained by allowing both v_par and v_perp to vary:
 
-```{r, echo = TRUE}
-dist_2D_examples <- j0j0r::calculate_distribution_data_frame(
+```{r, echo = TRUE, fig.align = "center", eval = TRUE}
+calculate_distribution_data_frame(
   particles = list(
     maxwellian = maxwellian_deuterium, 
     slowdown = slowdown_deuterium
     ), 
   v_par = seq(-1e6, 1e6, length.out = 300), 
-  v_perp = seq(0, 1e6, length.out = 300)
-) 
-
-plot2d_dist(dist_2D_examples) + 
+  v_perp = seq(0, 1e6, length.out = 300) 
+  ) %>% 
+  plot_dist() +
   ggplot2::facet_wrap( ~ name)
 ```
-
 
 The normalization can be checked with the function `integrate_distribution()`. For example:
 
 ```{r, echo = TRUE, results = "asis"}
-integrate_distribution(distribution = maxwellian_deuterium$distribution)
+integrate_distribution(distribution = maxwellian_deuterium[["distribution"]])
 ```
 
 
@@ -213,29 +184,24 @@ The function `j0j0_element()` is used to calculate a single element of j0j0 for 
 
 * **particle**: a list with with mass, charge, and momentum distribution. As in the examples above.
 
-* **integration_method**: either "stats" to use `stats::integrate()` or one of the methods from the [cubature package](https://cran.r-project.org/web/packages/cubature/index.html): "hcubature", "pcubature", "cuhre", "divonne", "suave" or "vegas". See alse the [cubature vignette](https://cran.r-project.org/web/packages/cubature/vignettes/cubature.html).
+* **integration_method**: either "stats" to use `stats::integrate()` or one of the methods from the [cubature package](https://cran.r-project.org/web/packages/cubature/index.html): "hcubature", "pcubature", "cuhre", "divonne", "suave" or "vegas". See also the [cubature vignette](https://cran.r-project.org/web/packages/cubature/vignettes/cubature.html).
 
-Regarding the integration methods, some experimentation may be needed to find find the best choice for a particular distribution function. 
+Regarding the integration methods, some experimentation may be needed to find find the best choice for a particular distribution function. The stats, hcubature and cuhre methods work reliably and give identical result (in all cases that I have tested). Stats is usually the fastest. The other methods are either very slow or fail to converge and just returns zero (although pcubature does work in some cases and is then very fast). The examples included here were computed with stats.
 
-* stats and hcubature seems to work in most cases, with "stats" usually being the fastest.
-* cuhre also works reliably, but is usually slower
-* pcubature can be faster than the others, but often fails to converge and just returns zero.
-* divonne, suave and vegas are either very slow or just return zero.
+The time to compute a single element of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ varies a great deal depending on the distribution function: from around 60 ms for a Maxwellian to 800 ms for the slowdowwn distribution and 1.5 s for the bi-variate normal distribution. 
 
-The the stats, hcubature and cuhre methods work reliably and give identical result (in all cases that I have tested). When pcubature works (i.e. does not return zero), its results are also identical to those of stats, hcubature and cuhre. The three other methods were too slow to be tested properly.
-
-The time to compute a single element of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ varies a great deal depending on the distribution function: from around 60 ms for a Maxwellian to 800 ms for teh slowdowwn distribution and 1.5 s for bi-variate normal distribution. 
+The package contains an exported data set, j0j0_examples, with examples of velocity distributions and results for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. The examples are shown below. When nothing else is mentioned they were calculated with $\phi = 80^\circ$, 
+$k = 2095.845 \,{\text m}^{-1}$, $B = 2.5\,{\text T}$, $n = 4e19 \,{\text m}^{-3}$, $A=2$, $Z=1$. Where relevant, a temperature around 2 keV is assumed.
 
 ## Maxwellian
 
-We have already seen the expression for a Maxwellian and how to set it up. To use it we first call `future::plan()`in order to make use of the parallelization with the furrr package:
-
+We have already seen the expression for a Maxwellian and how to set it up. To calculate $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ we call `j0j0()`, but we first need to call `future::plan()`in order to make use of the parallelization with the furrr package:
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
-future::plan(strategy = "multisession", .skip = TRUE)
+future::plan(strategy = "multisession")
 ```
 
-All of the inputs for `j0j0()` can be vectors or lists with multiple elements, e.g. multiple frequencies or particles. The function will form all unique combinations of its inputs and return $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ for each. So a sweep of frequency and direction for two values of phi can be done with:
+All the inputs for `j0j0()` can be vectors or lists with multiple elements, e.g. multiple frequencies or particles. The function will form all unique combinations of its inputs and return $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ for each. So a sweep of frequency and direction for two values of phi can be done with:
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
 
@@ -252,16 +218,11 @@ maxwellian_example <-j0j0(
 )
 ```
 
-And plotted with:
+And the results can be plotted with:
 
-```{r fig3, echo = TRUE, results = FALSE, fig.align = "center"}
+```{r fig3, echo = TRUE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 plot_j0j0(maxwellian_example, wrap_by = "element", color_by = "phi")
 ```
-
-
-The package contains two exported data sets, distribution_examples and j0j0_examples, with examples of velocity distributions and results for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. The examples were calculated with $\phi = 80^\circ$, 
-$k = 2095.845 \,{\text m}^{-1}$, $B = 2.5\,{\text T}$, $n = 4e19 \,{\text m}^{-3}$, $A=2$, $Z=1$. Where relevant, a temperature around 2 keV is assumed.
-
 
 ## Bimaxwellian
 
@@ -270,7 +231,7 @@ The expression for a bi-maxwellian is
 $$
 f(p_\perp, p_\parallel) =\frac{n}{(2\pi)^3 p_{\perp\,T}^2 p_{\parallel\,T}} e^{-(p_\parallel - p_{drift})^2 /p_{\parallel\,T}^2 + p_\perp^2 / p_{\perp\,T}^2}
 $$
-where $p_{\perp\,T}$ and $p_{\parallel\,T}$ are the perpendicilar and parallel themal momenta, and $p_{drift}$ corresponds to the parallel drift velocity.
+where $p_{\perp\,T}$ and $p_{\parallel\,T}$ are the perpendicular and parallel thermal momenta, and $p_{drift}$ corresponds to the parallel drift velocity.
 
 It can be se up with 
 ```{r, echo = TRUE}
@@ -288,16 +249,11 @@ bimaxwellian <-  bimaxwellian_setup(
 ```{r fig4, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp1 <- j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "bimaxwellian")) %>% 
-  plot1d_dist()
+  plot_dist()
 
-pp2 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    bvtnorm = bimaxwellian
-  ),
-  v_par = seq(-7e5, 7e5, length.out = 300),
-  v_perp = seq(0, 1e6, length.out = 300)
-  ) %>%
-  plot2d_dist() +
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("bimaxwellian")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("bimaxwellian")
 
 gridExtra::grid.arrange(pp1, pp2, ncol = 2)
@@ -306,7 +262,7 @@ gridExtra::grid.arrange(pp1, pp2, ncol = 2)
 
 This gives the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ shown below.
 
-```{r fig5, echo = FALSE, results = FALSE, fig.align = "center"}
+```{r fig5, echo = FALSE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 j0j0r::j0j0_examples %>%
   dplyr::filter(particle %in% c("maxwellian", "bimaxwellian")) %>% 
   plot_j0j0(wrap_by = "element", color_by = "particle")
@@ -329,7 +285,7 @@ where $\kappa$ is a spectral index. For large $\kappa$ the distribution tends to
 The distribution can be set up with
 
 ```{r, echo = TRUE}
-lorentzian <- j0j0r::generalized_lorentzian_setup(
+lorentzian <- generalized_lorentzian_setup(
   n = 4e19,
   T_eV = 2000,
   kp = 10,
@@ -342,16 +298,11 @@ lorentzian <- j0j0r::generalized_lorentzian_setup(
 ```{r fig6, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp1 <- j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "lorentzian")) %>% 
-  plot1d_dist() + ggplot2::scale_y_log10()
+  plot_dist() + ggplot2::scale_y_log10()
 
-pp2 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    lorentzian = lorentzian
-  ),
-  v_par = seq(-7e5, 7e5, length.out = 300),
-  v_perp = seq(0, 1e6, length.out = 300)
-) %>%
-  plot2d_dist() +
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("lorentzian")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("Generalized Lorentzian")
 
 gridExtra::grid.arrange(pp1, pp2, ncol = 2)
@@ -360,7 +311,7 @@ gridExtra::grid.arrange(pp1, pp2, ncol = 2)
 
 And we get the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ components shown below.
 
-```{r fig7, echo = FALSE, results = FALSE, fig.align = "center"}
+```{r fig7, echo = FALSE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "lorentzian")) %>% 
   plot_j0j0(wrap_by = "element", color_by = "particle")
@@ -376,10 +327,10 @@ f(p_\perp, p_\parallel) =K\frac{n}{\sqrt{\pi} p_{\text{width}}} e^{-(p - p_{\tex
 $$
 where $K$ is an integration constant (calculated numerically), $p_{\text{width}}$ controls the width of the ring, and $p_{\text{radius}}$ controls the radius of the ring.
 
-This distribition has no particular physical underpinning/meaning. It is merely an illustrative example. It is set up with:
+This distribition has no particular physical underpinning/meaning. It is meant merely as an illustrative example. It is set up with:
 
 ```{r, echo = TRUE}
-ring = j0j0r::maxwellian_ring_setup(
+ring = maxwellian_ring_setup(
   n = 4e19,
   v_width = 1.5e5,
   v_rad = 0.5e6,
@@ -392,16 +343,11 @@ ring = j0j0r::maxwellian_ring_setup(
 ```{r fig8, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp1 <- j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "ring")) %>% 
-  plot1d_dist()
+  plot_dist()
 
-pp2 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    ring = ring
-  ),
-  v_par = seq(-7e5, 7e5, length.out = 300),
-  v_perp = seq(0, 1e6, length.out = 300)
-  ) %>%
-  plot2d_dist() +
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("ring")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("Ring distribution")
 
 gridExtra::grid.arrange(pp1, pp2, ncol = 2)
@@ -410,7 +356,7 @@ gridExtra::grid.arrange(pp1, pp2, ncol = 2)
 
 And we get the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ components shown below.
 
-```{r fig9, echo = FALSE, results = FALSE, fig.align = "center"}
+```{r fig9, echo = FALSE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "ring")) %>% 
   plot_j0j0(wrap_by = "element", color_by = "particle")
@@ -447,17 +393,12 @@ bvtnorm <- bvtnorm_setup(
 ```{r fig10, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp1 <- j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "bvtnorm")) %>% 
-  plot1d_dist() + 
+  plot_dist() + 
   ggplot2::scale_y_log10()
 
-pp2 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    bivariate_normal = bvtnorm
-    ),
-  v_par = seq(-10e5, 10e5, length.out = 300),
-  v_perp = seq(0, 1e6, length.out = 300)
-  ) %>%
-  plot2d_dist() +
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("bvtnorm")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("Bivariate normal distribution")
 
 gridExtra::grid.arrange(pp1, pp2, ncol = 2)
@@ -468,7 +409,7 @@ Note that in this example ${\bf v} = 0$ is quite far from the distribution cente
 
 We get the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ components shown below.
 
-```{r fig11, echo = FALSE, results = FALSE, fig.align = "center"}
+```{r fig11, echo = FALSE, fig.width = 16, fig.height = 8, results = FALSE,fig.align = "center"}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "bvtnorm")) %>% 
   plot_j0j0(wrap_by = "element", color_by = "particle")
@@ -476,6 +417,7 @@ j0j0r::j0j0_examples %>%
 
 
 ## Slowdown
+
 The fast-ion slowdown distribution formulated by Wilkie, [https://arxiv.org/abs/1808.01934v2](https://arxiv.org/abs/1808.01934v2), includes effects of transport modifications - which tend to hollow out the distribution at small velocities. It is given by Eq. 2.9 in the reference and here implemented with the expression  
 
 $$
@@ -487,11 +429,11 @@ p_c=p_{te}\left( \frac{3\sqrt{\pi}}{4}\sum_i\frac{n_im_e}{n_em_i}Z_i^2\right)^{1
 $$
 with $p_{te}$ the electron thermal momentum. 
 
-The parameter $b$ quatifies the importance of transport effects. For $b=0$  transport is negligible and the distribution corresponds to the classical slowdown distribution. For $b = 10$ it is highly significant and causes a bump-on-tail shape.
+The parameter $b$ quantifies the importance of transport effects. For $b=0$  transport is negligible and the distribution corresponds to the classical slowdown distribution. For $b = 10$ it is highly significant and causes a bump-on-tail shape.
 
 The integration constant $K$ is here calculated numerically. Theoretically, $K = S_0\tau_s/4\pi$ where $S_0$ is a source term and $\tau_0$ the slowdown time. Here it is instead assumed that the total fast-ion density, $n$, is known rather than the source.
 
-The distribution can be set up with (note the ions argument, used to calculate $p_c$, can contain multiple species if relevant):
+The distribution can be set up with (note the *ions* argument, used to calculate $p_c$, can contain multiple species if relevant):
 
 ```{r, echo = TRUE}
 n <- 4e19
@@ -535,26 +477,16 @@ slowdown_b0 = slowdown_setup(
 ```{r fig12, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 j0j0r::distribution_examples %>% 
   dplyr::filter(name %in% c("maxwellian", "slowdown_b0", "slowdown_b5")) %>% 
-  plot1d_dist() 
+  plot_dist() 
 
-pp2 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    slowdown_b0 = slowdown_b0
-    ),
-  v_par = seq(-1.5e6, 1.5e6, length.out = 300),
-  v_perp = seq(0, 1.5e6, length.out = 300)
-  ) %>%
-  plot2d_dist() +
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("slowdown_b0")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("Slowdown distribution, b = 0")
 
-pp3 <- j0j0r::calculate_distribution_data_frame(
-  particles = list(
-    slowdown_b5 = slowdown_b5
-    ),
-  v_par = seq(-1.5e6, 1.5e6, length.out = 300),
-  v_perp = seq(0, 1.5e6, length.out = 300)
-  ) %>%
-  plot2d_dist() +
+pp3 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("slowdown_b5")) %>% 
+  plot_dist() +
   ggplot2::ggtitle("Slowdown distribution, b = 5")
 
 gridExtra::grid.arrange(pp2, pp3, ncol = 2)
@@ -563,8 +495,94 @@ gridExtra::grid.arrange(pp2, pp3, ncol = 2)
 
 And we get the $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ components shown below.
 
-```{r fig13, echo = FALSE, results = FALSE, fig.align = "center"}
+```{r fig13, echo = FALSE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 j0j0r::j0j0_examples %>% 
   dplyr::filter(particle %in% c("maxwellian", "slowdown_b0", "slowdown_b5")) %>% 
   plot_j0j0(wrap_by = "element", color_by = "particle")
 ```
+
+# Effects of localized features in the velocity distribution
+
+In the exaples above, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, was seen to display ion cyclotron features when $\phi$ is close to $90^\circ$ and for the ring and slowdown distributions - both of which have highly localized maxima and/or edges in velocity space.
+
+We can understand why by considering the expression for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ in a little more detail. It is illustrative to consider the  expression as a sum of integrals:
+
+$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l {\bf c}_l^*f^{(a0)}(p_\perp, p_\parallel)$$
+The integrals are evaluated along the whole range of $p_\perp$, but only at specific values of $\p_\parallel$. 
+
+$$p_\parallel = m_a\frac{\omega -l\omega_{c}}{k_\parallel}$$
+
+These are shown below for two deuterium distribution in a magnetic field of $B = 2.5\,{\text T}$ with $k = 2095.845 \,{\text m}^{-1}$ and $\phi = 80^\circ$ (thin white dashed lines) and $\phi = 86^\circ$ (thick black dashed lines). The frequency is assumed to be $\omega = 6\omega_c = 2\pi \times 115$ MHz. So In this case $v_\parallel = 0$ for $l = 6$. The step to the next values of $v_\parallel$ is $\omega_c/k\parallel = 3.3e5$ m/s for $\phi = 80^\circ$  and 8.2e5 m/s for $\phi = 86^\circ$. 
+
+In the maxwellian case, when $\phi$ is near $90^\circ$ and $k_\parallel$ is small, only a few, or even a single, value of $l$ will correspond to values of $v_\parallel$ that probe the region near the maximum at $v_\parallel = 0$. As $\omega$ changes, the value of $v_\parallel$ for that value of $l$ will sweep across the maximum of the distribution giving rise to a maximum of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. When $\phi$ is further from $90^\circ$, the step in $\v_\parallel$ between different $l$ values is smaller. Several values of $l$ will then probe the region near the maximum, and the result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ will be less sensitive to the specific value of $\omega$. This also explains why ion cyclytron structures are more prominent at lower temperatures: the peak in the velocity distribution is the narrower and the maximum more weel defined, so the precise value of $\omega$ matters even more when evene for values of $phi$ further from $90^\circ$.
+
+```{r echo = TRUE, results = asis}
+A <- 2
+Z <- 1
+mass <- A * j0j0r::const$amu
+charge <- Z * j0j0r::const$qe
+
+omega_c <- charge * B / mass
+
+omega = 2 * pi * 115e6
+phi = 86
+k_par <- cos(phi * pi / 180) * k
+
+l_values <- seq(-20, 20)
+
+v_parallel_86 <- (omega - l_values * omega_c) / k_par
+
+phi = 80
+k_par <- cos(phi * pi / 180) * k
+v_parallel_80 <- (omega - l_values * omega_c) / k_par
+
+```
+
+```{r fig12, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
+pp2 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("maxwellian")) %>% 
+  plot_dist() +
+  ggplot2::ggtitle("Maxwellian") +
+  ggplot2::geom_hline(
+    yintercept = v_parallel_86[abs(v_parallel_86) < 1e6], 
+    linetype = "dashed", 
+    color = "black",
+    size = 1.5
+    ) +
+    ggplot2::geom_hline(
+    yintercept = v_parallel_80[abs(v_parallel_80) < 1e6], 
+    linetype = "dashed", 
+    color = "white",
+    size = 1
+    )
+
+pp3 <- dist_2D_examples %>% 
+  dplyr::filter(name %in% c("slowdown_b5")) %>% 
+  plot_dist() +
+  ggplot2::ggtitle("Slowdown distribution, b = 5") +
+    ggplot2::geom_hline(
+    yintercept = v_parallel[abs(v_parallel) < 1.5e6], 
+    linetype = "dashed", 
+    color = "black",
+    size = 1.5
+    ) +
+    ggplot2::geom_hline(
+    yintercept = v_parallel_80[abs(v_parallel_80) < 1.5e6], 
+    linetype = "dashed", 
+    color = "white",
+    size = 1
+    )
+
+gridExtra::grid.arrange(pp2, pp3, ncol = 2)
+  ggplot2::facet_wrap( ~ name)
+
+```
+
+The slowdown distribution does not have a maximum (but actually a minimum) at $v_\parallel = 0$. Instead it has a sharp maximum and an edge at the velocity corresponding to the birth energy, here 20 keV corresponding to 1.4e6 m/s. For most values of $l$, the path of the integral will cross that edge fairly perpendicularly. However, in some cases the path will be near tangential to the edge at small values of $v_\perp$ resulting in a much arger integral. Again, the combined result will be highly sensitive to the value of $\omega$ when the step in $v_\parallel$ is large, so only a few $l$ values contribute, than when the sum contains contributions from integrals with many many values of l. Similar considerations apply to the ring distritribution, but since it only features a sherp maximum, not an edge, the resulting ion cyclotron structures are far more smooth than for the slowdown distribution.
+
+These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ will thne depend strongly on the precise value of $\omega$. 
+
+
+
+
+

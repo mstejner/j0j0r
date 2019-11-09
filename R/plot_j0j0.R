@@ -49,15 +49,16 @@ plot_j0j0 <- function(j0j0_df, wrap_by, color_by) {
         color = color_by
       )
     ) +
-    ggplot2::geom_line(size = 1) +
+    ggplot2::geom_line(size = 1.5) +
     ggplot2::geom_hline(yintercept = 0) +
     ggplot2::facet_wrap( facets = sym(wrap_by)) +
     ggplot2::xlab("Frequency in MHz") +
     ggplot2::theme(
       legend.position = "top",
-      text = ggplot2::element_text(size = 13)
+      text = ggplot2::element_text(size = 25)
     ) +
-    ggplot2::scale_y_continuous(labels=scaleFUN)
+    ggplot2::scale_y_continuous(labels = scaleFUN)
 
 }
+
 
