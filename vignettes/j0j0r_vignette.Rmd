@@ -507,12 +507,12 @@ In the exaples above, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0
 
 We can understand why by considering the expression for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ in a little more detail. It is illustrative to consider the  expression as a sum of integrals:
 
-$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l {\bf c}_l^*f^{(a0)}(p_\perp, p_\parallel)$$
+$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l^\strut {\bf c}_l^* f^{(a0)}(p_\perp, p_\parallel)$$
 The integrals are evaluated along the whole range of $p_\perp$, but only at specific values of $\p_\parallel$. 
 
 $$p_\parallel = m_a\frac{\omega -l\omega_{c}}{k_\parallel}$$
 
-These are shown below for two deuterium distribution in a magnetic field of $B = 2.5\,{\text T}$ with $k = 2095.845 \,{\text m}^{-1}$ and $\phi = 80^\circ$ (thin white dashed lines) and $\phi = 86^\circ$ (thick black dashed lines). The frequency is assumed to be $\omega = 6\omega_c = 2\pi \times 115$ MHz. So In this case $v_\parallel = 0$ for $l = 6$. The step to the next values of $v_\parallel$ is $\omega_c/k\parallel = 3.3e5$ m/s for $\phi = 80^\circ$  and 8.2e5 m/s for $\phi = 86^\circ$. 
+These are shown below for two deuterium distribution in a magnetic field of $B = 2.5\,{\text T}$ with $k = 2095.845 \,{\text m}^{-1}$ and $\phi = 80^\circ$ (thin white dashed lines) and $\phi = 86^\circ$ (thick black dashed lines). The frequency is assumed to be $\omega = 6\omega_c = 2\pi \times 115$ MHz. So In this case $v_\parallel = 0$ for $l = 6$. The step to the next values of $v_\parallel$ is $\omega_c/k\parallel = 3.3e5$ m/s for $\phi = 80^\circ$  and 8.2e5 m/s for $\phi = 86^\circ$. As $\omega$ changes these lines will move vertically in the plot.
 
 In the maxwellian case, when $\phi$ is near $90^\circ$ and $k_\parallel$ is small, only a few, or even a single, value of $l$ will correspond to values of $v_\parallel$ that probe the region near the maximum at $v_\parallel = 0$. As $\omega$ changes, the value of $v_\parallel$ for that value of $l$ will sweep across the maximum of the distribution giving rise to a maximum of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. When $\phi$ is further from $90^\circ$, the step in $\v_\parallel$ between different $l$ values is smaller. Several values of $l$ will then probe the region near the maximum, and the result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ will be less sensitive to the specific value of $\omega$. This also explains why ion cyclytron structures are more prominent at lower temperatures: the peak in the velocity distribution is the narrower and the maximum more weel defined, so the precise value of $\omega$ matters even more when evene for values of $phi$ further from $90^\circ$.
 
@@ -538,7 +538,7 @@ v_parallel_80 <- (omega - l_values * omega_c) / k_par
 
 ```
 
-```{r fig12, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
+```{r fig13, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp2 <- dist_2D_examples %>% 
   dplyr::filter(name %in% c("maxwellian")) %>% 
   plot_dist() +
@@ -578,11 +578,60 @@ gridExtra::grid.arrange(pp2, pp3, ncol = 2)
 
 ```
 
-The slowdown distribution does not have a maximum (but actually a minimum) at $v_\parallel = 0$. Instead it has a sharp maximum and an edge at the velocity corresponding to the birth energy, here 20 keV corresponding to 1.4e6 m/s. For most values of $l$, the path of the integral will cross that edge fairly perpendicularly. However, in some cases the path will be near tangential to the edge at small values of $v_\perp$ resulting in a much arger integral. Again, the combined result will be highly sensitive to the value of $\omega$ when the step in $v_\parallel$ is large, so only a few $l$ values contribute, than when the sum contains contributions from integrals with many many values of l. Similar considerations apply to the ring distritribution, but since it only features a sherp maximum, not an edge, the resulting ion cyclotron structures are far more smooth than for the slowdown distribution.
+The slowdown distribution does not have a maximum (but actually a minimum) at $v_\parallel = 0$. Instead it has a sharp maximum and an edge at the velocity corresponding to the birth energy (here 1.4e6 m/s corresponding to 20 keV). For most values of $l$, the path of the integral will cross that edge fairly perpendicularly. However, in some cases the path will be near tangential to the edge at small values of $v_\perp$, resulting in a much larger integral. Again, the combined result will then be much more sensitive to the value of $\omega$ when the step in $v_\parallel$ is large, so only a few $l$ values contribute, than when the sum contains contributions from integrals with many many values of $l$. Similar considerations apply to the ring distritribution, but since it only features a sharp maximum, not an edge, the resulting ion cyclotron structures are far more smooth than for the slowdown distribution.
 
-These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ will thne depend strongly on the precise value of $\omega$. 
+These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ can then depend strongly on the precise value of $\omega$. 
+
+Additional complexity arises from the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ that multiply the distribution in the integrals. The figure below shows examples of its dependence on $l$ and $\p_\perp$ with similar assumptions as above. 
+
+```{r fig14, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
+mass <- 2 * j0j0r::const$amu
+charge <- 1 * j0j0r::const$qe
+
+omega_c <- charge * B / mass
+
+omega = 2 * pi * 115e6
+phi = 86
+k_par <- cos(phi * pi / 180) * k
+k_perp <- sin(phi * pi / 180) * k
+
+df <- expand.grid(
+  l = seq(5,7), 
+  v_perp = seq(1e4, 1e6, 1e2), 
+  direction = c("x", "y", "z"), 
+  stringsAsFactors = FALSE
+  )
+
+df <- df %>% dplyr::mutate(
+  k_perp = k_perp, 
+  k_par = k_par,
+  omega_c = omega_c,
+  v_par = (omega - l * omega_c) / k_par
+)
 
 
+df[["clcl"]] <- unlist(purrr::pmap(.l = df, .f = cl))^2
 
+df[["factor"]] <- df[["clcl"]] * p_perp
+df[["l"]] <- as.factor(df[["l"]])
+df[["direction"]] <-  paste0(df[["direction"]], df[["direction"]])
 
+ggplot2::ggplot(
+  data = df, 
+  mapping = aes(x = v_perp, y = factor, color = l)
+  ) +
+  geom_line(size = 1.5) +
+  scale_y_log10() +
+  facet_wrap( ~ direction) +
+  theme(
+      legend.position = "top",
+      text = element_text(size = 25),
+      axis.text.x = ggplot2::element_text(angle = -45, size = 20)
+      ) +
+  ylab(unname(latex2exp::TeX("abs(p_{perp}  c_l c_l^*)"))) +
+  xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  scale_x_continuous(labels = scales::scientific)
+```
+
+The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integral at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions, it makes a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is stronly dominated by the narrow peak near the birhc velocity. It is then quite important if the contribution from that peak is suppressed by a root in $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$. Thus it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$.
 
