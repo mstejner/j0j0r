@@ -580,7 +580,7 @@ gridExtra::grid.arrange(pp2, pp3, ncol = 2)
 
 The slowdown distribution does not have a maximum (but actually a minimum) at $v_\parallel = 0$. Instead it has a sharp maximum and an edge at the velocity corresponding to the birth energy (here 1.4e6 m/s corresponding to 20 keV). For most values of $l$, the path of the integral will cross that edge fairly perpendicularly. However, in some cases the path will be near tangential to the edge at small values of $v_\perp$, resulting in a much larger integral. Again, the combined result will then be much more sensitive to the value of $\omega$ when the step in $v_\parallel$ is large, so only a few $l$ values contribute, than when the sum contains contributions from integrals with many many values of $l$. Similar considerations apply to the ring distritribution, but since it only features a sharp maximum, not an edge, the resulting ion cyclotron structures are far more smooth than for the slowdown distribution.
 
-These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ can then depend strongly on the precise value of $\omega$. 
+These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ can then depend strongly on the precise value of $\omega$. From that perspective, the ion cyclotron structures seen for a standard Maxwellian distribution is just a special case of the more general effects of a localized maximum in the distrribution.
 
 Additional complexity arises from the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ that multiply the distribution in the integrals. The figure below shows examples of its dependence on $l$ and $\p_\perp$ with similar assumptions as above. 
 
@@ -633,5 +633,15 @@ ggplot2::ggplot(
   scale_x_continuous(labels = scales::scientific)
 ```
 
-The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integral at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions, it makes a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is stronly dominated by the narrow peak near the birhc velocity. It is then quite important if the contribution from that peak is suppressed by a root in $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$. Thus it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$.
+The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integrals at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, it is different when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions. Then it will make a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is strongly dominated by the narrow peak near the birth velocity. It is then quite important, whether or not the contribution from that peak is suppressed by a root in $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$. 
 
+So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to eppear even when $\phi$ is quite far from $90^\circ$.
+
+
+```{r fig15, echo = FALSE, fig.width = 16, fig.height = 16, fig.align = "center"}
+phi_sweep %>% 
+  plot_j0j0(wrap_by = "particle", color_by = "phi") + 
+  ggplot2::facet_wrap( ~particle, ncol = 1, scales = "free") +
+  ggplot2::coord_cartesian(xlim = c(0,500)) + 
+  ggplot2::labs(color = expression(phi))
+```

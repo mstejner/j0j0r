@@ -179,4 +179,25 @@ j0j0_examples <- j0j0r::j0j0(
   integration_method = "stats"
 )
 
-susethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
+usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
+
+
+phi_sweep <- j0j0r::j0j0(
+  k = k,
+  phi = c(60, 70, 80, 84, 86),
+  frequencies = seq(0, 600e6, by = 2e6),
+  directions = c("z"),
+  B = B,
+  particles = list(
+    maxwellian = maxwellian,
+    ring = ring,
+    slowdown_b5 = slowdown_b5
+  ),
+  integration_method = "stats"
+)
+phi_sweep[["phi"]] <- as.factor(phi_sweep[["phi"]])
+phi_sweep %>% plot_j0j0(wrap_by = "particle", color_by = "phi")
+
+usethis::use_data(phi_sweep, overwrite = TRUE)
+
+
