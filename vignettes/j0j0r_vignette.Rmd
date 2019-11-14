@@ -516,16 +516,17 @@ These are shown below for two deuterium distribution in a magnetic field of $B =
 
 In the maxwellian case, when $\phi$ is near $90^\circ$ and $k_\parallel$ is small, only a few, or even a single, value of $l$ will correspond to values of $v_\parallel$ that probe the region near the maximum at $v_\parallel = 0$. As $\omega$ changes, the value of $v_\parallel$ for that value of $l$ will sweep across the maximum of the distribution giving rise to a maximum of $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. When $\phi$ is further from $90^\circ$, the step in $\v_\parallel$ between different $l$ values is smaller. Several values of $l$ will then probe the region near the maximum, and the result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ will be less sensitive to the specific value of $\omega$. This also explains why ion cyclytron structures are more prominent at lower temperatures: the peak in the velocity distribution is the narrower and the maximum more weel defined, so the precise value of $\omega$ matters even more when evene for values of $phi$ further from $90^\circ$.
 
-```{r echo = TRUE, results = asis}
+```{r echo = FALSE}
 A <- 2
 Z <- 1
 mass <- A * j0j0r::const$amu
 charge <- Z * j0j0r::const$qe
-
+B <- 2.5
 omega_c <- charge * B / mass
 
 omega = 2 * pi * 115e6
 phi = 86
+k <- 2 * pi / (j0j0r::const$c / 100e9)
 k_par <- cos(phi * pi / 180) * k
 
 l_values <- seq(-20, 20)
@@ -538,7 +539,7 @@ v_parallel_80 <- (omega - l_values * omega_c) / k_par
 
 ```
 
-```{r fig13, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
+```{r fig14, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 pp2 <- dist_2D_examples %>% 
   dplyr::filter(name %in% c("maxwellian")) %>% 
   plot_dist() +
@@ -547,13 +548,13 @@ pp2 <- dist_2D_examples %>%
     yintercept = v_parallel_86[abs(v_parallel_86) < 1e6], 
     linetype = "dashed", 
     color = "black",
-    size = 1.5
+    size = 2.2
     ) +
     ggplot2::geom_hline(
     yintercept = v_parallel_80[abs(v_parallel_80) < 1e6], 
     linetype = "dashed", 
     color = "white",
-    size = 1
+    size = 1.5
     )
 
 pp3 <- dist_2D_examples %>% 
@@ -561,21 +562,19 @@ pp3 <- dist_2D_examples %>%
   plot_dist() +
   ggplot2::ggtitle("Slowdown distribution, b = 5") +
     ggplot2::geom_hline(
-    yintercept = v_parallel[abs(v_parallel) < 1.5e6], 
+    yintercept = v_parallel_86[abs(v_parallel_86) < 1.5e6], 
     linetype = "dashed", 
     color = "black",
-    size = 1.5
+    size = 2.2
     ) +
     ggplot2::geom_hline(
     yintercept = v_parallel_80[abs(v_parallel_80) < 1.5e6], 
     linetype = "dashed", 
     color = "white",
-    size = 1
+    size = 1.5
     )
 
 gridExtra::grid.arrange(pp2, pp3, ncol = 2)
-  ggplot2::facet_wrap( ~ name)
-
 ```
 
 The slowdown distribution does not have a maximum (but actually a minimum) at $v_\parallel = 0$. Instead it has a sharp maximum and an edge at the velocity corresponding to the birth energy (here 1.4e6 m/s corresponding to 20 keV). For most values of $l$, the path of the integral will cross that edge fairly perpendicularly. However, in some cases the path will be near tangential to the edge at small values of $v_\perp$, resulting in a much larger integral. Again, the combined result will then be much more sensitive to the value of $\omega$ when the step in $v_\parallel$ is large, so only a few $l$ values contribute, than when the sum contains contributions from integrals with many many values of $l$. Similar considerations apply to the ring distritribution, but since it only features a sharp maximum, not an edge, the resulting ion cyclotron structures are far more smooth than for the slowdown distribution.
@@ -584,7 +583,7 @@ These arguments can be generalized. When there is a highly localized feature, sh
 
 Additional complexity arises from the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ that multiply the distribution in the integrals. The figure below shows examples of its dependence on $l$ and $\p_\perp$ with similar assumptions as above. 
 
-```{r fig14, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
+```{r fig15, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 mass <- 2 * j0j0r::const$amu
 charge <- 1 * j0j0r::const$qe
 
@@ -612,7 +611,7 @@ df <- df %>% dplyr::mutate(
 
 df[["clcl"]] <- unlist(purrr::pmap(.l = df, .f = cl))^2
 
-df[["factor"]] <- df[["clcl"]] * p_perp
+df[["factor"]] <- df[["clcl"]] * df[["v_perp"]] * mass
 df[["l"]] <- as.factor(df[["l"]])
 df[["direction"]] <-  paste0(df[["direction"]], df[["direction"]])
 
@@ -638,7 +637,7 @@ The Bessel functions have roots at irregular intervals, and at those roots the f
 So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to eppear even when $\phi$ is quite far from $90^\circ$.
 
 
-```{r fig15, echo = FALSE, fig.width = 16, fig.height = 16, fig.align = "center"}
+```{r fig16, echo = FALSE, fig.width = 16, fig.height = 16, fig.align = "center"}
 phi_sweep %>% 
   plot_j0j0(wrap_by = "particle", color_by = "phi") + 
   ggplot2::facet_wrap( ~particle, ncol = 1, scales = "free") +
