@@ -2,16 +2,20 @@
 #'
 #' @description helper function to plot the output of j0j0r::j0j0()
 #'
-#' @param j0j0_df \code{data.frame} output of j0j0r::j0j0() containing j0j0 elements
+#' @param j0j0_df \code{data.frame} output of j0j0r::j0j0() containing j0j0
+#'   elements
 #'
-#' @param wrap_by \code{charater} the plot will facet wrap by this variable in j0j0_df
+#' @param wrap_by \code{charater} the plot will facet wrap by this variable in
+#'   j0j0_df
 #'
-#' @param color_by \code{charater} lines will be colored according to this variable in j0j0_df
+#' @param color_by \code{charater} lines will be colored according to this
+#'   variable in j0j0_df
 #'
 #' @return \code{ggplot}
 #'
 #' @importFrom magrittr %>%
-#' @importFrom rlang sym !!
+#' @importFrom rlang sym !! .data
+#' @importFrom rlang :=
 #'
 #' @export
 plot_j0j0 <- function(j0j0_df, wrap_by, color_by) {
@@ -20,23 +24,19 @@ plot_j0j0 <- function(j0j0_df, wrap_by, color_by) {
 
   j0j0_df %>%
     dplyr::mutate(
-      real = Re(j0j0),
-      imaginary = Im(j0j0)
+      real = Re(.data[["j0j0"]]),
+      imaginary = Im(.data[["j0j0"]])
     ) %>%
     tidyr::gather("real", "imaginary", key = "component", value = "j0j0") %>%
-    dplyr::mutate(component = forcats::fct_rev(as.factor(component)),) %>%
     dplyr::mutate(
-      frequency = frequency/1e6,
-      element =
-        paste0(
-          directions,
-          ", ",
-          component,
-          " part"
-        )
+      component = forcats::fct_rev(as.factor(.data[["component"]]))
+      ) %>%
+    dplyr::mutate(
+      frequency = .data[["frequency"]]/1e6,
+      element = paste0(.data[["directions"]], ", ", .data[["component"]], " part")
     ) %>%
-    dplyr::group_by(element) %>%
-    dplyr::filter(!(all(j0j0 == 0))) %>%
+    dplyr::group_by( .data[["element"]]) %>%
+    dplyr::filter(!(all(.data[["j0j0"]] == 0))) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
       !!color_by := forcats::fct_rev(as.factor(.data[[color_by]])),
@@ -46,7 +46,7 @@ plot_j0j0 <- function(j0j0_df, wrap_by, color_by) {
       mapping = ggplot2::aes_string(
         x = "frequency",
         y = "j0j0",
-        color = color_by
+        color =  color_by
       )
     ) +
     ggplot2::geom_line(size = 1.5) +
@@ -58,7 +58,4 @@ plot_j0j0 <- function(j0j0_df, wrap_by, color_by) {
       text = ggplot2::element_text(size = 25)
     ) +
     ggplot2::scale_y_continuous(labels = scaleFUN)
-
 }
-
-

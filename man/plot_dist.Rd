@@ -4,11 +4,14 @@
 \alias{plot_dist}
 \title{plot_dist}
 \usage{
-plot_dist(dist_df)
+plot_dist(dist_df, velocity_dist = TRUE)
 }
 \arguments{
 \item{dist_df}{\code{data.frame} output of
 calculate_distribution_data_frame() containing the evaluated distribution}
+
+\item{velocity_dist}{\code{logical} plot velocity distribution (TRUE) or
+momentum distribution (FALSE)}
 }
 \value{
 \code{ggplot}

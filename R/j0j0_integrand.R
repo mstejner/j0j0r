@@ -47,7 +47,7 @@ j0j0_integrand <- function(
 
   j0j0_sum <- lapply(
     X = go_up_or_down,
-    FUN = j0j0r:::j0j0_integrand_sum,
+    FUN = j0j0_integrand_sum,
     l_0 = l_0,
     l_scale = l_scale,
     p_perp = p_perp,

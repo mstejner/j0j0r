@@ -20,7 +20,7 @@ maxwellian_ring_expr <- expression(
 #' @param p_par \code{numeric} value of parallel momentum component
 #' @param n \code{numeric} particle density.
 #' @param p_width \code{numeric} Width of ring momentum distribution
-#' @param p_term \code{numeric} Radius of ring momentum distribution
+#' @param p_rad \code{numeric} Radius of ring momentum distribution
 #' @param K \code{numeric} Integration constant
 #'
 #' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
@@ -38,7 +38,7 @@ maxwellian_ring_func <- function(p_perp, p_par, n, p_width, p_rad, K){
 #' @param p_par \code{numeric} value of parallel momentum component
 #' @param n \code{numeric} particle density.
 #' @param p_width \code{numeric} Width of ring momentum distribution
-#' @param p_term \code{numeric} Radius of ring momentum distribution
+#' @param p_rad \code{numeric} Radius of ring momentum distribution
 #' @param K \code{numeric} Integration constant
 #'
 #' @return \code{list}
@@ -82,7 +82,7 @@ maxwellian_ring_setup <- function(n, v_width, v_rad, A, Z, name){
     gradient = "maxwellian_ring_grad",
     distargs = list(
       n = n,
-      p_width = v_width *  A *const[["amu"]],
+      p_width = v_width *  A * const[["amu"]],
       p_rad = v_rad *  A * const[["amu"]],
       K = 1 / integrate_distribution(dist_unnormalized)
     ),

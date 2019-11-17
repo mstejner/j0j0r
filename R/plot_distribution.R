@@ -7,6 +7,9 @@
 #' @param particles \code{list} list of particles with distribution setups.
 #' @param logscale \code{logical} if TRUE sets log scale on y-axis
 #'
+#' @importFrom rlang .data
+#' @importFrom magrittr %>%
+#'
 #' @return \code{ggplot} 1D plot of distributions
 #'
 plot_distribution <- function(particles, v_par, v_perp, logscale = TRUE){
@@ -29,20 +32,29 @@ plot_distribution <- function(particles, v_par, v_perp, logscale = TRUE){
 
   dist_df <- dist_df %>%
     dplyr::mutate(
-      p_par = v_par * A * const[["amu"]],
-      p_perp = v_perp * A * const[["amu"]],
-      distribution = purrr::transpose(particles)[["distribution"]][distname]
+      p_par = .data[["v_par"]] * .data[["A "]] * const[["amu"]],
+      p_perp = .data[["v_perp"]] * .data[["A"]] * const[["amu"]],
+      distribution = purrr::transpose(particles)[["distribution"]][.data[["distname"]]]
     )
 
   dist_df[["distval"]] <-
     purrr::pmap_dbl(
-      .l = dist_df %>% dplyr::select(distribution, p_perp, p_par),
+      .l = dist_df %>%
+        dplyr::select(
+          .data[["distribution"]],
+          .data[["p_perp"]],
+          .data[["p_par"]]
+          ),
       .f = eval_distribution
     )
 
   plot <- dist_df %>%
     ggplot2::ggplot(
-      mapping = ggplot2::aes(x = v_par, y = distval, color = distname)
+      mapping = ggplot2::aes_string(
+        x = "v_par",
+        y = "distval",
+        color = "distname"
+      )
     ) +
     ggplot2::geom_line()
 

@@ -12,8 +12,6 @@ calculate_distribution_data_frame(particles, v_par, v_perp)
 \item{v_par}{\code{numeric} value of parallel velocity}
 
 \item{v_perp}{\code{numeric} value of perpendicular velocity}
-
-\item{logscale}{\code{logical} if TRUE sets log scale on y-axis}
 }
 \value{
 \code{data.frame} with evaluated distribution in column

@@ -235,6 +235,8 @@ integrand_homogeneous_distribution <- function(p, distribution){
 #'
 #' @param distribution \code{list} with the momentum distribution.
 #'
+#' @param limits \code{list} integration limits.
+#'
 #' @return \code{numeric} value of integral
 #'
 #' @export

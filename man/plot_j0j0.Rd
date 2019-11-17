@@ -7,11 +7,14 @@
 plot_j0j0(j0j0_df, wrap_by, color_by)
 }
 \arguments{
-\item{j0j0_df}{\code{data.frame} output of j0j0r::j0j0() containing j0j0 elements}
+\item{j0j0_df}{\code{data.frame} output of j0j0r::j0j0() containing j0j0
+elements}
 
-\item{wrap_by}{\code{charater} the plot will facet wrap by this variable in j0j0_df}
+\item{wrap_by}{\code{charater} the plot will facet wrap by this variable in
+j0j0_df}
 
-\item{color_by}{\code{charater} lines will be colored according to this variable in j0j0_df}
+\item{color_by}{\code{charater} lines will be colored according to this
+variable in j0j0_df}
 }
 \value{
 \code{ggplot}

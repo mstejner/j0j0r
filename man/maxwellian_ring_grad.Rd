@@ -15,9 +15,9 @@ maxwellian_ring_grad(p_perp, p_par, n, p_width, p_rad, K)
 
 \item{p_width}{\code{numeric} Width of ring momentum distribution}
 
-\item{K}{\code{numeric} Integration constant}
+\item{p_rad}{\code{numeric} Radius of ring momentum distribution}
 
-\item{p_term}{\code{numeric} Radius of ring momentum distribution}
+\item{K}{\code{numeric} Integration constant}
 }
 \value{
 \code{list}

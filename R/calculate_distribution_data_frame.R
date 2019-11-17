@@ -6,10 +6,12 @@
 #' @param v_perp \code{numeric} value of perpendicular velocity
 #' @param v_par \code{numeric} value of parallel velocity
 #' @param particles \code{list} list of particles with distribution setups.
-#' @param logscale \code{logical} if TRUE sets log scale on y-axis
 #'
 #' @return \code{data.frame} with evaluated distribution in column
 #'   distribution_value
+#'
+#' @importFrom rlang .data
+#' @importFrom magrittr %>%
 #'
 #' @export
 calculate_distribution_data_frame <- function(particles, v_par, v_perp){
@@ -37,14 +39,20 @@ calculate_distribution_data_frame <- function(particles, v_par, v_perp){
 
   dist_df <- dist_df %>%
     dplyr::mutate(
-      p_par = v_par * A * const[["amu"]],
-      p_perp = v_perp * A * const[["amu"]],
-      distribution = purrr::transpose(particles)[["distribution"]][name]
+      p_par = .data[["v_par"]] * .data[["A"]] * const[["amu"]],
+      p_perp = .data[["v_perp"]] * .data[["A"]] * const[["amu"]],
+      distribution =
+        purrr::transpose(particles)[["distribution"]][.data[["name"]]]
     )
 
   dist_df[["value"]] <-
     furrr::future_pmap_dbl(
-      .l = dist_df %>% dplyr::select(distribution, p_perp, p_par),
+      .l = dist_df %>%
+        dplyr::select(
+          .data[["distribution"]],
+          .data[["p_perp"]],
+          .data[["p_par"]]
+          ),
       .f = eval_distribution
     )
 
@@ -61,9 +69,12 @@ calculate_distribution_data_frame <- function(particles, v_par, v_perp){
 #' @param dist_df \code{data.frame} output of
 #'   calculate_distribution_data_frame() containing the evaluated distribution
 #'
+#' @param velocity_dist \code{logical} plot velocity distribution (TRUE) or
+#'   momentum distribution (FALSE)
 #' @return \code{ggplot}
 #'
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #'
 #' @export
 plot_dist <- function(dist_df, velocity_dist = TRUE){
@@ -84,9 +95,9 @@ plot_dist <- function(dist_df, velocity_dist = TRUE){
   if (both_vary) {
     dist_df %>%
       ggplot2::ggplot(
-        mapping = ggplot2::aes(y = v_par, x = v_perp, z = value)
+        mapping = ggplot2::aes_string(y = "v_par", x = "v_perp", z = "value")
       ) +
-      ggplot2::geom_raster(ggplot2::aes(fill = value)) +
+      ggplot2::geom_raster(ggplot2::aes_string(fill = "value")) +
       ggplot2::geom_contour(colour = "white", alpha = 0.2) +
       viridis::scale_fill_viridis(option = "plasma") +
       ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +

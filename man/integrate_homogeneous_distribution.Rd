@@ -8,6 +8,8 @@ integrate_homogeneous_distribution(distribution, limits = c(0, Inf))
 }
 \arguments{
 \item{distribution}{\code{list} with the momentum distribution.}
+
+\item{limits}{\code{list} integration limits.}
 }
 \value{
 \code{numeric} value of integral

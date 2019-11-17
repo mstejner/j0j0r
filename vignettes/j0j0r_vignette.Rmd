@@ -1,5 +1,5 @@
 ---
-title: "j0j0r vignette"
+title: "j0j0r: numerical calculations of current correlation tensors"
 output:
   prettydoc::html_pretty:
     toc: TRUE
@@ -7,7 +7,7 @@ output:
     highlight: github
     math: katex
 vignette: >
-  %\VignetteIndexEntry{j0j0r vignette}
+  %\VignetteIndexEntry{j0j0r: numerical calculations of current correlation tensors}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -581,7 +581,7 @@ The slowdown distribution does not have a maximum (but actually a minimum) at $v
 
 These arguments can be generalized. When there is a highly localized feature, shuch as a well defined maximum or a sharp edge, in the velocity distribution, and when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, it matters a great deal whether the value of $\omega$ allows that feature in the distribution to be probed. The result for $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ can then depend strongly on the precise value of $\omega$. From that perspective, the ion cyclotron structures seen for a standard Maxwellian distribution is just a special case of the more general effects of a localized maximum in the distrribution.
 
-Additional complexity arises from the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ that multiply the distribution in the integrals. The figure below shows examples of its dependence on $l$ and $\p_\perp$ with similar assumptions as above. 
+Additional complexity arises from the factor $p_\perp  {\bf c}_l {\bf c}_l^*$ that multiply the distribution in the integrals. The figure below shows examples of its dependence on $l$ and $\p_\perp$ with similar assumptions as above. 
 
 ```{r fig15, echo = FALSE, fig.width = 16, fig.height = 8, fig.align = "center"}
 mass <- 2 * j0j0r::const$amu
@@ -632,7 +632,7 @@ ggplot2::ggplot(
   scale_x_continuous(labels = scales::scientific)
 ```
 
-The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integrals at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, it is different when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions. Then it will make a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is strongly dominated by the narrow peak near the birth velocity. It is then quite important, whether or not the contribution from that peak is suppressed by a root in $p_\perp  {\bf c}_l^\strut {\bf c}_l^*$. 
+The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integrals at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, it is different when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions. Then it will make a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is strongly dominated by the narrow peak near the birth velocity. It is then quite important, whether or not the contribution from that peak is suppressed by a root in $p_\perp {\bf c}_l {\bf c}_l^*$. 
 
 So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to eppear even when $\phi$ is quite far from $90^\circ$.
 
