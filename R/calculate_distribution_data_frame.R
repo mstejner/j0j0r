@@ -97,7 +97,10 @@ plot_dist <- function(dist_df, velocity_dist = TRUE){
       ggplot2::ggplot(
         mapping = ggplot2::aes_string(y = "v_par", x = "v_perp", z = "value")
       ) +
-      ggplot2::geom_raster(ggplot2::aes_string(fill = "value")) +
+      ggplot2::geom_raster(
+        mapping = ggplot2::aes_string(fill = "value"),
+        interpolate = TRUE
+      ) +
       ggplot2::geom_contour(colour = "white", alpha = 0.2) +
       viridis::scale_fill_viridis(option = "plasma") +
       ggplot2::ylab(unname(latex2exp::TeX("$v_{par}$ in m/s^2"))) +
@@ -127,8 +130,8 @@ plot_dist <- function(dist_df, velocity_dist = TRUE){
       ) +
       ggplot2::geom_line(size = 1.3) +
       ggplot2::theme(legend.position = "top") +
-      ylab(latex2exp::TeX(ylab)) +
-      xlab(latex2exp::TeX(xlab)) +
+      ggplot2::ylab(latex2exp::TeX(ylab)) +
+      ggplot2::xlab(latex2exp::TeX(xlab)) +
       ggplot2::theme(text = ggplot2::element_text(size = 17))
   }
 }

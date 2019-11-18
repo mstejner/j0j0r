@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-future::plan(strategy = "multisession")
 ```
 
 # Introduction
@@ -67,15 +66,13 @@ A particle and its momentum distribution can be input to the code as a list with
     * **gradient,** a text string:  name of function to be called to be called to evaluate the gradient of the distribution. This intended for future use and isnNot used at present - so optional. 
     * **distargs**, a named list: all arguments to the distribution function other than p_par and p_perp, e.g. density and thermal momentum.
     
-    * **p_scale**, a double: a typical/representative momentum scale. Used to scale momentum so it is near 1 in calls to `stats::integrate()` or the cubature methods.
+    * **p_scale**, a double: a typical/representative momentum scale. Used to scale momentum so it is near 1 in calls to `stats::integrate()` and the cubature methods.
 
 Such a list does not have to be constructed using functions from the package, but the package includes some examples (mentioned above) of how this can be done. 
 
 The code assumes that the distributions are in cylindrical coordinates and symmetric about the magnetic field, so ${\bf p} = (p_\perp, p_\parallel)$ where the magnetic field is in the z-direction. Thus, $p_\perp =\sqrt{(p_x^2 + p_y^2)}$ and $p_\parallel = p_z$. When transforming between different coordinate system, the distribution function must remain normalized. So
 
-$$ 
-n = \int f({\bf p}) d{\bf p} = \int f(p_x, p_y, p_z)dp_x dp_y dp_z = 2\pi\int f(p_\perp, p_\parallel) p_\perp dp_\perp dp_\parallel 
-$$
+
 Where the final equality again assumes symmetry around the megnetic field (z-axis), so the integral over azimuthal angle contributes a factor $2\pi$. 
 
 Note that with this convention, the factor $2\pi p_\perp$ is considered part of the volume element, not of the distribution function. So with this convention the expression for a Maxwellian velocity distribution is 
@@ -84,18 +81,23 @@ $$
 f_{maxw}(p_\perp, p_\parallel) = \frac{n}{(\sqrt{\pi}p_t)^3}e^{-(p_\perp^2 + p_\parallel^2)/p_t}, \quad
 p_t = \sqrt{2k_bTm}
 $$
-where $T$ is temperature, $k_b$ Boltzmann's constant and $p_t$ is the thermal momentum corresponding to the thermal velocity $v_t = \sqrt{2k_bT/m}$. 
+
+where $T$ is temperature, $k_b$ Boltzmann's constant and $p_t$ is the thermal momentum corresponding to the thermal velocity $v_t = \sqrt{2k_bT/m}$.
+
+
 
 ## Examples of distribution functions
 
-For the examples below, we need to load some packages:
+For the examples below, we attach the j0`j0j0r` package:
 
 ```{r, echo = TRUE, results = FALSE, warning = FALSE, message = FALSE}
 library(j0j0r)
-library(magrittr)
-library(rlang)
-library(purrr)
-library(ggplot2)
+```
+
+and to make use of the parallelization with the `furrr` package we set a plan for the `future` package:
+
+```{r, echo = TRUE, results = FALSE, eval = FALSE}
+future::plan(strategy = "multisession")
 ```
 
 A Maxwellian distribution and a slowdown distribution (with b = 3, indicating strong effects of transport) can be set up with:
@@ -193,6 +195,7 @@ The time to compute a single element of $\langle \widetilde{\bf{j}}^{(a0)} \wide
 The package contains an exported data set, j0j0_examples, with examples of velocity distributions and results for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$. The examples are shown below. When nothing else is mentioned they were calculated with $\phi = 80^\circ$, 
 $k = 2095.845 \,{\text m}^{-1}$, $B = 2.5\,{\text T}$, $n = 4e19 \,{\text m}^{-3}$, $A=2$, $Z=1$. Where relevant, a temperature around 2 keV is assumed.
 
+
 ## Maxwellian
 
 We have already seen the expression for a Maxwellian and how to set it up. To calculate $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ we call `j0j0()`, but we first need to call `future::plan()`in order to make use of the parallelization with the furrr package:
@@ -223,6 +226,7 @@ And the results can be plotted with:
 ```{r fig3, echo = TRUE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 plot_j0j0(maxwellian_example, wrap_by = "element", color_by = "phi")
 ```
+
 
 ## Bimaxwellian
 
@@ -501,13 +505,14 @@ j0j0r::j0j0_examples %>%
   plot_j0j0(wrap_by = "element", color_by = "particle")
 ```
 
+
 # Effects of localized features in the velocity distribution
 
 In the exaples above, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, was seen to display ion cyclotron features when $\phi$ is close to $90^\circ$ and for the ring and slowdown distributions - both of which have highly localized maxima and/or edges in velocity space.
 
 We can understand why by considering the expression for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ in a little more detail. It is illustrative to consider the  expression as a sum of integrals:
 
-$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l^\strut {\bf c}_l^* f^{(a0)}(p_\perp, p_\parallel)$$
+$$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l {\bf c}_l^* f^{(a0)}(p_\perp, p_\parallel)$$
 
 The integrals are evaluated along the whole range of $p_\perp$, but only at specific values of $\p_\parallel$. 
 
@@ -618,25 +623,24 @@ df[["direction"]] <-  paste0(df[["direction"]], df[["direction"]])
 
 ggplot2::ggplot(
   data = df, 
-  mapping = aes(x = v_perp, y = factor, color = l)
+  mapping = ggplot2::aes(x = v_perp, y = factor, color = l)
   ) +
-  geom_line(size = 1.5) +
-  scale_y_log10() +
-  facet_wrap( ~ direction) +
-  theme(
+  ggplot2::geom_line(size = 1.5) +
+  ggplot2::scale_y_log10() +
+  ggplot2::facet_wrap( ~ direction) +
+  ggplot2::theme(
       legend.position = "top",
-      text = element_text(size = 25),
+      text = ggplot2::element_text(size = 25),
       axis.text.x = ggplot2::element_text(angle = -45, size = 20)
       ) +
-  ylab(unname(latex2exp::TeX("abs(p_{perp}  c_l c_l^*)"))) +
-  xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
-  scale_x_continuous(labels = scales::scientific)
+  ggplot2::ylab(unname(latex2exp::TeX("abs(p_{perp}  c_l c_l^*)"))) +
+  ggplot2::xlab(latex2exp::TeX("$v_{perp}$ in m/s^2")) +
+  ggplot2::scale_x_continuous(labels = scales::scientific)
 ```
 
 The Bessel functions have roots at irregular intervals, and at those roots the factor $p_\perp  {\bf c}_l {\bf c}_l^*$ goes rapidly to zero leading to narrow minima. This will hardly matter, if integrals at many different values of $l$ contribute to the sum - the combined effect will still lead to a smooth dependence on frequency. But, it is different when $\delta v_\parallel = \omega_c/k_\parallel$ is sufficiently large, so only a few of the integrals provide significamt contributions. Then it will make a big difference if one of those roots happens to coincide with a maximum in the velocity distribution. For example, the slowdown distribution with $b=5$ is strongly dominated by the narrow peak near the birth velocity. It is then quite important, whether or not the contribution from that peak is suppressed by a root in $p_\perp {\bf c}_l {\bf c}_l^*$. 
 
-So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to eppear even when $\phi$ is quite far from $90^\circ$.
-
+So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to appear even when $\phi$ is quite far from $90^\circ$.
 
 ```{r fig16, echo = FALSE, fig.width = 16, fig.height = 16, fig.align = "center"}
 phi_sweep %>% 
@@ -645,3 +649,5 @@ phi_sweep %>%
   ggplot2::coord_cartesian(xlim = c(0,500)) + 
   ggplot2::labs(color = expression(phi))
 ```
+
+

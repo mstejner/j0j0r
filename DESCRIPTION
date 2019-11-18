@@ -34,7 +34,8 @@ Imports:
     mvtnorm,
     scales,
     tidyr,
-    viridis
+    viridis,
+    gridExtra
 Suggests: 
     knitr,
     rmarkdown,

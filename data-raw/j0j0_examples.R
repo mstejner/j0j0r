@@ -134,8 +134,8 @@ dist_2D_examples <-
         ring = ring,
         bvtnorm = bvtnorm
       ),
-      v_par = seq(-1e6, 1e6, length.out = 300),
-      v_perp = seq(0, 1e6, length.out = 300)
+      v_par = seq(-1e6, 1e6, length.out = 50),
+      v_perp = seq(0, 1e6, length.out = 50)
     ),
     j0j0r::calculate_distribution_data_frame(
       particles = list(
@@ -147,18 +147,6 @@ dist_2D_examples <-
     )
   )
 usethis::use_data(dist_2D_examples, overwrite = TRUE)
-
-
-# ggplot2::ggplot( data = distribution_examples,
-#   mapping = ggplot2::aes(x = v_par, y = value, color = name)
-# ) +
-#   ggplot2::geom_line(size = 1.2) +
-#   ggplot2::theme(legend.position = "top") +
-#   ggplot2::ylab("Density") +
-#   ggplot2::xlab(latex2exp::TeX("$v_{par}$ in m/s^2")) +
-#   ggplot2::theme(text = ggplot2::element_text(size = 17)) +
-#   ggplot2::scale_y_log10(limits=c(1e78, 1e82))
-#
 
 
 j0j0_examples <- j0j0r::j0j0(
@@ -178,7 +166,6 @@ j0j0_examples <- j0j0r::j0j0(
   ),
   integration_method = "stats"
 )
-
 usethis::use_data(j0j0_examples, distribution_examples, overwrite = TRUE)
 
 
