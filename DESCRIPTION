@@ -1,14 +1,17 @@
 Package: j0j0r
 Type: Package
-Title: Calculate the j0j0 terms in the CTS model of Bindslev 1996
+Title: Calculate the j0j0 terms in the fluctuation model of Bindslev 1996
 Version: 0.1.0
 Author: Morten Stejner
 Maintainer: Morten Stejner <mstejner@gmail.com>
 Description: Package to calculate terms in the  unscreened current fluctuation 
-    correlation tensor in the CTS model of Bindslev 1996, JATP 58, 983. 
-    Can in princple handle arbitrary velocity distributions, and users are free 
-    to define new distributions. 
+    correlation tensor in the fluctuation model of Bindslev 1996, Journal of 
+    Atmospheric and Terrestial Physics, 58, 983. Can in princple handle 
+    arbitrary velocity distributions, and users are free to define new 
+    distributions. 
 License: file LICENSE
+URL: https://github.com/mstejner/j0j0r
+BugReports: https://github.com/mstejner/j0j0r/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
