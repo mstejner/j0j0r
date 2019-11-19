@@ -9,7 +9,7 @@ Description: Package to calculate terms in the  unscreened current fluctuation
     Atmospheric and Terrestial Physics, 58, 983. Can in princple handle 
     arbitrary velocity distributions, and users are free to define new 
     distributions. 
-License: file LICENSE
+License: MIT + file LICENSE
 URL: https://github.com/mstejner/j0j0r
 BugReports: https://github.com/mstejner/j0j0r/issues
 Encoding: UTF-8
