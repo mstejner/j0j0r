@@ -52,7 +52,7 @@ devtools::install_github("mstejner/j0j0r")
 
 The package is not yet on CRAN.
 
-## Example
+## Vignette
 
 The example below shows the basic work flow for a Maxwellian
 distribution. The package vignette gives a more thorough introductiion
@@ -60,10 +60,13 @@ and a discussion of the effects of strongly non-Maxwwellian
 distributions. It can be viewed with:
 
 ``` r
+devtools::build_vignettes()
 vignette("j0j0r_vignette")
 ```
 
-To run the examples below, first attach the `j0j0r` and `magrittr`
+## Example
+
+To run the example below, first attach the `j0j0r` and `magrittr`
 packages:
 
 ``` r
