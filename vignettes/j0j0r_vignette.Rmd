@@ -507,13 +507,13 @@ j0j0r::j0j0_examples %>%
 
 # Effects of localized features in the velocity distribution
 
-In the exaples above, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, was seen to display ion cyclotron features when $\phi$ is close to $90^\circ$ and for the ring and slowdown distributions - both of which have highly localized maxima and/or edges in velocity space.
+In the exapmles above, $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, was seen to display ion cyclotron features when $\phi$ is close to $90^\circ$ and for the ring and slowdown distributions - both of which have highly localized maxima and/or edges in velocity space.
 
 We can understand why by considering the expression for $\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ in a little more detail. It is illustrative to consider the  expression as a sum of integrals:
 
 $$\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle = (2\pi)^2 \frac{m_a q_a^2}{\lvert k_\parallel \rvert} \sum_{l = -\infty}^\infty \int dp_\perp p_\perp  {\bf c}_l {\bf c}_l^* f^{(a0)}(p_\perp, p_\parallel)$$
 
-The integrals are evaluated along the whole range of $p_\perp$, but only at specific values of $\p_\parallel$. 
+The integrals are evaluated along the whole range of $p_\perp$, but only at specific values of $p_\parallel$:
 
 $$p_\parallel = m_a\frac{\omega -l\omega_{c}}{k_\parallel}$$
 
