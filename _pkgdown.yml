@@ -1,0 +1,6 @@
+template:
+  params:
+    bootswatch: cerulean
+
+toc:
+  depth: 2

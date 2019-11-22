@@ -1,5 +1,5 @@
 ---
-title: "j0j0r: numerical calculations of current correlation tensors"
+title: "j0j0r: An R-package for numerical calculations of current correlation tensors"
 output:
   prettydoc::html_pretty:
     toc: TRUE
