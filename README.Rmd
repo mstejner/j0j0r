@@ -23,7 +23,7 @@ The goal of `j0j0r` is to calculate the unscreened current correlation tensor of
 
 The code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. Integrals over the momentum distribution are calculated numerically. Analytic solutions, possible only in special cases, are not used/supported.
 
-The package contains functions to set up a number of momentum distributions:
+The package contains functions to set up a number of momentum distribution types:
 
 * An isotropic Maxwellian distribution. 
 
@@ -41,22 +41,27 @@ Apart from those, users are free to input new distribution functions of their ow
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+
 devtools::install_github("mstejner/j0j0r")
 ```
 The package is not yet on CRAN.
 
 ## Vignette
 
-The example below shows the basic work flow for a Maxwellian distribution. The package vignette gives a more thorough introductiion and a discussion of the effects of strongly non-Maxwwellian distributions. It can be viewed with:
+The example below shows the basic work flow for a Maxwellian distribution. The package vignette gives a more thorough introduction and a discussion of the effects of strongly non-Maxwellian distributions. It can be viewed with:
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
 devtools::build_vignettes()
 vignette("j0j0r_vignette")
 ```
+
+And on [https://mstejner.github.io/j0j0r/](https://mstejner.github.io/j0j0r/) under articles.
 
 ## Example
 
@@ -89,17 +94,15 @@ It can evaluated and be plotted with:
 
 ```{r maxwdist, echo = TRUE, fig.align = "center", eval = TRUE, fig.height = 4}
 calculate_distribution_data_frame(
-  particles = list(
-    maxwellian_deuterium = maxwellian_deuterium
-    ), 
+  particles = list(maxwellian_deuterium = maxwellian_deuterium), 
   v_par = seq(-1e6, 1e6, length.out = 300), 
   v_perp = seq(0, 1e6, length.out = 300) 
-  ) %>% 
-  plot_dist() +
-  ggplot2::theme(text = ggplot2::element_text(size = 12))
+) %>% 
+plot_dist() +
+ggplot2::theme(text = ggplot2::element_text(size = 12))
 ```
 
-Assuming a magnetic field of 2.5 T, a wave vector length of 2000/m, and two values of the resolved angle, the elements of the current correlation tensor can now be calculated with:
+The elements of the current correlation tensor can now be calculated with the `j0j0` funnction. Here assuming a magnetic field of 2.5 T, a wave vector length of 2000/m, resolved angles of 60 and 86 degrees and frequencies between 0 and 400 MHz. 
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
 maxwellian_example <- j0j0(
@@ -108,16 +111,21 @@ maxwellian_example <- j0j0(
   frequencies = seq(0, 400e6, by = 2e6),
   directions = c("x", "y", "z"),
   B = 2.5,
-  particles = list(
-    maxwellian = maxwellian_deuterium
-  ),
-  integration_method = "stats"
+  particles = list(maxwellian = maxwellian_deuterium),
+  integration_method = "hcubature"
 )
 ```
 
+The output is a tibble with results (j0j0) for every combination of all values of the input variables:
+
+```{r echo = TRUE}
+dplyr::glimpse(maxwellian_example)
+```
+
+
 And the results can be plotted with:
 
-```{r maxwwj0j0, echo = TRUE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
+```{r maxwj0j0, echo = TRUE, fig.width = 16, fig.height = 8, results = FALSE, fig.align = "center"}
 plot_j0j0(maxwellian_example, wrap_by = "element", color_by = "phi")
 ```
 

@@ -18,7 +18,7 @@ the momentum distribution are calculated numerically. Analytic
 solutions, possible only in special cases, are not used/supported.
 
 The package contains functions to set up a number of momentum
-distributions:
+distribution types:
 
   - An isotropic Maxwellian distribution.
 
@@ -42,11 +42,13 @@ their own design.
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+Install the development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+if (!require("devtools")) {
+  install.packages("devtools")
+}
+
 devtools::install_github("mstejner/j0j0r")
 ```
 
@@ -55,14 +57,16 @@ The package is not yet on CRAN.
 ## Vignette
 
 The example below shows the basic work flow for a Maxwellian
-distribution. The package vignette gives a more thorough introductiion
-and a discussion of the effects of strongly non-Maxwwellian
+distribution. The package vignette gives a more thorough introduction
+and a discussion of the effects of strongly non-Maxwellian
 distributions. It can be viewed with:
 
 ``` r
 devtools::build_vignettes()
 vignette("j0j0r_vignette")
 ```
+
+And on <https://mstejner.github.io/j0j0r/> under articles.
 
 ## Example
 
@@ -101,21 +105,20 @@ It can evaluated and be plotted with:
 
 ``` r
 calculate_distribution_data_frame(
-  particles = list(
-    maxwellian_deuterium = maxwellian_deuterium
-    ), 
+  particles = list(maxwellian_deuterium = maxwellian_deuterium), 
   v_par = seq(-1e6, 1e6, length.out = 300), 
   v_perp = seq(0, 1e6, length.out = 300) 
-  ) %>% 
-  plot_dist() +
-  ggplot2::theme(text = ggplot2::element_text(size = 12))
+) %>% 
+plot_dist() +
+ggplot2::theme(text = ggplot2::element_text(size = 12))
 ```
 
 <img src="man/figures/README-maxwdist-1.png" width="100%" style="display: block; margin: auto;" />
 
-Assuming a magnetic field of 2.5 T, a wave vector length of 2000/m, and
-two values of the resolved angle, the elements of the current
-correlation tensor can now be calculated with:
+The elements of the current correlation tensor can now be calculated
+with the `j0j0` funnction. Here assuming a magnetic field of 2.5 T, a
+wave vector length of 2000/m, resolved angles of 60 and 86 degrees and
+frequencies between 0 and 400 MHz.
 
 ``` r
 maxwellian_example <- j0j0(
@@ -124,11 +127,28 @@ maxwellian_example <- j0j0(
   frequencies = seq(0, 400e6, by = 2e6),
   directions = c("x", "y", "z"),
   B = 2.5,
-  particles = list(
-    maxwellian = maxwellian_deuterium
-  ),
-  integration_method = "stats"
+  particles = list(maxwellian = maxwellian_deuterium),
+  integration_method = "hcubature"
 )
+```
+
+The output is a tibble with results (j0j0) for every combination of all
+values of the input variables:
+
+``` r
+dplyr::glimpse(maxwellian_example)
+#> Observations: 2,412
+#> Variables: 10
+#> $ k                  <dbl> 2095.845, 2095.845, 2095.845, 2095.845, 209...
+#> $ phi                <dbl> 60, 86, 60, 86, 60, 86, 60, 86, 60, 86, 60,...
+#> $ frequency          <dbl> 0.0e+00, 0.0e+00, 2.0e+06, 2.0e+06, 4.0e+06...
+#> $ B                  <dbl> 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5...
+#> $ particle           <chr> "maxwellian", "maxwellian", "maxwellian", "...
+#> $ integration_method <chr> "hcubature", "hcubature", "hcubature", "hcu...
+#> $ directions         <chr> "xx", "xx", "xx", "xx", "xx", "xx", "xx", "...
+#> $ A                  <dbl> 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2...
+#> $ Z                  <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...
+#> $ j0j0               <cpl> 5.984923e-16+0i, 5.095825e-18+0i, 5.990463e...
 ```
 
 And the results can be plotted with:
@@ -137,4 +157,4 @@ And the results can be plotted with:
 plot_j0j0(maxwellian_example, wrap_by = "element", color_by = "phi")
 ```
 
-<img src="man/figures/README-maxwwj0j0-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-maxwj0j0-1.png" width="100%" style="display: block; margin: auto;" />
