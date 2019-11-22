@@ -79,8 +79,8 @@ library(magrittr)
 ```
 
 The code is parallelized using the
-[future](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html)
-and [furrr](https://cran.r-project.org/web/packages/furrr/index.html)
+[future](https://cran.r-project.org/web/packages/future/) and
+[furrr](https://cran.r-project.org/web/packages/furrr/index.html)
 packages. To make use of the parallelization, first set a plan for the
 `future` package. Different plans will be appropriate for different
 operating systems. On Windows it could be:
@@ -101,7 +101,7 @@ maxwellian_deuterium <- maxwellian_setup(
 )
 ```
 
-It can evaluated and be plotted with:
+It can be evaluated and plotted with:
 
 ``` r
 calculate_distribution_data_frame(
@@ -117,12 +117,12 @@ ggplot2::theme(text = ggplot2::element_text(size = 12))
 
 The elements of the current correlation tensor can now be calculated
 with the `j0j0` funnction. Here assuming a magnetic field of 2.5 T, a
-wave vector length of 2000/m, resolved angles of 60 and 86 degrees and
-frequencies between 0 and 400 MHz.
+wave vector length corresponding to 3 mm waves, resolved angles of 60
+and 86 degrees, and frequencies between 0 and 400 MHz.
 
 ``` r
 maxwellian_example <- j0j0(
-  k = 2000,
+  k = 2 * pi / (j0j0r::const$c / 100e9),
   phi = c(60, 86),
   frequencies = seq(0, 400e6, by = 2e6),
   directions = c("x", "y", "z"),

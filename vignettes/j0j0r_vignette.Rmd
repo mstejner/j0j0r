@@ -35,7 +35,7 @@ with notation as in the references.
 
 The code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. The integral over perpendicular momentum is calculated numerically with [stats::integrate](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/integrate.html) or one of the methods from the [cubature package](https://cran.r-project.org/web/packages/cubature/index.html). Analytic solutions, possible only in special cases, are not used/supported. 
 
-The code is intended to be flexible and easy to use, but it is not meant for speed. However, the code does support parallelized calculations using the [future](https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html) and [furrr](https://cran.r-project.org/web/packages/furrr/index.html) packages.
+The code is intended to be flexible and easy to use, but it is not meant for speed. However, the code does support parallelized calculations using the [future](https://cran.r-project.org/web/packages/future/) and [furrr](https://cran.r-project.org/web/packages/furrr/index.html) packages.
 
 # Distribution functions
 

@@ -62,6 +62,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -89,7 +92,7 @@
 <!-- badges: end -->
 <p>The goal of <code>j0j0r</code> is to calculate the unscreened current correlation tensor of the plasma fluctuation model of <a href="https://www.sciencedirect.com/science/article/pii/0021916995001298">Bindslev 1996, Journal of Atmospheric and Terrestial Physics, <strong>58</strong>, 983</a>.</p>
 <p>The code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. Integrals over the momentum distribution are calculated numerically. Analytic solutions, possible only in special cases, are not used/supported.</p>
-<p>The package contains functions to set up a number of momentum distributions:</p>
+<p>The package contains functions to set up a number of momentum distribution types:</p>
 <ul>
 <li><p>An isotropic Maxwellian distribution.</p></li>
 <li><p>A bi-Maxwellian distribution, with drift along the magnetic field (z-direction).</p></li>
@@ -102,17 +105,21 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"mstejner/j0j0r"</span>)</a></code></pre></div>
+<p>Install the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"devtools"</span>)) {</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3">}</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"mstejner/j0j0r"</span>)</a></code></pre></div>
 <p>The package is not yet on CRAN.</p>
 </div>
 <div id="vignette" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vignette" class="anchor"></a>Vignette</h2>
-<p>The example below shows the basic work flow for a Maxwellian distribution. The package vignette gives a more thorough introductiion and a discussion of the effects of strongly non-Maxwwellian distributions. It can be viewed with:</p>
+<p>The example below shows the basic work flow for a Maxwellian distribution. The package vignette gives a more thorough introduction and a discussion of the effects of strongly non-Maxwellian distributions. It can be viewed with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/build_vignettes.html">build_vignettes</a></span>()</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"j0j0r_vignette"</span>)</a></code></pre></div>
+<p>And on <a href="https://mstejner.github.io/j0j0r/" class="uri">https://mstejner.github.io/j0j0r/</a> under articles.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -120,7 +127,7 @@
 <p>To run the example below, first attach the <code>j0j0r</code> and <code>magrittr</code> packages:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(j0j0r)</a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a></code></pre></div>
-<p>The code is parallelized using the <a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html">future</a> and <a href="https://cran.r-project.org/web/packages/furrr/index.html">furrr</a> packages. To make use of the parallelization, first set a plan for the <code>future</code> package. Different plans will be appropriate for different operating systems. On Windows it could be:</p>
+<p>The code is parallelized using the <a href="https://cran.r-project.org/web/packages/future/">future</a> and <a href="https://cran.r-project.org/web/packages/furrr/index.html">furrr</a> packages. To make use of the parallelization, first set a plan for the <code>future</code> package. Different plans will be appropriate for different operating systems. On Windows it could be:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">future<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span>(<span class="dt">strategy =</span> <span class="st">"multisession"</span>)</a></code></pre></div>
 <p>A Maxwellian distribution can be set up with:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">maxwellian_deuterium &lt;-<span class="st"> </span><span class="kw"><a href="reference/maxwellian_setup.html">maxwellian_setup</a></span>(</a>
@@ -130,32 +137,42 @@
 <a class="sourceLine" id="cb5-5" title="5">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
 <a class="sourceLine" id="cb5-6" title="6">  <span class="dt">name =</span> <span class="st">"maxwellian"</span></a>
 <a class="sourceLine" id="cb5-7" title="7">)</a></code></pre></div>
-<p>It can evaluated and be plotted with:</p>
+<p>It can be evaluated and plotted with:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame</a></span>(</a>
-<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb6-3" title="3">    <span class="dt">maxwellian_deuterium =</span> maxwellian_deuterium</a>
-<a class="sourceLine" id="cb6-4" title="4">    ), </a>
-<a class="sourceLine" id="cb6-5" title="5">  <span class="dt">v_par =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">1e6</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>), </a>
-<a class="sourceLine" id="cb6-6" title="6">  <span class="dt">v_perp =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>) </a>
-<a class="sourceLine" id="cb6-7" title="7">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="st">  </span><span class="kw"><a href="reference/plot_dist.html">plot_dist</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-9" title="9"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">text =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">size =</span> <span class="dv">12</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" title="2">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maxwellian_deuterium =</span> maxwellian_deuterium), </a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">v_par =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">1e6</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>), </a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">v_perp =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>) </a>
+<a class="sourceLine" id="cb6-5" title="5">) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw"><a href="reference/plot_dist.html">plot_dist</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-7" title="7">ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">text =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">size =</span> <span class="dv">12</span>))</a></code></pre></div>
 <p><img src="reference/figures/README-maxwdist-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Assuming a magnetic field of 2.5 T, a wave vector length of 2000/m, and two values of the resolved angle, the elements of the current correlation tensor can now be calculated with:</p>
+<p>The elements of the current correlation tensor can now be calculated with the <code>j0j0</code> funnction. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60 and 86 degrees, and frequencies between 0 and 400 MHz.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">maxwellian_example &lt;-<span class="st"> </span><span class="kw"><a href="reference/j0j0.html">j0j0</a></span>(</a>
-<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">k =</span> <span class="dv">2000</span>,</a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">k =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span>(j0j0r<span class="op">::</span>const<span class="op">$</span>c <span class="op">/</span><span class="st"> </span><span class="fl">100e9</span>),</a>
 <a class="sourceLine" id="cb7-3" title="3">  <span class="dt">phi =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">60</span>, <span class="dv">86</span>),</a>
 <a class="sourceLine" id="cb7-4" title="4">  <span class="dt">frequencies =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">400e6</span>, <span class="dt">by =</span> <span class="fl">2e6</span>),</a>
 <a class="sourceLine" id="cb7-5" title="5">  <span class="dt">directions =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>),</a>
 <a class="sourceLine" id="cb7-6" title="6">  <span class="dt">B =</span> <span class="fl">2.5</span>,</a>
-<a class="sourceLine" id="cb7-7" title="7">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb7-8" title="8">    <span class="dt">maxwellian =</span> maxwellian_deuterium</a>
-<a class="sourceLine" id="cb7-9" title="9">  ),</a>
-<a class="sourceLine" id="cb7-10" title="10">  <span class="dt">integration_method =</span> <span class="st">"stats"</span></a>
-<a class="sourceLine" id="cb7-11" title="11">)</a></code></pre></div>
+<a class="sourceLine" id="cb7-7" title="7">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maxwellian =</span> maxwellian_deuterium),</a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="dt">integration_method =</span> <span class="st">"hcubature"</span></a>
+<a class="sourceLine" id="cb7-9" title="9">)</a></code></pre></div>
+<p>The output is a tibble with results (j0j0) for every combination of all values of the input variables:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(maxwellian_example)</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; Observations: 2,412</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; Variables: 10</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; $ k                  &lt;dbl&gt; 2095.845, 2095.845, 2095.845, 2095.845, 209...</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; $ phi                &lt;dbl&gt; 60, 86, 60, 86, 60, 86, 60, 86, 60, 86, 60,...</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; $ frequency          &lt;dbl&gt; 0.0e+00, 0.0e+00, 2.0e+06, 2.0e+06, 4.0e+06...</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; $ B                  &lt;dbl&gt; 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5...</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; $ particle           &lt;chr&gt; "maxwellian", "maxwellian", "maxwellian", "...</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; $ integration_method &lt;chr&gt; "hcubature", "hcubature", "hcubature", "hcu...</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; $ directions         &lt;chr&gt; "xx", "xx", "xx", "xx", "xx", "xx", "xx", "...</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; $ A                  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2...</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; $ Z                  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...</span></a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; $ j0j0               &lt;cpl&gt; 5.984923e-16+0i, 5.095825e-18+0i, 5.990463e...</span></a></code></pre></div>
 <p>And the results can be plotted with:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="reference/plot_j0j0.html">plot_j0j0</a></span>(maxwellian_example, <span class="dt">wrap_by =</span> <span class="st">"element"</span>, <span class="dt">color_by =</span> <span class="st">"phi"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-maxwwj0j0-1.png" width="100%" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/plot_j0j0.html">plot_j0j0</a></span>(maxwellian_example, <span class="dt">wrap_by =</span> <span class="st">"element"</span>, <span class="dt">color_by =</span> <span class="st">"phi"</span>)</a></code></pre></div>
+<p><img src="reference/figures/README-maxwj0j0-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>

@@ -3,4 +3,7 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   j0j0r_vignette: j0j0r_vignette.html
+urls:
+  reference: https://mstejner.github.io/j0j0r//reference
+  article: https://mstejner.github.io/j0j0r//articles
 

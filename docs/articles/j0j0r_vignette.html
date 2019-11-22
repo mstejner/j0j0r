@@ -58,6 +58,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -99,7 +102,7 @@
 <p><span class="math display">\[ {\bf c}_l = \left(\begin{array}{c} \frac{l\omega_{ca}}{k_\parallel}J_l(k_\perp\rho) \\ -iv_\perp J'_l(k_\perp\rho) \\ v_\parallel J_l(k_\perp\rho) \end{array}\right), \quad p_\parallel = m_a\frac{\omega -l\omega_{ca}}{k_\parallel}, \quad \rho = v_\perp/\omega_{ca}, \quad \omega_{ca} = q_aB^{(0)}/m_a \]</span></p>
 <p>with notation as in the references.</p>
 <p>The code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. The integral over perpendicular momentum is calculated numerically with <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/integrate.html">stats::integrate</a> or one of the methods from the <a href="https://cran.r-project.org/web/packages/cubature/index.html">cubature package</a>. Analytic solutions, possible only in special cases, are not used/supported.</p>
-<p>The code is intended to be flexible and easy to use, but it is not meant for speed. However, the code does support parallelized calculations using the <a href="https://cran.r-project.org/web/packages/future/vignettes/future-1-overview.html">future</a> and <a href="https://cran.r-project.org/web/packages/furrr/index.html">furrr</a> packages.</p>
+<p>The code is intended to be flexible and easy to use, but it is not meant for speed. However, the code does support parallelized calculations using the <a href="https://cran.r-project.org/web/packages/future/">future</a> and <a href="https://cran.r-project.org/web/packages/furrr/index.html">furrr</a> packages.</p>
 </div>
 <div id="distribution-functions" class="section level1">
 <h1 class="hasAnchor">
