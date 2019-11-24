@@ -1,8 +1,8 @@
+url: https://mstejner.github.io/j0j0r/
+
 template:
   params:
     bootswatch: cerulean
 
 toc:
   depth: 2
-
-url: https://mstejner.github.io/j0j0r/

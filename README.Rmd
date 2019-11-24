@@ -58,7 +58,7 @@ The example below shows the basic work flow for a Maxwellian distribution. The p
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
 devtools::build_vignettes()
-vignette("j0j0r_vignette")
+vignette("j0j0r_intro")
 ```
 
 And on [https://mstejner.github.io/j0j0r/](https://mstejner.github.io/j0j0r/) under articles.

@@ -2,7 +2,7 @@ pandoc: 2.7.2
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  j0j0r_vignette: j0j0r_vignette.html
+  j0j0r_intro: j0j0r_intro.html
 urls:
   reference: https://mstejner.github.io/j0j0r//reference
   article: https://mstejner.github.io/j0j0r//articles

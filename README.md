@@ -62,7 +62,7 @@ distributions. It can be viewed with:
 
 ``` r
 devtools::build_vignettes()
-vignette("j0j0r_vignette")
+vignette("j0j0r_intro")
 ```
 
 And on <https://mstejner.github.io/j0j0r/> under articles.

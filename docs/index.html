@@ -58,7 +58,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/j0j0r_vignette.html">j0j0r: An R-package for numerical calculations of current correlation tensors</a>
+      <a href="articles/j0j0r_intro.html">j0j0r: An R-package for numerical calculations of current correlation tensors</a>
     </li>
   </ul>
 </li>
@@ -90,16 +90,16 @@
 <a href="#j0j0r" class="anchor"></a>j0j0r</h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of <code>j0j0r</code> is to calculate the unscreened current correlation tensor of the plasma fluctuation model of <a href="https://www.sciencedirect.com/science/article/pii/0021916995001298">Bindslev 1996, Journal of Atmospheric and Terrestial Physics, <strong>58</strong>, 983</a>.</p>
+<p><code>j0j0r</code> is is an R-package built to calculate the unscreened current correlation tensor of the plasma fluctuation model of <a href="https://www.sciencedirect.com/science/article/pii/0021916995001298">Bindslev 1996, Journal of Atmospheric and Terrestial Physics, <strong>58</strong>, 983</a>.</p>
 <p>The code is meant to be distribution-agnostic, i.e. it should be able to handle any reasonable form of the momentum distribution. Integrals over the momentum distribution are calculated numerically. Analytic solutions, possible only in special cases, are not used/supported.</p>
 <p>The package contains functions to set up a number of momentum distribution types:</p>
 <ul>
 <li><p>An isotropic Maxwellian distribution.</p></li>
-<li><p>A bi-Maxwellian distribution, with drift along the magnetic field (z-direction).</p></li>
+<li><p>A bi-Maxwellian distribution with drift along the magnetic field.</p></li>
 <li><p>A <a href="https://www.spenvis.oma.be/help/background/distributions/distributions.html">generalized Lorentzian / Kappa</a> distribution.</p></li>
 <li><p>A ring-distribution.</p></li>
 <li><p>A bivariate normal distribution.</p></li>
-<li><p>A slowdown distribution: an isotropic fast-ion slowdown with transport modifications as formulated by George J. Wilkie . See <a href="https://arxiv.org/abs/1808.01934v2" class="uri">https://arxiv.org/abs/1808.01934v2</a>.</p></li>
+<li><p>A slowdown distribution: an isotropic fast-ion slowdown with transport modifications as formulated by Wilkie 2018. See <a href="https://arxiv.org/abs/1808.01934v2" class="uri">https://arxiv.org/abs/1808.01934v2</a>.</p></li>
 </ul>
 <p>Apart from those, users are free to input new distribution functions of their own design.</p>
 <div id="installation" class="section level2">
@@ -118,7 +118,7 @@
 <a href="#vignette" class="anchor"></a>Vignette</h2>
 <p>The example below shows the basic work flow for a Maxwellian distribution. The package vignette gives a more thorough introduction and a discussion of the effects of strongly non-Maxwellian distributions. It can be viewed with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/build_vignettes.html">build_vignettes</a></span>()</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"j0j0r_vignette"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"j0j0r_intro"</span>)</a></code></pre></div>
 <p>And on <a href="https://mstejner.github.io/j0j0r/" class="uri">https://mstejner.github.io/j0j0r/</a> under articles.</p>
 </div>
 <div id="example" class="section level2">
@@ -144,9 +144,12 @@
 <a class="sourceLine" id="cb6-4" title="4">  <span class="dt">v_perp =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>) </a>
 <a class="sourceLine" id="cb6-5" title="5">) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-6" title="6"><span class="kw"><a href="reference/plot_dist.html">plot_dist</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-7" title="7">ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">text =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">size =</span> <span class="dv">12</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb6-7" title="7">ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(</a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="dt">text =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">size =</span> <span class="dv">11</span>),</a>
+<a class="sourceLine" id="cb6-9" title="9">  <span class="dt">axis.text.x =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">-45</span>, <span class="dt">size =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb6-10" title="10">) </a></code></pre></div>
 <p><img src="reference/figures/README-maxwdist-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>The elements of the current correlation tensor can now be calculated with the <code>j0j0</code> funnction. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60 and 86 degrees, and frequencies between 0 and 400 MHz.</p>
+<p>The elements of the current correlation tensor can now be calculated with the <code>j0j0</code> function. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60 and 86 degrees, and frequencies between 0 and 400 MHz.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">maxwellian_example &lt;-<span class="st"> </span><span class="kw"><a href="reference/j0j0.html">j0j0</a></span>(</a>
 <a class="sourceLine" id="cb7-2" title="2">  <span class="dt">k =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span>(j0j0r<span class="op">::</span>const<span class="op">$</span>c <span class="op">/</span><span class="st"> </span><span class="fl">100e9</span>),</a>
 <a class="sourceLine" id="cb7-3" title="3">  <span class="dt">phi =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">60</span>, <span class="dv">86</span>),</a>
@@ -156,7 +159,7 @@
 <a class="sourceLine" id="cb7-7" title="7">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">maxwellian =</span> maxwellian_deuterium),</a>
 <a class="sourceLine" id="cb7-8" title="8">  <span class="dt">integration_method =</span> <span class="st">"hcubature"</span></a>
 <a class="sourceLine" id="cb7-9" title="9">)</a></code></pre></div>
-<p>The output is a tibble with results (j0j0) for every combination of all values of the input variables:</p>
+<p>The output is a tibble with results (j0j0) for all combinations of all values of the input variables:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(maxwellian_example)</a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; Observations: 2,412</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; Variables: 10</span></a>
@@ -170,7 +173,7 @@
 <a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; $ A                  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2...</span></a>
 <a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; $ Z                  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...</span></a>
 <a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; $ j0j0               &lt;cpl&gt; 5.984923e-16+0i, 5.095825e-18+0i, 5.990463e...</span></a></code></pre></div>
-<p>And the results can be plotted with:</p>
+<p>The results can be plotted with:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/plot_j0j0.html">plot_j0j0</a></span>(maxwellian_example, <span class="dt">wrap_by =</span> <span class="st">"element"</span>, <span class="dt">color_by =</span> <span class="st">"phi"</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-maxwj0j0-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
