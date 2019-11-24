@@ -110,7 +110,8 @@ plot_dist <- function(dist_df, velocity_dist = TRUE){
         text = ggplot2::element_text(size = 15),
         axis.text.x = ggplot2::element_text(angle = -45, size = 17)
       ) +
-      ggplot2::scale_x_continuous(labels = scales::scientific)
+      ggplot2::scale_x_continuous(labels = scales::scientific) +
+      ggplot2::coord_fixed(ratio = 1, expand = TRUE)
   } else {
     x <- ifelse(
       test = v_par_varies,

@@ -7,9 +7,9 @@
 
 <!-- badges: end -->
 
-The goal of `j0j0r` is to calculate the unscreened current correlation
-tensor of the plasma fluctuation model of [Bindslev 1996, Journal of
-Atmospheric and Terrestial Physics, **58**,
+`j0j0r` is is an R-package built to calculate the unscreened current
+correlation tensor of the plasma fluctuation model of [Bindslev 1996,
+Journal of Atmospheric and Terrestial Physics, **58**,
 983](https://www.sciencedirect.com/science/article/pii/0021916995001298).
 
 The code is meant to be distribution-agnostic, i.e. it should be able to
@@ -22,8 +22,7 @@ distribution types:
 
   - An isotropic Maxwellian distribution.
 
-  - A bi-Maxwellian distribution, with drift along the magnetic field
-    (z-direction).
+  - A bi-Maxwellian distribution with drift along the magnetic field.
 
   - A [generalized Lorentzian /
     Kappa](https://www.spenvis.oma.be/help/background/distributions/distributions.html)
@@ -34,7 +33,7 @@ distribution types:
   - A bivariate normal distribution.
 
   - A slowdown distribution: an isotropic fast-ion slowdown with
-    transport modifications as formulated by George J. Wilkie . See
+    transport modifications as formulated by Wilkie 2018. See
     <https://arxiv.org/abs/1808.01934v2>.
 
 Apart from those, users are free to input new distribution functions of
@@ -110,13 +109,16 @@ calculate_distribution_data_frame(
   v_perp = seq(0, 1e6, length.out = 300) 
 ) %>% 
 plot_dist() +
-ggplot2::theme(text = ggplot2::element_text(size = 12))
+ggplot2::theme(
+  text = ggplot2::element_text(size = 11),
+  axis.text.x = ggplot2::element_text(angle = -45, size = 10)
+) 
 ```
 
 <img src="man/figures/README-maxwdist-1.png" width="100%" style="display: block; margin: auto;" />
 
 The elements of the current correlation tensor can now be calculated
-with the `j0j0` funnction. Here assuming a magnetic field of 2.5 T, a
+with the `j0j0` function. Here assuming a magnetic field of 2.5 T, a
 wave vector length corresponding to 3 mm waves, resolved angles of 60
 and 86 degrees, and frequencies between 0 and 400 MHz.
 
@@ -132,7 +134,7 @@ maxwellian_example <- j0j0(
 )
 ```
 
-The output is a tibble with results (j0j0) for every combination of all
+The output is a tibble with results (j0j0) for all combinations of all
 values of the input variables:
 
 ``` r
@@ -151,7 +153,7 @@ dplyr::glimpse(maxwellian_example)
 #> $ j0j0               <cpl> 5.984923e-16+0i, 5.095825e-18+0i, 5.990463e...
 ```
 
-And the results can be plotted with:
+The results can be plotted with:
 
 ``` r
 plot_j0j0(maxwellian_example, wrap_by = "element", color_by = "phi")
