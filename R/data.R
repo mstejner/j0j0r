@@ -10,7 +10,7 @@
 #'   * slowdown_b5
 #'
 #'
-#' @format A tibble with 12,642 rows and 10 variables:
+#' @format A tibble with 12642 rows and 10 variables:
 #' \describe{
 #'   \item{k}{length of wave vector in 1/m}
 #'   \item{phi}{angle between wave vector and magnetic field in degrees}
@@ -32,7 +32,7 @@
 #' values of phi for a maxwellian distribution.
 #'
 #'
-#' @format A tibble with 12,642 rows and 10 variables:
+#' @format A tibble with 3618 rows and 10 variables:
 #' \describe{
 #'   \item{k}{length of wave vector in 1/m}
 #'   \item{phi}{angle between wave vector and magnetic field in degrees}

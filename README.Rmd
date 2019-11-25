@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(j0j0r)
 library(purrr)
 ```
 
@@ -105,12 +106,12 @@ ggplot2::theme(
 ) 
 ```
 
-The elements of the current correlation tensor can now be calculated with the `j0j0` function. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60 and 86 degrees, and frequencies between 0 and 400 MHz. 
+The elements of the current correlation tensor can now be calculated with the `j0j0` function. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60, 80 and 86 degrees, and frequencies between 0 and 400 MHz. 
 
 ```{r, echo = TRUE, results = FALSE, eval = FALSE}
 maxwellian_example <- j0j0(
   k = 2 * pi / (j0j0r::const$c / 100e9),
-  phi = c(60, 86),
+  phi = c(60, 80, 86),
   frequencies = seq(0, 400e6, by = 2e6),
   directions = c("x", "y", "z"),
   B = 2.5,

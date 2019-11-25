@@ -149,10 +149,10 @@
 <a class="sourceLine" id="cb6-9" title="9">  <span class="dt">axis.text.x =</span> ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="dt">angle =</span> <span class="dv">-45</span>, <span class="dt">size =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb6-10" title="10">) </a></code></pre></div>
 <p><img src="reference/figures/README-maxwdist-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>The elements of the current correlation tensor can now be calculated with the <code>j0j0</code> function. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60 and 86 degrees, and frequencies between 0 and 400 MHz.</p>
+<p>The elements of the current correlation tensor can now be calculated with the <code>j0j0</code> function. Here assuming a magnetic field of 2.5 T, a wave vector length corresponding to 3 mm waves, resolved angles of 60, 80 and 86 degrees, and frequencies between 0 and 400 MHz.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">maxwellian_example &lt;-<span class="st"> </span><span class="kw"><a href="reference/j0j0.html">j0j0</a></span>(</a>
 <a class="sourceLine" id="cb7-2" title="2">  <span class="dt">k =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span>(j0j0r<span class="op">::</span>const<span class="op">$</span>c <span class="op">/</span><span class="st"> </span><span class="fl">100e9</span>),</a>
-<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">phi =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">60</span>, <span class="dv">86</span>),</a>
+<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">phi =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">60</span>, <span class="dv">80</span>, <span class="dv">86</span>),</a>
 <a class="sourceLine" id="cb7-4" title="4">  <span class="dt">frequencies =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">400e6</span>, <span class="dt">by =</span> <span class="fl">2e6</span>),</a>
 <a class="sourceLine" id="cb7-5" title="5">  <span class="dt">directions =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>),</a>
 <a class="sourceLine" id="cb7-6" title="6">  <span class="dt">B =</span> <span class="fl">2.5</span>,</a>
@@ -161,18 +161,18 @@
 <a class="sourceLine" id="cb7-9" title="9">)</a></code></pre></div>
 <p>The output is a tibble with results (j0j0) for all combinations of all values of the input variables:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(maxwellian_example)</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; Observations: 2,412</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">#&gt; Observations: 3,618</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="co">#&gt; Variables: 10</span></a>
 <a class="sourceLine" id="cb8-4" title="4"><span class="co">#&gt; $ k                  &lt;dbl&gt; 2095.845, 2095.845, 2095.845, 2095.845, 209...</span></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; $ phi                &lt;dbl&gt; 60, 86, 60, 86, 60, 86, 60, 86, 60, 86, 60,...</span></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; $ frequency          &lt;dbl&gt; 0.0e+00, 0.0e+00, 2.0e+06, 2.0e+06, 4.0e+06...</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">#&gt; $ phi                &lt;dbl&gt; 60, 80, 86, 60, 80, 86, 60, 80, 86, 60, 80,...</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">#&gt; $ frequency          &lt;dbl&gt; 0.0e+00, 0.0e+00, 0.0e+00, 2.0e+06, 2.0e+06...</span></a>
 <a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt; $ B                  &lt;dbl&gt; 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5...</span></a>
 <a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt; $ particle           &lt;chr&gt; "maxwellian", "maxwellian", "maxwellian", "...</span></a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt; $ integration_method &lt;chr&gt; "hcubature", "hcubature", "hcubature", "hcu...</span></a>
 <a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; $ directions         &lt;chr&gt; "xx", "xx", "xx", "xx", "xx", "xx", "xx", "...</span></a>
 <a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; $ A                  &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2...</span></a>
 <a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; $ Z                  &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1...</span></a>
-<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; $ j0j0               &lt;cpl&gt; 5.984923e-16+0i, 5.095825e-18+0i, 5.990463e...</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt; $ j0j0               &lt;cpl&gt; 5.984923e-16+0i, 7.253801e-17+0i, 5.095825e...</span></a></code></pre></div>
 <p>The results can be plotted with:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/plot_j0j0.html">plot_j0j0</a></span>(maxwellian_example, <span class="dt">wrap_by =</span> <span class="st">"element"</span>, <span class="dt">color_by =</span> <span class="st">"phi"</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-maxwj0j0-1.png" width="100%" style="display: block; margin: auto;"></p>

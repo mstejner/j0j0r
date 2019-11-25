@@ -22,7 +22,7 @@ maxwellian = j0j0r::maxwellian_setup(
 
 maxwellian_example <- j0j0r::j0j0(
   k = 2 * pi / (j0j0r::const$c / 100e9),
-  phi = c(60, 86),
+  phi = c(60, 80, 86),
   frequencies = seq(0, 400e6, by = 2e6),
   directions = c("x", "y", "z"),
   B = 2.5,
