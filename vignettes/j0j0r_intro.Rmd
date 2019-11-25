@@ -647,9 +647,7 @@ The Bessel functions have roots at irregular intervals, and at those roots the f
 
 So it is possible for narrow localized features in the velocity distribution to cause both maxima and minima in $\langle\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$, and for cyclotron structures to appear even when $\phi$ is quite far from $90^\circ$. 
 
-The figure below shows the zz-component for a sweep of resolved angle and the three distributions discussed above. The dependence on the resolved angle and distribution type is seen to be rather complicated and rich in different types of ion cyclotron features.
-
-Also note that although the Maxwellian and ring-type distribution are very different in velocity space, their $\langle\widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle$ elements are similar enough that those of a ring distribution could be mistaken for those of a Maxwellian with a large Doppler shift. 
+The figure below shows the $zz$-component for a sweep of resolved angle and the three distributions discussed above. The dependence on the resolved angle and distribution type is seen to be rather complicated and rich in different types of ion cyclotron features.
 
 ```{r fig16, echo = FALSE, fig.width = 16, fig.height = 16, fig.align = "center"}
 phi_sweep %>% 

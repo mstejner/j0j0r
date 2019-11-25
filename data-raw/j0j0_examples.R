@@ -1,7 +1,7 @@
 #script to generate j0j0_examples, distribution_examples
+
 library(magrittr)
 library(j0j0r)
-library(tictoc)
 
 phi <- 80
 k <- 2 * pi / (j0j0r::const$c / 100e9)
@@ -27,11 +27,11 @@ maxwellian_example <- j0j0r::j0j0(
   directions = c("x", "y", "z"),
   B = 2.5,
   particles = list(
-    maxwellian = maxwellian_deuterium
+    maxwellian = maxwellian
   ),
   integration_method = "hcubature"
 )
-usethis::use_data(maxwellian_example)
+usethis::use_data(maxwellian_example, overwrite = TRUE)
 
 
 bimaxwellian <-  j0j0r::bimaxwellian_setup(
