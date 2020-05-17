@@ -192,23 +192,3 @@ matrix_integrand <- function(p_perp,
     ncol = ncol(p_perp)
   )
 }
-
-# vector_integrand <- Vectorize(
-#   FUN = j0j0_integrand,
-#   vectorize.args = "p_perp"
-# )
-
-
-# integral <- stats::integrate(
-#   f = vector_integrand,
-#   lower = 0,
-#   upper = Inf,
-#   subdivisions = 1000L,
-#   directions = directions,
-#   k_perp = k_perp,
-#   k_par = k_par,
-#   omega = 2 * pi * frequency,
-#   omega_c = omega_c,
-#   m = m,
-#   distribution = distribution
-# )[["value"]]
