@@ -4,8 +4,19 @@
 \alias{j0j0_integrand_sum}
 \title{j0j0_integrand_sum}
 \usage{
-j0j0_integrand_sum(go_up_or_down, l_0, l_scale, p_perp, directions, k_perp,
-  k_par, omega, omega_c, mass, distribution)
+j0j0_integrand_sum(
+  go_up_or_down,
+  l_0,
+  l_scale,
+  p_perp,
+  directions,
+  k_perp,
+  k_par,
+  omega,
+  omega_c,
+  mass,
+  distribution
+)
 }
 \arguments{
 \item{go_up_or_down}{\code{character} starting from l_0, go "up" or go "down"}

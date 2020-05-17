@@ -4,7 +4,9 @@
 \name{bimaxwellian_expr}
 \alias{bimaxwellian_expr}
 \title{bimaxwellian_expr}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 bimaxwellian_expr
 }

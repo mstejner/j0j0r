@@ -1,7 +1,10 @@
 #script to generate j0j0_examples, distribution_examples
+devtools::uninstall("C:/ctsr/j0j0r")
+devtools::document("C:/ctsr/j0j0r")
+devtools::install("C:/ctsr/j0j0r")
 
+library(rlang)
 library(magrittr)
-library(j0j0r)
 
 phi <- 80
 k <- 2 * pi / (j0j0r::const$c / 100e9)
@@ -23,8 +26,7 @@ maxwellian = j0j0r::maxwellian_setup(
 maxwellian_example <- j0j0r::j0j0(
   k = 2 * pi / (j0j0r::const$c / 100e9),
   phi = c(60, 80, 86),
-  frequencies = seq(0, 400e6, by = 2e6),
-  directions = c("x", "y", "z"),
+  frequencies = seq(0, 400e6, by = 200e6),
   B = 2.5,
   particles = list(
     maxwellian = maxwellian
@@ -153,7 +155,6 @@ j0j0_examples <- j0j0r::j0j0(
   k = k,
   phi = phi,
   frequencies = seq(0, 600e6, by = 2e6),
-  directions = c("x", "y", "z"),
   B = B,
   particles = list(
     maxwellian = maxwellian,

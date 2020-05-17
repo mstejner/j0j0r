@@ -4,7 +4,9 @@
 \name{slowdown_expr_p}
 \alias{slowdown_expr_p}
 \title{slowdown_expr_p}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 slowdown_expr_p
 }

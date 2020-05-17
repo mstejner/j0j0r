@@ -4,8 +4,17 @@
 \alias{j0j0_element}
 \title{j0j0_element}
 \usage{
-j0j0_element(directions, k, phi, frequency, B, A, Z, distribution,
-  integration_method)
+j0j0_element(
+  directions,
+  k,
+  phi,
+  frequency,
+  B,
+  A,
+  Z,
+  distribution,
+  integration_method
+)
 }
 \arguments{
 \item{directions}{\code{character} vector with two spatial directions: a

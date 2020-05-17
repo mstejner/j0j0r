@@ -4,7 +4,8 @@
 \name{distribution_examples}
 \alias{distribution_examples}
 \title{Examples 1D velocity distributions at v_perp = 0}
-\format{A data frame with 7000 rows and 8 variables:
+\format{
+A data frame with 7000 rows and 8 variables:
 \describe{
   \item{name}{Distribution name}
   \item{v_par}{Parallel velocity}
@@ -14,7 +15,8 @@
   \item{p_par}{parallel momentum}
   \item{p_perp}{perpendicular momentum}
   \item{value}{momentum distribution value (i.e. density)}
-  }}
+  }
+}
 \source{
 File /data/raw/j0j0_examples
 }

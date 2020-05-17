@@ -4,7 +4,9 @@
 \name{bvtnorm_expr}
 \alias{bvtnorm_expr}
 \title{bvtnorm_expr}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 bvtnorm_expr
 }

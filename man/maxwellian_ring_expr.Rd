@@ -4,7 +4,9 @@
 \name{maxwellian_ring_expr}
 \alias{maxwellian_ring_expr}
 \title{maxwellian_ring_expr}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 maxwellian_ring_expr
 }

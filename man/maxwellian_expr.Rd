@@ -4,7 +4,9 @@
 \name{maxwellian_expr}
 \alias{maxwellian_expr}
 \title{maxwellian_expr}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 maxwellian_expr
 }

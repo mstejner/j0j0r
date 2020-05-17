@@ -4,8 +4,17 @@
 \alias{j0j0_sum_terms}
 \title{j0j0_sum_terms}
 \usage{
-j0j0_sum_terms(l_values, p_perp, directions, k_perp, k_par, omega, omega_c,
-  mass, distribution)
+j0j0_sum_terms(
+  l_values,
+  p_perp,
+  directions,
+  k_perp,
+  k_par,
+  omega,
+  omega_c,
+  mass,
+  distribution
+)
 }
 \arguments{
 \item{l_values}{\code{numeric} vector of l-values at which to evaluate terms.}

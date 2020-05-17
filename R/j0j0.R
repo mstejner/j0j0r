@@ -21,48 +21,87 @@
 #' @importFrom rlang .data
 #'
 #' @export
-j0j0 <- function(
-  k,
-  phi,
-  frequencies,
-  directions = c("x", "y", "z"),
-  B,
-  particles,
-  integration_method
+j0j0 <- function(k,
+                 phi,
+                 frequencies,
+                 directions = c("xx", "xy", "xz", "yy", "yz", "zz"),
+                 B,
+                 particles,
+                 integration_method
 ) {
 
-  spec <-
-    purrr::cross_df(
-      .l = list(
-        k = k,
-        phi = phi,
-        frequency = frequencies,
-        d1 = directions,
-        d2 = directions,
-        B = B,
-        particle = names(particles),
-        integration_method = integration_method
-      ),
-      .filter = function(k, phi, frequency, d1, d2, B, particle, integration_method) { d1 > d2 }
-    ) %>%
-    dplyr::mutate(
-      directions = paste0(.data[["d1"]], .data[["d2"]]),
-      A = sapply(.data[["particle"]], function(x){particles[[x]][["A"]]}),
-      Z = sapply(.data[["particle"]], function(x){particles[[x]][["Z"]]}),
-      distribution = lapply(.data[["particle"]], function(x){particles[[x]][["distribution"]]})
-    ) %>%
-    dplyr::select(-.data[["d1"]], -.data[["d2"]])
+  spec <- initiate_spec(
+    k = k,
+    phi = phi,
+    frequencies = frequencies,
+    directions = directions,
+    B = B,
+    particles = particles,
+    integration_method = integration_method
+  )
 
-  spec %>%
-    dplyr::mutate(
-      j0j0 =
-        furrr::future_pmap(
-          .l = spec %>% dplyr::select(-.data[["particle"]]),
-          .f = j0j0r::j0j0_element,
-          .progress = TRUE
-        ) %>%
-        unlist()
-    ) %>%
-    dplyr::select(-.data[["distribution"]])
 
+  spec[["j0j0"]] <- furrr::future_pmap(
+    .l = dplyr::select(spec, -"particle"),
+    .f = j0j0r::j0j0_element,
+    .progress = TRUE
+  ) %>%
+    unlist()
+
+  dplyr::select(spec, -"distribution")
+}
+
+#' @title initiate_spec
+#'
+#' @description creates a \code{data.frame}, spec, with all combinations of the
+#'   values in the inpurt parameters
+#'
+#' @inheritParams j0j0
+#'
+#' @return \code{data.frame}
+#'
+#' @export
+#'
+initiate_spec <- function(k,
+                          phi,
+                          frequencies,
+                          directions,
+                          B,
+                          particles,
+                          integration_method
+) {
+
+  assertthat::assert_that(
+    all(directions %in% c("xx", "xy", "xz", "yy", "yz", "zz")),
+    msg = "direction not recognized"
+  )
+
+  assertthat::assert_that(
+    all(
+      integration_method %in% c(
+        "stats", "hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"
+      )
+    ),
+    msg = "integration_method not recognized"
+  )
+
+  settings <- list(
+    k = k,
+    phi = phi,
+    frequency = frequencies,
+    directions = directions,
+    B = B,
+    particle = names(particles),
+    integration_method = integration_method
+  )
+
+  spec <- purrr::cross_df(settings)
+
+  particles <- purrr::transpose(particles)
+
+  spec[["A"]] <- unlist(particles$A[spec$particle])
+  spec[["Z"]] <- unlist(particles$Z[spec$particle])
+  spec[["distribution"]] <- particles$distribution[spec$particle]
+
+  spec
 }

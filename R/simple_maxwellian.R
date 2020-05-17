@@ -23,7 +23,7 @@ maxwellian_expr <- expression(
 #' @return \code{numeric} value of momentum distribution at (p_perp, p_par)
 #'
 maxwellian_func <- function(p_perp, p_par, n, p_term){
-  eval(maxwellian_expr)
+  n / (sqrt(pi) * p_term)^3 * exp(-(p_par^2 + p_perp^2) / p_term^2)
 }
 
 #' @title maxwellian_grad

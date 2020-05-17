@@ -5,7 +5,8 @@
 \alias{j0j0_examples}
 \title{Examples of results for j0j0 for a sweep of frequency, directions and a
 number of different velocity distributions:}
-\format{A tibble with 12642 rows and 10 variables:
+\format{
+A tibble with 12642 rows and 10 variables:
 \describe{
   \item{k}{length of wave vector in 1/m}
   \item{phi}{angle between wave vector and magnetic field in degrees}
@@ -17,7 +18,8 @@ number of different velocity distributions:}
   \item{A}{mass number}
   \item{Z}{charge number}
   \item{j0j0}{result for j0j0}
-  }}
+  }
+}
 \source{
 File /data/raw/j0j0_examples
 }

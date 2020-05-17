@@ -4,8 +4,14 @@
 \alias{j0j0_spectrum_no_future}
 \title{j0j0_spectrum_no_future}
 \usage{
-j0j0_spectrum_no_future(k, phi, frequencies, directions = c("x", "y",
-  "z"), B, particle)
+j0j0_spectrum_no_future(
+  k,
+  phi,
+  frequencies,
+  directions = c("x", "y", "z"),
+  B,
+  particle
+)
 }
 \arguments{
 \item{k}{\code{numeric} length of the fluctuation wavevector.}

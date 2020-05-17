@@ -4,7 +4,9 @@
 \name{generalized_lorentzian_expr}
 \alias{generalized_lorentzian_expr}
 \title{generalized_lorentzian_expr}
-\format{An object of class \code{expression} of length 1.}
+\format{
+An object of class \code{expression} of length 1.
+}
 \usage{
 generalized_lorentzian_expr
 }

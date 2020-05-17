@@ -5,7 +5,8 @@
 \alias{dist_2D_examples}
 \title{Examples of 2D velocity distributions with variation in both v_par and
  v_perp for a number of velocity distributions:}
-\format{A data frame with 630000 rows and 8 variables:
+\format{
+A data frame with 630000 rows and 8 variables:
 \describe{
   \item{name}{Distribution name}
   \item{v_par}{Parallel velocity}
@@ -15,7 +16,8 @@
   \item{p_par}{parallel momentum}
   \item{p_perp}{perpendicular momentum}
   \item{value}{momentum distribution value (i.e. density)}
-  }}
+  }
+}
 \source{
 File /data/raw/j0j0_examples
 }

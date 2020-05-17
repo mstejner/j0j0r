@@ -4,8 +4,16 @@
 \alias{j0j0_integrand}
 \title{j0j0_integrand}
 \usage{
-j0j0_integrand(p_perp, directions, k_perp, k_par, omega, omega_c, mass,
-  distribution)
+j0j0_integrand(
+  p_perp,
+  directions,
+  k_perp,
+  k_par,
+  omega,
+  omega_c,
+  mass,
+  distribution
+)
 }
 \arguments{
 \item{p_perp}{\code{numeric} component of momentum vector perpendicular to
