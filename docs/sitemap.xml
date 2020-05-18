@@ -37,6 +37,9 @@
     <loc>https://mstejner.github.io/j0j0r//reference/const.html</loc>
   </url>
   <url>
+    <loc>https://mstejner.github.io/j0j0r//reference/create_integral_settings.html</loc>
+  </url>
+  <url>
     <loc>https://mstejner.github.io/j0j0r//reference/critical_velocity.html</loc>
   </url>
   <url>
@@ -47,6 +50,9 @@
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//reference/dist_2D_examples.html</loc>
+  </url>
+  <url>
+    <loc>https://mstejner.github.io/j0j0r//reference/evaluate_integral.html</loc>
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//reference/eval_distribution.html</loc>
@@ -77,6 +83,9 @@
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//reference/generalized_lorentzian_setup.html</loc>
+  </url>
+  <url>
+    <loc>https://mstejner.github.io/j0j0r//reference/initiate_spec.html</loc>
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//reference/integrand_distribution.html</loc>
@@ -185,6 +194,9 @@
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//reference/thermal_velocity.html</loc>
+  </url>
+  <url>
+    <loc>https://mstejner.github.io/j0j0r//reference/vector_integrand.html</loc>
   </url>
   <url>
     <loc>https://mstejner.github.io/j0j0r//articles/j0j0r_intro.html</loc>

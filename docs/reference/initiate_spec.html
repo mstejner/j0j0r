@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>j0j0_integrand — j0j0_integrand • j0j0r</title>
+<title>initiate_spec — initiate_spec • j0j0r</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="j0j0_integrand — j0j0_integrand" />
-<meta property="og:description" content="Function to calculate the integrand in eq. 25 of Bindslev 1996,
-  JATP 58, 983." />
+<meta property="og:title" content="initiate_spec — initiate_spec" />
+<meta property="og:description" content="creates a data.frame, spec, with all combinations of the
+  values in the inpurt parameters" />
 
 
 
@@ -124,73 +124,65 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>j0j0_integrand</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mstejner/j0j0r/blob/master/R/j0j0_integrand.R'><code>R/j0j0_integrand.R</code></a></small>
-    <div class="hidden name"><code>j0j0_integrand.Rd</code></div>
+    <h1>initiate_spec</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mstejner/j0j0r/blob/master/R/j0j0.R'><code>R/j0j0.R</code></a></small>
+    <div class="hidden name"><code>initiate_spec.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to calculate the integrand in eq. 25 of Bindslev 1996,
-  JATP 58, 983.</p>
+    <p>creates a <code>data.frame</code>, spec, with all combinations of the
+  values in the inpurt parameters</p>
     </div>
 
-    <pre class="usage"><span class='fu'>j0j0_integrand</span>(
-  <span class='no'>p_perp</span>,
+    <pre class="usage"><span class='fu'>initiate_spec</span>(
+  <span class='no'>k</span>,
+  <span class='no'>phi</span>,
+  <span class='no'>frequencies</span>,
   <span class='no'>directions</span>,
-  <span class='no'>k_perp</span>,
-  <span class='no'>k_par</span>,
-  <span class='no'>omega</span>,
-  <span class='no'>omega_c</span>,
-  <span class='no'>mass</span>,
-  <span class='no'>distribution</span>
+  <span class='no'>B</span>,
+  <span class='no'>particles</span>,
+  <span class='no'>integration_method</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>p_perp</th>
-      <td><p><code>numeric</code> component of momentum vector perpendicular to
-the magnetic field divided by p_scale. Should be near 1.</p></td>
+      <th>k</th>
+      <td><p><code>numeric</code> length of the fluctuation wavevector.</p></td>
+    </tr>
+    <tr>
+      <th>phi</th>
+      <td><p><code>numeric</code> angle (in degrees) between the magnetic field and
+the fluctuation wavevector</p></td>
+    </tr>
+    <tr>
+      <th>frequencies</th>
+      <td><p><code>numeric</code> fluctuation frequencies in Hz.</p></td>
     </tr>
     <tr>
       <th>directions</th>
-      <td><p><code>character</code> vector with two spatial directions:
-acombination of x, y, and z. e.g  xx, xy or yz.</p></td>
+      <td><p><code>character</code> one or more spatial directions ("x", "y"
+or "z").</p></td>
     </tr>
     <tr>
-      <th>k_perp</th>
-      <td><p><code>numeric</code> length of component of wavevector perpendicular
-to the magnetic field.</p></td>
+      <th>B</th>
+      <td><p><code>numeric</code> strength of magnetic field in Tesla.</p></td>
     </tr>
     <tr>
-      <th>k_par</th>
-      <td><p><code>numeric</code> length of component of wavevector parallel to the
-magnetic field.</p></td>
+      <th>particles</th>
+      <td><p><code>list</code> with mass, charge, and momentum distribution.</p></td>
     </tr>
     <tr>
-      <th>omega</th>
-      <td><p><code>numeric</code> angular cyclotron frequency of current
-fluctuations.</p></td>
-    </tr>
-    <tr>
-      <th>omega_c</th>
-      <td><p><code>numeric</code> particle angular cyclotron frequency (omega_c =
-qB/m).</p></td>
-    </tr>
-    <tr>
-      <th>mass</th>
-      <td><p><code>numeric</code> particle mass in kg.</p></td>
-    </tr>
-    <tr>
-      <th>distribution</th>
-      <td><p><code>list</code> with the velocity distribution.</p></td>
+      <th>integration_method</th>
+      <td><p><code>character</code> method to use for integration. One
+of "stats", "hcubature", "pcubature", "cuhre", "divonne", "suave", "vegas"</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>numeric</code></p>
+    <p><code>data.frame</code></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

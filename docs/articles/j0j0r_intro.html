@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>j0j0r: An R-package for numerical calculations of current correlation tensors • j0j0r</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="j0j0r: An R-package for numerical calculations of current correlation tensors">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="j0j0r">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -64,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/mstejner/j0j0r">
+  <a href="https://github.com/mstejner/j0j0r/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -82,7 +82,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>j0j0r: An R-package for numerical calculations of current correlation tensors</h1>
+      <h1 data-toc-skip>j0j0r: An R-package for numerical calculations of current correlation tensors</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/mstejner/j0j0r/blob/master/vignettes/j0j0r_intro.Rmd"><code>vignettes/j0j0r_intro.Rmd</code></a></small>
@@ -150,67 +150,67 @@ p_t = \sqrt{2k_bTm}
 <h2 class="hasAnchor">
 <a href="#examples-of-distribution-functions" class="anchor"></a>Examples of distribution functions</h2>
 <p>For the examples below, we attach the <code>j0j0r</code> and <code>magrittr</code> packages:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(j0j0r)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">j0j0r</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)</pre></body></html></div>
 <p>and to make use of the parallelization with the <code>furrr</code> package we set a plan for the <code>future</code> package:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">future<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span>(<span class="dt">strategy =</span> <span class="st">"multisession"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw pkg">future</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span>(<span class="kw">strategy</span> <span class="kw">=</span> <span class="st">"multisession"</span>)</pre></body></html></div>
 <p>A Maxwellian distribution and a slowdown distribution (with b = 3, indicating strong effects of transport) can be set up with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">maxwellian_deuterium &lt;-<span class="st"> </span><span class="kw"><a href="../reference/maxwellian_setup.html">maxwellian_setup</a></span>(</a>
-<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">n =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">T_eV =</span> <span class="dv">2000</span>,</a>
-<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb3-6" title="6">  <span class="dt">name =</span> <span class="st">"maxwellian"</span></a>
-<a class="sourceLine" id="cb3-7" title="7">)</a>
-<a class="sourceLine" id="cb3-8" title="8"></a>
-<a class="sourceLine" id="cb3-9" title="9">slowdown_deuterium &lt;-<span class="st"> </span><span class="kw"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(</a>
-<a class="sourceLine" id="cb3-10" title="10">  <span class="dt">b =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb3-11" title="11">  <span class="dt">n =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb3-12" title="12">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-13" title="13">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb3-14" title="14">  <span class="dt">birth_energy =</span> <span class="fl">10e3</span>,</a>
-<a class="sourceLine" id="cb3-15" title="15">  <span class="dt">n_e =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb3-16" title="16">  <span class="dt">T_e_eV =</span> <span class="fl">2e3</span>,</a>
-<a class="sourceLine" id="cb3-17" title="17">  <span class="dt">ions =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb3-18" title="18">    <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb3-19" title="19">    <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb3-20" title="20">    <span class="dt">n =</span> <span class="fl">4e19</span></a>
-<a class="sourceLine" id="cb3-21" title="21">  ),</a>
-<a class="sourceLine" id="cb3-22" title="22">  <span class="dt">name =</span> <span class="st">"slowdown"</span></a>
-<a class="sourceLine" id="cb3-23" title="23">)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">maxwellian_deuterium</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/maxwellian_setup.html">maxwellian_setup</a></span>(
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">T_eV</span> <span class="kw">=</span> <span class="fl">2000</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"maxwellian"</span>
+)
+
+<span class="no">slowdown_deuterium</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(
+  <span class="kw">b</span> <span class="kw">=</span> <span class="fl">3</span>,
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">birth_energy</span> <span class="kw">=</span> <span class="fl">10e3</span>,
+  <span class="kw">n_e</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">T_e_eV</span> <span class="kw">=</span> <span class="fl">2e3</span>,
+  <span class="kw">ions</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
+    <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+    <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+    <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>
+  ),
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"slowdown"</span>
+)</pre></body></html></div>
 <p>And they can be evaluated in a slice at <span class="math inline">\(v_\perp = 0\)</span> with</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">dist_examples &lt;-<span class="st"> </span><span class="kw"><a href="../reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame</a></span>(</a>
-<a class="sourceLine" id="cb4-2" title="2">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb4-3" title="3">    <span class="dt">maxwellian =</span> maxwellian_deuterium, </a>
-<a class="sourceLine" id="cb4-4" title="4">    <span class="dt">slowdown =</span> slowdown_deuterium</a>
-<a class="sourceLine" id="cb4-5" title="5">    ), </a>
-<a class="sourceLine" id="cb4-6" title="6">  <span class="dt">v_par =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">1.5e6</span>, <span class="fl">1.5e6</span>, <span class="dt">length.out =</span> <span class="dv">1000</span>), </a>
-<a class="sourceLine" id="cb4-7" title="7">  <span class="dt">v_perp =</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb4-8" title="8">) </a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt; Vedhæfter pakke: 'purrr'</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt; Det følgende objekt er maskeret fra 'package:magrittr':</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt;     set_names</span></a>
-<a class="sourceLine" id="cb4-14" title="14"></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="kw"><a href="../reference/plot_dist.html">plot_dist</a></span>(dist_examples)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">dist_examples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame</a></span>(
+  <span class="kw">particles</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+    <span class="kw">maxwellian</span> <span class="kw">=</span> <span class="no">maxwellian_deuterium</span>,
+    <span class="kw">slowdown</span> <span class="kw">=</span> <span class="no">slowdown_deuterium</span>
+    ),
+  <span class="kw">v_par</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(-<span class="fl">1.5e6</span>, <span class="fl">1.5e6</span>, <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">1000</span>),
+  <span class="kw">v_perp</span> <span class="kw">=</span> <span class="fl">0</span>
+)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Vedhæfter pakke: 'purrr'</span>
+<span class="co">#&gt; Det følgende objekt er maskeret fra 'package:magrittr':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     set_names</span>
+
+<span class="fu"><a href="../reference/plot_dist.html">plot_dist</a></span>(<span class="no">dist_examples</span>)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig1-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Note that, although the code generally works with momentum distributions, they are shown here as velocity distrubutions in order to have more recognizable units/scales on the axis.</p>
 <p>Also, as noted above, the factor <span class="math inline">\(2\pi p_\perp\)</span> is considered part of the volume element, not of the distribution function. So it is not included here.</p>
 <p>The function <code><a href="../reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame()</a></code> returns a data frame with the evaluated distribution for all combinations of its arguments: particles, v_par and v_perp. So a 2D-plot can be obtained by allowing both v_par and v_perp to vary:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="../reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame</a></span>(</a>
-<a class="sourceLine" id="cb5-2" title="2">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">maxwellian =</span> maxwellian_deuterium, </a>
-<a class="sourceLine" id="cb5-4" title="4">    <span class="dt">slowdown =</span> slowdown_deuterium</a>
-<a class="sourceLine" id="cb5-5" title="5">    ), </a>
-<a class="sourceLine" id="cb5-6" title="6">  <span class="dt">v_par =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">1e6</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>), </a>
-<a class="sourceLine" id="cb5-7" title="7">  <span class="dt">v_perp =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">1e6</span>, <span class="dt">length.out =</span> <span class="dv">300</span>) </a>
-<a class="sourceLine" id="cb5-8" title="8">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="st">  </span><span class="kw"><a href="../reference/plot_dist.html">plot_dist</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>( <span class="op">~</span><span class="st"> </span>name)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/calculate_distribution_data_frame.html">calculate_distribution_data_frame</a></span>(
+  <span class="kw">particles</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+    <span class="kw">maxwellian</span> <span class="kw">=</span> <span class="no">maxwellian_deuterium</span>,
+    <span class="kw">slowdown</span> <span class="kw">=</span> <span class="no">slowdown_deuterium</span>
+    ),
+  <span class="kw">v_par</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(-<span class="fl">1e6</span>, <span class="fl">1e6</span>, <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">300</span>),
+  <span class="kw">v_perp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">1e6</span>, <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">300</span>)
+  ) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/plot_dist.html">plot_dist</a></span>() +
+  <span class="kw pkg">ggplot2</span><span class="kw ns">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>( ~ <span class="no">name</span>)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/unnamed-chunk-5-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>The normalization can be checked with the function <code><a href="../reference/integrate_distribution.html">integrate_distribution()</a></code>. For example:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/integrate_distribution.html">integrate_distribution</a></span>(<span class="dt">distribution =</span> maxwellian_deuterium[[<span class="st">"distribution"</span>]])</a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/integrate_distribution.html">integrate_distribution</a></span>(<span class="kw">distribution</span> <span class="kw">=</span> <span class="no">maxwellian_deuterium</span><span class="kw">[[</span><span class="st">"distribution"</span>]])</pre></body></html></div>
 <p>[1] 4.000002e+19</p>
 </div>
 </div>
@@ -235,19 +235,19 @@ p_t = \sqrt{2k_bTm}
 <a href="#maxwellian" class="anchor"></a>Maxwellian</h2>
 <p>We have already seen the expression for a Maxwellian and how to set it up. To calculate <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> we call <code><a href="../reference/j0j0.html">j0j0()</a></code>.</p>
 <p>All the inputs for <code><a href="../reference/j0j0.html">j0j0()</a></code> can be vectors or lists with multiple elements, e.g. multiple frequencies, directions, resolved angles or particles. The function will form all unique combinations of its inputs and return <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> for each. So a sweep of frequency and direction for two values of phi can be done with:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">maxwellian_example &lt;-<span class="st"> </span><span class="kw"><a href="../reference/j0j0.html">j0j0</a></span>(</a>
-<a class="sourceLine" id="cb7-2" title="2">  <span class="dt">k =</span> <span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span>(j0j0r<span class="op">::</span>const<span class="op">$</span>c <span class="op">/</span><span class="st"> </span><span class="fl">100e9</span>),</a>
-<a class="sourceLine" id="cb7-3" title="3">  <span class="dt">phi =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">60</span>, <span class="dv">86</span>),</a>
-<a class="sourceLine" id="cb7-4" title="4">  <span class="dt">frequencies =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="fl">400e6</span>, <span class="dt">by =</span> <span class="fl">2e6</span>),</a>
-<a class="sourceLine" id="cb7-5" title="5">  <span class="dt">directions =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>),</a>
-<a class="sourceLine" id="cb7-6" title="6">  <span class="dt">B =</span> <span class="fl">2.5</span>,</a>
-<a class="sourceLine" id="cb7-7" title="7">  <span class="dt">particles =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb7-8" title="8">    <span class="dt">maxwellian =</span> maxwellian_deuterium</a>
-<a class="sourceLine" id="cb7-9" title="9">  ),</a>
-<a class="sourceLine" id="cb7-10" title="10">  <span class="dt">integration_method =</span> <span class="st">"stats"</span></a>
-<a class="sourceLine" id="cb7-11" title="11">)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">maxwellian_example</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/j0j0.html">j0j0</a></span>(
+  <span class="kw">k</span> <span class="kw">=</span> <span class="fl">2</span> * <span class="no">pi</span> / (<span class="kw pkg">j0j0r</span><span class="kw ns">::</span><span class="no"><a href="../reference/const.html">const</a></span>$<span class="no">c</span> / <span class="fl">100e9</span>),
+  <span class="kw">phi</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">60</span>, <span class="fl">86</span>),
+  <span class="kw">frequencies</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">400e6</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fl">2e6</span>),
+  <span class="kw">directions</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span>),
+  <span class="kw">B</span> <span class="kw">=</span> <span class="fl">2.5</span>,
+  <span class="kw">particles</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+    <span class="kw">maxwellian</span> <span class="kw">=</span> <span class="no">maxwellian_deuterium</span>
+  ),
+  <span class="kw">integration_method</span> <span class="kw">=</span> <span class="st">"stats"</span>
+)</pre></body></html></div>
 <p>And the results can be plotted with:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/plot_j0j0.html">plot_j0j0</a></span>(maxwellian_example, <span class="dt">wrap_by =</span> <span class="st">"element"</span>, <span class="dt">color_by =</span> <span class="st">"phi"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_j0j0.html">plot_j0j0</a></span>(<span class="no">maxwellian_example</span>, <span class="kw">wrap_by</span> <span class="kw">=</span> <span class="st">"element"</span>, <span class="kw">color_by</span> <span class="kw">=</span> <span class="st">"phi"</span>)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig3-1.png" width="1536" style="display: block; margin: auto;"></p>
 </div>
 <div id="bimaxwellian" class="section level2">
@@ -258,15 +258,15 @@ p_t = \sqrt{2k_bTm}
 f(p_\perp, p_\parallel) =\frac{n}{(2\pi)^3 p_{\perp\,T}^2 p_{\parallel\,T}} e^{-(p_\parallel - p_{drift})^2 /p_{\parallel\,T}^2 + p_\perp^2 / p_{\perp\,T}^2}
 \]</span> where <span class="math inline">\(p_{\perp\,T}\)</span> and <span class="math inline">\(p_{\parallel\,T}\)</span> are the perpendicular and parallel thermal momenta, and <span class="math inline">\(p_{drift}\)</span> is the parallel drift velocity in <span class="math inline">\(m/s\)</span>.</p>
 <p>It can be se up with</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">bimaxwellian &lt;-<span class="st">  </span><span class="kw"><a href="../reference/bimaxwellian_setup.html">bimaxwellian_setup</a></span>(</a>
-<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">n =</span> <span class="fl">4e9</span>,</a>
-<a class="sourceLine" id="cb9-3" title="3">  <span class="dt">T_eV_perp =</span> <span class="dv">2000</span>,</a>
-<a class="sourceLine" id="cb9-4" title="4">  <span class="dt">T_eV_par =</span> <span class="dv">1000</span>,</a>
-<a class="sourceLine" id="cb9-5" title="5">  <span class="dt">v_drift =</span> <span class="fl">2e5</span>,</a>
-<a class="sourceLine" id="cb9-6" title="6">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb9-7" title="7">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb9-8" title="8">  <span class="dt">name =</span>  <span class="st">"bimaxwellian"</span></a>
-<a class="sourceLine" id="cb9-9" title="9">)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">bimaxwellian</span> <span class="kw">&lt;-</span>  <span class="fu"><a href="../reference/bimaxwellian_setup.html">bimaxwellian_setup</a></span>(
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e9</span>,
+  <span class="kw">T_eV_perp</span> <span class="kw">=</span> <span class="fl">2000</span>,
+  <span class="kw">T_eV_par</span> <span class="kw">=</span> <span class="fl">1000</span>,
+  <span class="kw">v_drift</span> <span class="kw">=</span> <span class="fl">2e5</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">name</span> <span class="kw">=</span>  <span class="st">"bimaxwellian"</span>
+)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig4-1.png" width="1536" style="display: block; margin: auto;"></p>
 <p>This gives the <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> elements shown below.</p>
 <p><img src="j0j0r_intro_files/figure-html/fig5-1.png" width="1536" style="display: block; margin: auto;"></p>
@@ -281,14 +281,14 @@ f(p_\perp, p_\parallel) = \frac{n}{(\sqrt{\pi}\theta)^3}\frac{\Gamma(\kappa + 1)
 \theta = \sqrt\frac{(2\kappa -3)mkT}{\kappa}
 \]</span> where <span class="math inline">\(\kappa\)</span> is a spectral index. For large <span class="math inline">\(\kappa\)</span> the distribution tends towards a Maxwellian. For small <span class="math inline">\(\kappa\)</span> it is much flatter and remains significant at far higher velocities. Calculations of <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> can therefore be slow for small <span class="math inline">\(\kappa\)</span> values. The example below was calculated with <span class="math inline">\(\kappa = 7\)</span>.</p>
 <p>The distribution can be set up with</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">lorentzian &lt;-<span class="st"> </span><span class="kw"><a href="../reference/generalized_lorentzian_setup.html">generalized_lorentzian_setup</a></span>(</a>
-<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">n =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb10-3" title="3">  <span class="dt">T_eV =</span> <span class="dv">2000</span>,</a>
-<a class="sourceLine" id="cb10-4" title="4">  <span class="dt">kp =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb10-5" title="5">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb10-6" title="6">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb10-7" title="7">  <span class="dt">name =</span> <span class="st">"lorentzian"</span></a>
-<a class="sourceLine" id="cb10-8" title="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">lorentzian</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/generalized_lorentzian_setup.html">generalized_lorentzian_setup</a></span>(
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">T_eV</span> <span class="kw">=</span> <span class="fl">2000</span>,
+  <span class="kw">kp</span> <span class="kw">=</span> <span class="fl">10</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"lorentzian"</span>
+)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig6-1.png" width="1536" style="display: block; margin: auto;"></p>
 <p>And we get the <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> components shown below.</p>
 <p><img src="j0j0r_intro_files/figure-html/fig7-1.png" width="1536" style="display: block; margin: auto;"></p>
@@ -301,14 +301,14 @@ f(p_\perp, p_\parallel) = \frac{n}{(\sqrt{\pi}\theta)^3}\frac{\Gamma(\kappa + 1)
 f(p_\perp, p_\parallel) =K\frac{n}{\sqrt{\pi} p_{\text{width}}} e^{-(p - p_{\text{radius}})^2/p_{\text{width}}^2},\quad p=\sqrt{p_\perp^2+p_\parallel^2}
 \]</span> where <span class="math inline">\(K\)</span> is an integration constant (calculated numerically), <span class="math inline">\(p_{\text{width}}\)</span> controls the width of the ring, and <span class="math inline">\(p_{\text{radius}}\)</span> controls the radius of the ring.</p>
 <p>This distribition has no particular physical underpinning/meaning. It is meant merely as an illustrative example. It is set up with:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">ring =<span class="st"> </span><span class="kw"><a href="../reference/maxwellian_ring_setup.html">maxwellian_ring_setup</a></span>(</a>
-<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">n =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb11-3" title="3">  <span class="dt">v_width =</span> <span class="fl">1.5e5</span>,</a>
-<a class="sourceLine" id="cb11-4" title="4">  <span class="dt">v_rad =</span> <span class="fl">0.5e6</span>,</a>
-<a class="sourceLine" id="cb11-5" title="5">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb11-6" title="6">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb11-7" title="7">  <span class="dt">name =</span> <span class="st">"ring"</span></a>
-<a class="sourceLine" id="cb11-8" title="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">ring</span> <span class="kw">=</span> <span class="fu"><a href="../reference/maxwellian_ring_setup.html">maxwellian_ring_setup</a></span>(
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">v_width</span> <span class="kw">=</span> <span class="fl">1.5e5</span>,
+  <span class="kw">v_rad</span> <span class="kw">=</span> <span class="fl">0.5e6</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"ring"</span>
+)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig8-1.png" width="1536" style="display: block; margin: auto;"></p>
 <p>And we get the <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> components shown below.</p>
 <p><img src="j0j0r_intro_files/figure-html/fig9-1.png" width="1536" style="display: block; margin: auto;"></p>
@@ -321,20 +321,20 @@ f(p_\perp, p_\parallel) =K\frac{n}{\sqrt{\pi} p_{\text{width}}} e^{-(p - p_{\tex
 f(p_\perp, p_\parallel) = nK \frac{\exp\left(-\frac{1}{2}({\mathbf p} - \mathbf{\mu})^T\Sigma^{-1}({\mathbf p} - \mathbf{\mu})\right)}{\sqrt{(2\pi)^2}\lvert\Sigma\rvert},\quad {\mathbf p}= \left(\begin{array}{c} p_\perp \\ p_\parallel \end{array}\right)
 \]</span> where <span class="math inline">\(K\)</span> is an integration constant (calculated numerically), <span class="math inline">\(\mathbf{\mu}\)</span> is the center of the distribution, and <span class="math inline">\(\Sigma\)</span> its covariance. In practice it is here implemented using the <code>dmvnorm</code> function from the <a href="https://cran.r-project.org/web/packages/mvtnorm/index.html">mvtnorm package</a>. The integration constant <span class="math inline">\(K\)</span> is included because <span class="math inline">\(p_\perp\)</span> cannot be negative (if it could, the normalization would be correct without <span class="math inline">\(K\)</span>).</p>
 <p>Again, this distribution is merely an illustrative example with no particular physical underpinning. An example can be set up with:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">center &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5e5</span>, <span class="fl">3e5</span>)</a>
-<a class="sourceLine" id="cb12-2" title="2">T_eV &lt;-<span class="st"> </span><span class="fl">2e3</span></a>
-<a class="sourceLine" id="cb12-3" title="3">A &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb12-4" title="4">v_term &lt;-<span class="st"> </span><span class="kw"><a href="../reference/find_p_term.html">find_p_term</a></span>(T_eV, A) <span class="op">/</span><span class="st"> </span>(A <span class="op">*</span><span class="st"> </span>j0j0r<span class="op">::</span>const[[<span class="st">"amu"</span>]])</a>
-<a class="sourceLine" id="cb12-5" title="5">covariance &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(v_term<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">4</span>, v_term<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">3</span>), <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(v_term<span class="op">^</span><span class="dv">2</span><span class="op">/</span><span class="dv">5</span>, (v_term)<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb12-6" title="6"></a>
-<a class="sourceLine" id="cb12-7" title="7">bvtnorm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/bvtnorm_setup.html">bvtnorm_setup</a></span>(</a>
-<a class="sourceLine" id="cb12-8" title="8">  <span class="dt">n =</span> <span class="fl">4e19</span>,</a>
-<a class="sourceLine" id="cb12-9" title="9">  <span class="dt">center =</span> center,</a>
-<a class="sourceLine" id="cb12-10" title="10">  <span class="dt">covariance =</span> covariance,</a>
-<a class="sourceLine" id="cb12-11" title="11">  <span class="dt">A =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb12-12" title="12">  <span class="dt">Z =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb12-13" title="13">  <span class="dt">name =</span> <span class="st">"bivariate_normal"</span></a>
-<a class="sourceLine" id="cb12-14" title="14">)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">center</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5e5</span>, <span class="fl">3e5</span>)
+<span class="no">T_eV</span> <span class="kw">&lt;-</span> <span class="fl">2e3</span>
+<span class="no">A</span> <span class="kw">&lt;-</span> <span class="fl">2</span>
+<span class="no">v_term</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/find_p_term.html">find_p_term</a></span>(<span class="no">T_eV</span>, <span class="no">A</span>) / (<span class="no">A</span> * <span class="kw pkg">j0j0r</span><span class="kw ns">::</span><span class="no"><a href="../reference/const.html">const</a></span><span class="kw">[[</span><span class="st">"amu"</span>]])
+<span class="no">covariance</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">v_term</span>^<span class="fl">2</span>/<span class="fl">4</span>, <span class="no">v_term</span>^<span class="fl">2</span>/<span class="fl">3</span>), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">v_term</span>^<span class="fl">2</span>/<span class="fl">5</span>, (<span class="no">v_term</span>)^<span class="fl">2</span>))
+
+<span class="no">bvtnorm</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/bvtnorm_setup.html">bvtnorm_setup</a></span>(
+  <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4e19</span>,
+  <span class="kw">center</span> <span class="kw">=</span> <span class="no">center</span>,
+  <span class="kw">covariance</span> <span class="kw">=</span> <span class="no">covariance</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="fl">2</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="fl">1</span>,
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"bivariate_normal"</span>
+)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig10-1.png" width="1536" style="display: block; margin: auto;"></p>
 <p>Note that in this example <span class="math inline">\({\bf v} = 0\)</span> is quite far from the distribution center at <span class="math inline">\({\bf v} = (5e5, 3e5)\, m/s\)</span>, which explains why the ring distribution appears much smaller than the Maxwellian in the 1D plot (the plot is a slice along <span class="math inline">\(v_{perp} = 0\)</span>, far from the center).</p>
 <p>We get the <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> components shown below.</p>
@@ -352,41 +352,41 @@ p_c=p_{te}\left( \frac{3\sqrt{\pi}}{4}\sum_i\frac{n_im_e}{n_em_i}Z_i^2\right)^{1
 <p>The parameter <span class="math inline">\(b\)</span> quantifies the importance of transport effects. For <span class="math inline">\(b=0\)</span> transport is negligible and the distribution corresponds to the classical slowdown distribution. For <span class="math inline">\(b = 10\)</span> it is highly significant and causes a bump-on-tail shape.</p>
 <p>The integration constant <span class="math inline">\(K\)</span> is here calculated numerically. Theoretically, <span class="math inline">\(K = S_0\tau_s/4\pi\)</span> where <span class="math inline">\(S_0\)</span> is a source term and <span class="math inline">\(\tau_0\)</span> the slowdown time. Here it is instead assumed that the total fast-ion density, <span class="math inline">\(n\)</span>, is known rather than the source.</p>
 <p>The distribution can be set up with (note the <em>ions</em> argument, used to calculate <span class="math inline">\(p_c\)</span>, can contain multiple species if relevant):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">n &lt;-<span class="st"> </span><span class="fl">4e19</span></a>
-<a class="sourceLine" id="cb13-2" title="2">A &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb13-3" title="3">Z &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb13-4" title="4"></a>
-<a class="sourceLine" id="cb13-5" title="5">slowdown_b5 =<span class="st"> </span><span class="kw"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(</a>
-<a class="sourceLine" id="cb13-6" title="6">  <span class="dt">b =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb13-7" title="7">  <span class="dt">n =</span> n,</a>
-<a class="sourceLine" id="cb13-8" title="8">  <span class="dt">A =</span> A,</a>
-<a class="sourceLine" id="cb13-9" title="9">  <span class="dt">Z =</span> Z,</a>
-<a class="sourceLine" id="cb13-10" title="10">  <span class="dt">birth_energy =</span> <span class="fl">20e3</span>,</a>
-<a class="sourceLine" id="cb13-11" title="11">  <span class="dt">n_e =</span> n,</a>
-<a class="sourceLine" id="cb13-12" title="12">  <span class="dt">T_e_eV =</span> <span class="fl">2e3</span>,</a>
-<a class="sourceLine" id="cb13-13" title="13">  <span class="dt">ions =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb13-14" title="14">    <span class="dt">Z =</span> Z,</a>
-<a class="sourceLine" id="cb13-15" title="15">    <span class="dt">A =</span> A,</a>
-<a class="sourceLine" id="cb13-16" title="16">    <span class="dt">n =</span> n</a>
-<a class="sourceLine" id="cb13-17" title="17">  ),</a>
-<a class="sourceLine" id="cb13-18" title="18">  <span class="dt">name =</span> <span class="st">"deuterium_slowdown_b5"</span></a>
-<a class="sourceLine" id="cb13-19" title="19">)</a>
-<a class="sourceLine" id="cb13-20" title="20"></a>
-<a class="sourceLine" id="cb13-21" title="21">slowdown_b0 =<span class="st"> </span><span class="kw"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(</a>
-<a class="sourceLine" id="cb13-22" title="22">  <span class="dt">b =</span> <span class="dv">0</span>,</a>
-<a class="sourceLine" id="cb13-23" title="23">  <span class="dt">n =</span> n,</a>
-<a class="sourceLine" id="cb13-24" title="24">  <span class="dt">A =</span> A,</a>
-<a class="sourceLine" id="cb13-25" title="25">  <span class="dt">Z =</span> Z,</a>
-<a class="sourceLine" id="cb13-26" title="26">  <span class="dt">birth_energy =</span> <span class="fl">20e3</span>,</a>
-<a class="sourceLine" id="cb13-27" title="27">  <span class="dt">n_e =</span> n,</a>
-<a class="sourceLine" id="cb13-28" title="28">  <span class="dt">T_e_eV =</span> <span class="fl">2e3</span>,</a>
-<a class="sourceLine" id="cb13-29" title="29">  <span class="dt">ions =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(</a>
-<a class="sourceLine" id="cb13-30" title="30">    <span class="dt">Z =</span> Z,</a>
-<a class="sourceLine" id="cb13-31" title="31">    <span class="dt">A =</span> A,</a>
-<a class="sourceLine" id="cb13-32" title="32">    <span class="dt">n =</span> n</a>
-<a class="sourceLine" id="cb13-33" title="33">  ),</a>
-<a class="sourceLine" id="cb13-34" title="34">  <span class="dt">name =</span> <span class="st">"deuterium_slowdown_b0"</span></a>
-<a class="sourceLine" id="cb13-35" title="35">)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">n</span> <span class="kw">&lt;-</span> <span class="fl">4e19</span>
+<span class="no">A</span> <span class="kw">&lt;-</span> <span class="fl">2</span>
+<span class="no">Z</span> <span class="kw">&lt;-</span> <span class="fl">1</span>
+
+<span class="no">slowdown_b5</span> <span class="kw">=</span> <span class="fu"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(
+  <span class="kw">b</span> <span class="kw">=</span> <span class="fl">5</span>,
+  <span class="kw">n</span> <span class="kw">=</span> <span class="no">n</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="no">A</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="no">Z</span>,
+  <span class="kw">birth_energy</span> <span class="kw">=</span> <span class="fl">20e3</span>,
+  <span class="kw">n_e</span> <span class="kw">=</span> <span class="no">n</span>,
+  <span class="kw">T_e_eV</span> <span class="kw">=</span> <span class="fl">2e3</span>,
+  <span class="kw">ions</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
+    <span class="kw">Z</span> <span class="kw">=</span> <span class="no">Z</span>,
+    <span class="kw">A</span> <span class="kw">=</span> <span class="no">A</span>,
+    <span class="kw">n</span> <span class="kw">=</span> <span class="no">n</span>
+  ),
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"deuterium_slowdown_b5"</span>
+)
+
+<span class="no">slowdown_b0</span> <span class="kw">=</span> <span class="fu"><a href="../reference/slowdown_setup.html">slowdown_setup</a></span>(
+  <span class="kw">b</span> <span class="kw">=</span> <span class="fl">0</span>,
+  <span class="kw">n</span> <span class="kw">=</span> <span class="no">n</span>,
+  <span class="kw">A</span> <span class="kw">=</span> <span class="no">A</span>,
+  <span class="kw">Z</span> <span class="kw">=</span> <span class="no">Z</span>,
+  <span class="kw">birth_energy</span> <span class="kw">=</span> <span class="fl">20e3</span>,
+  <span class="kw">n_e</span> <span class="kw">=</span> <span class="no">n</span>,
+  <span class="kw">T_e_eV</span> <span class="kw">=</span> <span class="fl">2e3</span>,
+  <span class="kw">ions</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
+    <span class="kw">Z</span> <span class="kw">=</span> <span class="no">Z</span>,
+    <span class="kw">A</span> <span class="kw">=</span> <span class="no">A</span>,
+    <span class="kw">n</span> <span class="kw">=</span> <span class="no">n</span>
+  ),
+  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"deuterium_slowdown_b0"</span>
+)</pre></body></html></div>
 <p><img src="j0j0r_intro_files/figure-html/fig12-1.png" width="1536" style="display: block; margin: auto;"><img src="j0j0r_intro_files/figure-html/fig12-2.png" width="1536" style="display: block; margin: auto;"></p>
 <p>And we get the <span class="math inline">\(\langle \widetilde{\bf{j}}^{(a0)} \widetilde{\bf{j}}^{(a0)}\rangle\)</span> components shown below.</p>
 <p><img src="j0j0r_intro_files/figure-html/fig13-1.png" width="1536" style="display: block; margin: auto;"></p>
@@ -416,33 +416,11 @@ p_c=p_{te}\left( \frac{3\sqrt{\pi}}{4}\sum_i\frac{n_im_e}{n_em_i}Z_i^2\right)^{1
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction">Introduction</a></li>
-      <li>
-<a href="#distribution-functions">Distribution functions</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#conventions-for-distribution-functions">Conventions for distribution functions</a></li>
-      <li><a href="#examples-of-distribution-functions">Examples of distribution functions</a></li>
-      </ul>
-</li>
-      <li>
-<a href="#calculating-j0j0">Calculating j0j0</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#maxwellian">Maxwellian</a></li>
-      <li><a href="#bimaxwellian">Bimaxwellian</a></li>
-      <li><a href="#lorentzian">Lorentzian</a></li>
-      <li><a href="#ring">Ring</a></li>
-      <li><a href="#bivariate-normal">Bivariate Normal</a></li>
-      <li><a href="#slowdown">Slowdown</a></li>
-      </ul>
-</li>
-      <li><a href="#effects-of-localized-features-in-the-velocity-distribution">Effects of localized features in the velocity distribution</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -453,7 +431,7 @@ p_c=p_{te}\left( \frac{3\sqrt{\pi}}{4}\sum_i\frac{n_im_e}{n_em_i}Z_i^2\right)^{1
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
